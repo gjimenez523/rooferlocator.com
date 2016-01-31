@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/rooferlocator.com.Application/bin/Debug
+/rooferlocator.com.Application/obj/Debug
+/rooferlocator.com.Core/bin/Debug
+/rooferlocator.com.Core/obj/Debug
+/rooferlocator.com.EntityFramework/bin/Debug
+/rooferlocator.com.EntityFramework/obj/Debug
+/rooferlocator.com.Web/bin
+/rooferlocator.com.Web/obj/Debug
+/rooferlocator.com.WebApi/bin/Debug
+/rooferlocator.com.WebApi/obj/Debug
+/Tests/rooferlocator.com.Tests/obj/Debug

@@ -3,12 +3,32 @@ using Abp.Zero.EntityFramework;
 using rooferlocator.com.Authorization.Roles;
 using rooferlocator.com.MultiTenancy;
 using rooferlocator.com.Users;
+using System.Data.Entity;
+using rooferlocator.Common;
+using rooferlocator.Common.News;
+using rooferlocator.Common.Types;
+using rooferlocator.Sales;
 
 namespace rooferlocator.com.EntityFramework
 {
     public class comDbContext : AbpZeroDbContext<Tenant, Role, User>
     {
         //TODO: Define an IDbSet for your Entities...
+        public virtual IDbSet<Company> Company { get; set; }
+        public virtual IDbSet<Member> Member { get; set; }
+        public virtual IDbSet<MembersRoofType> MembersRoofType { get; set; }
+        public virtual IDbSet<MembersServiceType> MembersServiceType { get; set; }
+        public virtual IDbSet<News> News { get; set; }
+        public virtual IDbSet<NewsCategories> NewsCategories { get; set; }
+        public virtual IDbSet<Tips> Tips { get; set; }
+        public virtual IDbSet<TipsCategories> TipsCategories { get; set; }
+        public virtual IDbSet<Testimonial> Testimonial { get; set; }
+        public virtual IDbSet<LocationType> LocationType { get; set; }
+        public virtual IDbSet<QuoteType> QuoteType { get; set; }
+        public virtual IDbSet<RoofType> RoofType { get; set; }
+        public virtual IDbSet<ServiceType> ServiceType { get; set; }
+        public virtual IDbSet<Lead> Lead { get; set; }
+        public virtual IDbSet<Payment> Payment { get; set; }
 
         /* NOTE: 
          *   Setting "Default" to base class helps us when working migration commands on Package Manager Console.

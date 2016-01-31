@@ -108,7 +108,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntityFramework\comDbContext.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\Companies\CompanyRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\Members\MemberRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\News\NewsCategoriesRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\News\NewsRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\News\TipsCategoriesRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\News\TipsRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\Testimonial\TestimonialRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\Types\LocationTypeRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\Types\QuoteTypeRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\Types\RoofTypeRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\Types\ServiceTypeRepository.cs" />
     <Compile Include="EntityFramework\Repositories\comRepositoryBase.cs" />
+    <Compile Include="EntityFramework\Repositories\Sales\LeadRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Sales\PaymentRepository.cs" />
     <Compile Include="Migrations\201506210746108_AbpZero_Initial.cs" />
     <Compile Include="Migrations\201506210746108_AbpZero_Initial.Designer.cs">
       <DependentUpon>201506210746108_AbpZero_Initial.cs</DependentUpon>
@@ -140,6 +153,10 @@
     <Compile Include="Migrations\201601032115057_Upgraded_Module_Zero_0_7_7.cs" />
     <Compile Include="Migrations\201601032115057_Upgraded_Module_Zero_0_7_7.Designer.cs">
       <DependentUpon>201601032115057_Upgraded_Module_Zero_0_7_7.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601312210148_RooferLocator_Initial.cs" />
+    <Compile Include="Migrations\201601312210148_RooferLocator_Initial.Designer.cs">
+      <DependentUpon>201601312210148_RooferLocator_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="comDataModule.cs" />
@@ -183,6 +200,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601032115057_Upgraded_Module_Zero_0_7_7.resx">
       <DependentUpon>201601032115057_Upgraded_Module_Zero_0_7_7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601312210148_RooferLocator_Initial.resx">
+      <DependentUpon>201601312210148_RooferLocator_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using rooferlocator.com.MultiTenancy;
 using rooferlocator.com.Users;
 using rooferlocator.Sales;
-using rooferlocator.Common.Types;
+using rooferlocator.com.Common.Types;
 
-namespace rooferlocator.Common
+namespace rooferlocator.com.Common
 {
     [Table("RlMembers")]
     public class Member : FullAuditedEntity

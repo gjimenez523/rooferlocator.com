@@ -7,7 +7,7 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using rooferlocator.com.MultiTenancy;
 
-namespace rooferlocator.Common.Types
+namespace rooferlocator.com.Common.Types
 {
     [Table("RlQuoteType")]
     public class QuoteType : FullAuditedEntity

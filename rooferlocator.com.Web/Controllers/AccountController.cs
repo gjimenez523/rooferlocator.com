@@ -23,6 +23,11 @@ using rooferlocator.com.Web.Models.Account;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using rooferlocator.com.Common.Types;
+using System.IO;
+using System.Text;
+using System.Net;
+using System.Web.Configuration;
 
 namespace rooferlocator.com.Web.Controllers
 {
@@ -33,6 +38,10 @@ namespace rooferlocator.com.Web.Controllers
         private readonly RoleManager _roleManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IMultiTenancyConfig _multiTenancyConfig;
+        private readonly IRoofTypeAppService _roofTypeService;
+        private readonly IServiceTypeAppService _serviceTypeService;
+        private readonly ILocationAppService _locationService;
+
 
         private IAuthenticationManager AuthenticationManager
         {
@@ -47,14 +56,291 @@ namespace rooferlocator.com.Web.Controllers
             UserManager userManager,
             RoleManager roleManager,
             IUnitOfWorkManager unitOfWorkManager,
-            IMultiTenancyConfig multiTenancyConfig)
+            IMultiTenancyConfig multiTenancyConfig,
+            IRoofTypeAppService roofTypeAppService,
+            IServiceTypeAppService serviceTypeAppService,
+            ILocationAppService locationAppService)
         {
             _tenantManager = tenantManager;
             _userManager = userManager;
             _roleManager = roleManager;
             _unitOfWorkManager = unitOfWorkManager;
             _multiTenancyConfig = multiTenancyConfig;
+
+            _roofTypeService = roofTypeAppService;
+            _serviceTypeService = serviceTypeAppService;
+            _locationService = locationAppService;
         }
+
+        #region RooferLocator
+        [HttpGet]
+        //public ActionResult GetCities(FormCollection collection, LoginFormViewModel inquiryModel, string returnUrl = "", string state = "")
+        public ActionResult GetCities(string state)
+        {
+            LoginFormViewModel loginFormModel = new LoginFormViewModel()
+            {
+                InquiryResults = new CreditsHero.Messaging.Requests.Dtos.GetInquiryResults(),
+                RequestResults = new CreditsHero.Messaging.Dtos.RequestsDto(),
+                ReturnUrl = "/",
+                IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled
+            };
+
+            List<KeyValuePair<string, string>> inquiryValues = new List<KeyValuePair<string, string>>();
+
+            BuildInquiry(ref inquiryValues);
+
+            SetupLoginModel(ref loginFormModel, new CreditsHero.Messaging.Requests.Dtos.GetInquiryResults(),
+                new CreditsHero.Messaging.Dtos.RequestsDto(),
+                state);
+
+            return Json(loginFormModel, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [DisableAuditing]
+        public ActionResult Inquiry(FormCollection collection, LoginFormViewModel inquiryModel, string returnUrl = "")
+        {
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                returnUrl = Request.ApplicationPath;
+            }
+
+            LoginFormViewModel loginFormModel = new LoginFormViewModel()
+            {
+                InquiryResults = new CreditsHero.Messaging.Requests.Dtos.GetInquiryResults(),
+                RequestResults = new CreditsHero.Messaging.Dtos.RequestsDto(),
+                ReturnUrl = returnUrl,
+                IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled
+            };
+
+            var creditsHeroFormat = String.Format("{0}api/services/app/Inquiry/MakeInquiry", WebConfigurationManager.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            //var creditsHeroFormat = "http://CreditsHero.azurewebsites.net/api/services/cd/Inquiry/MakeInquiry";
+            //var creditsHeroFormat = "http://localhost:6234/api/services/cd/Inquiry/MakeInquiry";
+            var timelineUrl = string.Format(creditsHeroFormat);
+            CreditsHero.Messaging.Requests.Dtos.GetInquiryInput inquiryInput;
+            CreditsHero.Messaging.Requests.Dtos.GetInquiryResults inquiryResults;
+            List<KeyValuePair<string, string>> inquiryValues = new List<KeyValuePair<string, string>>();
+
+            BuildInquiry(ref inquiryValues);
+
+            //Serialize object to JSON
+            MemoryStream jsonStream = new MemoryStream();
+
+            inquiryInput = new CreditsHero.Messaging.Requests.Dtos.GetInquiryInput()
+            {
+                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]),
+                QueryRequest = inquiryValues
+            };
+
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(inquiryInput);
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            Stream newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<CreditsHero.Messaging.Requests.Dtos.GetInquiryResults>(jObject2.ToString());
+                    inquiryResults = itemResult;
+                }
+            }
+
+            SetupLoginModel(ref loginFormModel, inquiryResults, new CreditsHero.Messaging.Dtos.RequestsDto(), string.Empty);// , inquiryValues[3].Key);
+
+            //Send Inquiry Email to Admin
+            var serviceUrl = String.Format("{0}api/services/app/Notification/SendEmailNotification", WebConfigurationManager.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            //var serviceUrl = string.Format("http://CreditsHero.azurewebsites.net/api/services/cd/Notification/SendEmailNotification");
+            CreditsHero.Messaging.Dtos.NotificationInput emailInput = new CreditsHero.Messaging.Dtos.NotificationInput();
+
+            //Serialize object to JSON
+            jsonStream = new MemoryStream();
+
+            emailInput = new CreditsHero.Messaging.Dtos.NotificationInput()
+            {
+                EmailFrom = "no-reply@rooferlocator.com",
+                EmailSubject = String.Format("New Inquiry at RooferLocator.com"),
+                EmailMessage = String.Format("Hello Administrator: \n  An inquiry/search has been submitted at RooferLocator.com.\n\n Following are the details of the inquiry:\n Roof Type = {0} \n Service Type = {1} \n Time Of Repair = {2} \n State = {3} \n City = {4}",
+                    inquiryValues[0].Value,
+                    inquiryValues[1].Value,
+                    inquiryValues[2].Value,
+                    inquiryValues[3].Value,
+                    inquiryValues[4].Value),
+                EmailTo = System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:AdminEmailAddress"]
+            };
+
+            jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(emailInput);
+            byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            creditsHeroRequest = (HttpWebRequest)WebRequest.Create(serviceUrl);
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<CreditsHero.Messaging.Requests.Dtos.GetInquiryResults>(jObject2.ToString());
+                    inquiryResults = itemResult;
+                }
+            }
+
+            return View("Login", loginFormModel);
+            //new LoginFormViewModel
+            //{
+            //    InquiryResults = inquiryResults,
+            //    RequestResults = new CreditsHero.Messaging.Dtos.RequestsDto(),
+            //    RoofTypeValues = roofTypes.RoofTypes.Cast<CreditsHero.Common.Dtos.CriteriaValuesDto>().ToList(),
+            //    TypeOfService = serviceTypes.ServiceTypes.Cast<CreditsHero.Common.Dtos.CriteriaValuesDto>().ToList(),
+            //    ReturnUrl = returnUrl,
+            //    IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled
+            //});
+        }
+
+        [HttpPost]
+        [DisableAuditing]
+        public ActionResult SendRequest(FormCollection collection, LoginFormViewModel inquiryModel, string returnUrl = "")
+        {
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                returnUrl = Request.ApplicationPath;
+            }
+
+            LoginFormViewModel loginFormModel = new LoginFormViewModel()
+            {
+                InquiryResults = new CreditsHero.Messaging.Requests.Dtos.GetInquiryResults(),
+                RequestResults = new CreditsHero.Messaging.Dtos.RequestsDto(),
+                ReturnUrl = returnUrl,
+                IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled
+            };
+
+            var creditsHeroFormat = String.Format("{0}api/services/app/Requests/CreateRequests", WebConfigurationManager.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            //var creditsHeroFormat = "http://CreditsHero.azurewebsites.net/api/services/cd/Requests/CreateRequests";
+            //var creditsHeroFormat = "http://localhost:6234/api/services/cd/Requests/CreateRequests";
+            var timelineUrl = string.Format(creditsHeroFormat);
+            CreditsHero.Messaging.Dtos.CreateRequestsInput requestInput = new CreditsHero.Messaging.Dtos.CreateRequestsInput();
+            CreditsHero.Messaging.Dtos.RequestsDto requestResults;
+            List<KeyValuePair<string, string>> inquiryValues = new List<KeyValuePair<string, string>>();
+
+            BuildInquiry(ref inquiryValues);
+
+            //Serialize object to JSON
+            MemoryStream jsonStream = new MemoryStream();
+
+            requestInput.QueryRequest = inquiryValues;
+            requestInput.CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]);
+            requestInput.FullName = String.Format("{0} {1}", Request.Form["FirstName"], Request.Form["LastName"]);
+            requestInput.InquiryId = Int32.Parse(Request.Form["InquiryId"]);
+            requestInput.SmsNumber = Request.Form["PhoneNumber"];
+            requestInput.RequestsId = 0;
+            requestInput.Email = Request.Form["EmailAddress"];
+            requestInput.ReplyToEmail = System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:EmailReply"];
+
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(requestInput);
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            Stream newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<CreditsHero.Messaging.Dtos.RequestsDto>(jObject2.ToString());
+                    requestResults = itemResult;
+                }
+            }
+
+            SetupLoginModel(ref loginFormModel, inquiryModel.InquiryResults, requestResults, string.Empty);
+
+            return View("Login", loginFormModel);
+            //{
+            //    InquiryResults = inquiryModel.InquiryResults,
+            //    RequestResults = requestResults,
+            //    RoofTypeValues = roofTypes.RoofTypes.Cast<CreditsHero.Common.Dtos.CriteriaValuesDto>().ToList(),
+            //    TypeOfService = serviceTypes.ServiceTypes.Cast<CreditsHero.Common.Dtos.CriteriaValuesDto>().ToList(),
+            //    ReturnUrl = returnUrl,
+            //    IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled
+            //});
+        }
+
+        private void BuildInquiry(ref List<KeyValuePair<string, string>> inquiryValues)
+        {
+            //Build Inquiry Request - Type Of Roof
+            inquiryValues.Add(new KeyValuePair<string, string>("Type Of Roof", Request.Form["RoofTypeValues"]));
+
+            //Build Inquiry Request - Type of Service
+            inquiryValues.Add(new KeyValuePair<string, string>("Type Of Service", Request.Form["TypeOfService"]));
+
+            //Build Inquiry Request - Time Of Repair
+            inquiryValues.Add(new KeyValuePair<string, string>("Time Of Repair", Request.Form["TimeOfRepairValues"]));
+
+            //Build Inquiry Request - State
+            inquiryValues.Add(new KeyValuePair<string, string>("State", Request.Form["StateValues"]));
+
+            //Build Inquiry Request - Cities
+            inquiryValues.Add(new KeyValuePair<string, string>("City", Request.Form["City"]));
+        }
+
+        private void SetupLoginModel(ref LoginFormViewModel loginFormModel,
+            CreditsHero.Messaging.Requests.Dtos.GetInquiryResults inquiryResults,
+            CreditsHero.Messaging.Dtos.RequestsDto requestResults,
+            string selectedState)
+        {
+            //Get RoofType
+            var roofTypes = _roofTypeService.GetRoofTypes(new CreditsHero.Common.Dtos.GetCriteriaInput()
+            {
+                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]),
+                CriteriaId = Int32.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:RoofTypeId"])
+            });
+            //Get TypeOfService
+            var serviceTypes = _serviceTypeService.GetServiceTypes(new CreditsHero.Common.Dtos.GetCriteriaInput()
+            {
+                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]),
+                CriteriaId = Int32.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:ServiceTypeId"])
+            });
+            //TODO: Get TimeOfRepair
+
+            //TODO: Get State
+
+            //TODO: Get City
+            var cities = _locationService.GetCities(new CreditsHero.Common.Dtos.GetCriteriaInput()
+            {
+                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]),
+                CriteriaId = Int32.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CityLocationTypeId"])
+            }, selectedState);
+
+            loginFormModel.InquiryResults = inquiryResults;
+            loginFormModel.RequestResults = requestResults;
+            loginFormModel.RoofTypeValues = roofTypes.RoofTypes.Cast<CreditsHero.Common.Dtos.CriteriaValuesDto>().ToList();
+            loginFormModel.TypeOfService = serviceTypes.ServiceTypes.Cast<CreditsHero.Common.Dtos.CriteriaValuesDto>().ToList();
+            loginFormModel.City = cities.Locations.Cast<CreditsHero.Common.Dtos.CriteriaValuesDto>().ToList();
+        }
+        #endregion
 
         #region Login / Logout
 
@@ -64,6 +350,21 @@ namespace rooferlocator.com.Web.Controllers
             {
                 returnUrl = Request.ApplicationPath;
             }
+
+            //LoginFormViewModel loginFormModel = new LoginFormViewModel()
+            //{
+            //    InquiryResults = new CreditsHero.Messaging.Requests.Dtos.GetInquiryResults(),
+            //    RequestResults = new CreditsHero.Messaging.Dtos.RequestsDto(),
+            //    ReturnUrl = returnUrl,
+            //    IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled
+            //};
+
+            //SetupLoginModel(ref loginFormModel,
+            //    new CreditsHero.Messaging.Requests.Dtos.GetInquiryResults(),
+            //    new CreditsHero.Messaging.Dtos.RequestsDto(),
+            //    String.Empty);
+
+            //return View(loginFormModel);
 
             return View(
                 new LoginFormViewModel

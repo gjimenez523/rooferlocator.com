@@ -15,7 +15,7 @@ namespace rooferlocator.com
         public override void PreInitialize()
         {
             //Remove the following line to disable multi-tenancy.
-            Configuration.MultiTenancy.IsEnabled = true;
+            //Configuration.MultiTenancy.IsEnabled = true;
 
             //Add/remove localization sources here
             Configuration.Localization.Sources.Add(
@@ -28,9 +28,11 @@ namespace rooferlocator.com
                     )
                 );
 
-            AppRoleConfig.Configure(Configuration.Modules.Zero().RoleManagement);
+            //The following is commented out because of collision with CreditsHero Tenancy
+            //AppRoleConfig.Configure(Configuration.Modules.Zero().RoleManagement);
 
-            Configuration.Authorization.Providers.Add<comAuthorizationProvider>();
+            //The following is commented out because of collision with CreditsHero Tenancy
+            //Configuration.Authorization.Providers.Add<comAuthorizationProvider>();
         }
 
         public override void Initialize()

@@ -2,7 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using Abp.EntityFramework;
-using rooferlocator.Common.News;
+using rooferlocator.com.Common.News;
 
 namespace rooferlocator.com.EntityFramework.Repositories.Common
 {

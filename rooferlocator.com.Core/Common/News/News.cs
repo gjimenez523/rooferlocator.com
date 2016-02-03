@@ -7,7 +7,7 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using rooferlocator.com.MultiTenancy;
 
-namespace rooferlocator.Common.News
+namespace rooferlocator.com.Common.News
 {
     [Table("RlNews")]
     public class News : FullAuditedEntity

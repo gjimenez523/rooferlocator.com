@@ -4,9 +4,9 @@ using rooferlocator.com.Authorization.Roles;
 using rooferlocator.com.MultiTenancy;
 using rooferlocator.com.Users;
 using System.Data.Entity;
-using rooferlocator.Common;
-using rooferlocator.Common.News;
-using rooferlocator.Common.Types;
+using rooferlocator.com.Common;
+using rooferlocator.com.Common.News;
+using rooferlocator.com.Common.Types;
 using rooferlocator.Sales;
 
 namespace rooferlocator.com.EntityFramework

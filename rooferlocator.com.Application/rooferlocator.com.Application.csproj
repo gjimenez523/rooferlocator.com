@@ -45,6 +45,10 @@
       <HintPath>..\packages\Abp.Zero.0.7.7.0\lib\net452\Abp.Zero.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AuthorizeNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.15\lib\AuthorizeNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
@@ -60,6 +64,14 @@
     <Reference Include="Castle.Windsor, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="CreditsHero.Application, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.15\lib\CreditsHero.Application.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CreditsHero.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.15\lib\CreditsHero.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -81,6 +93,18 @@
       <HintPath>..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SendGrid, Version=6.3.4.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.15\lib\SendGrid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SendGrid.SmtpApi, Version=1.3.1.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.15\lib\SendGrid.SmtpApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SendGridMail, Version=6.3.4.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.15\lib\SendGridMail.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.0.34.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -88,15 +112,101 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.15\lib\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.15\lib\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.15\lib\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.15\lib\System.Web.Http.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Twilio.Api, Version=3.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.15\lib\Twilio.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="comApplicationModule.cs" />
     <Compile Include="comAppServiceBase.cs" />
+    <Compile Include="Common\Companies\CompanyAppService.cs" />
+    <Compile Include="Common\Companies\Dtos\CompanyDto.cs" />
+    <Compile Include="Common\Companies\Dtos\CreateCompanyInput.cs" />
+    <Compile Include="Common\Companies\Dtos\GetCompaniesOutput.cs" />
+    <Compile Include="Common\Companies\Dtos\GetCompanyInput.cs" />
+    <Compile Include="Common\Companies\Dtos\UpdateCompanyInput.cs" />
+    <Compile Include="Common\Companies\ICompanyAppService.cs" />
+    <Compile Include="Common\Members\Dtos\CreateMembersInput.cs" />
+    <Compile Include="Common\Members\Dtos\GetMembersInput.cs" />
+    <Compile Include="Common\Members\Dtos\GetMembersOutput.cs" />
+    <Compile Include="Common\Members\Dtos\MemberDto.cs" />
+    <Compile Include="Common\Members\Dtos\UpdateMembersInput.cs" />
+    <Compile Include="Common\Members\IMemberAppService.cs" />
+    <Compile Include="Common\Members\MemberAppService.cs" />
+    <Compile Include="Common\News\Dtos\CreateNewsCategoriesInput.cs" />
+    <Compile Include="Common\News\Dtos\CreateNewsInput.cs" />
+    <Compile Include="Common\News\Dtos\CreateTipsCategoriesInput.cs" />
+    <Compile Include="Common\News\Dtos\CreateTipsInput.cs" />
+    <Compile Include="Common\News\Dtos\GetNewsCategoriesInput.cs" />
+    <Compile Include="Common\News\Dtos\GetNewsCategoriesOutput.cs" />
+    <Compile Include="Common\News\Dtos\GetNewsInput.cs" />
+    <Compile Include="Common\News\Dtos\GetNewsOutput.cs" />
+    <Compile Include="Common\News\Dtos\GetTipsCategoriesInput.cs" />
+    <Compile Include="Common\News\Dtos\GetTipsCategoriesOutput.cs" />
+    <Compile Include="Common\News\Dtos\GetTipsInput.cs" />
+    <Compile Include="Common\News\Dtos\GetTipsOutput.cs" />
+    <Compile Include="Common\News\Dtos\NewsCategoriesDto.cs" />
+    <Compile Include="Common\News\Dtos\NewsCategoriesInput.cs" />
+    <Compile Include="Common\News\Dtos\NewsDto.cs" />
+    <Compile Include="Common\News\Dtos\TipsCategoriesDto.cs" />
+    <Compile Include="Common\News\Dtos\TipsDto.cs" />
+    <Compile Include="Common\News\Dtos\UpdateNewsInput.cs" />
+    <Compile Include="Common\News\Dtos\UpdateTipsCategoriesInput.cs" />
+    <Compile Include="Common\News\Dtos\UpdateTipsInput.cs" />
+    <Compile Include="Common\News\INewsAppService.cs" />
+    <Compile Include="Common\News\ITipsAppService.cs" />
+    <Compile Include="Common\News\NewsAppService.cs" />
+    <Compile Include="Common\News\TipsAppService.cs" />
+    <Compile Include="Common\Types\Location\Dtos\CreateLocationInput.cs" />
+    <Compile Include="Common\Types\Location\Dtos\GetLocationInput.cs" />
+    <Compile Include="Common\Types\Location\Dtos\GetLocationOutput.cs" />
+    <Compile Include="Common\Types\Location\Dtos\LocationDto.cs" />
+    <Compile Include="Common\Types\Location\Dtos\UpdateLocationInput.cs" />
+    <Compile Include="Common\Types\Location\ILocationAppService.cs" />
+    <Compile Include="Common\Types\Location\LocationAppService.cs" />
+    <Compile Include="Common\Types\QuoteType\Dtos\CreateQuoteTypeInput.cs" />
+    <Compile Include="Common\Types\QuoteType\Dtos\GetQuoteTypeInput.cs" />
+    <Compile Include="Common\Types\QuoteType\Dtos\GetQuoteTypeOutput.cs" />
+    <Compile Include="Common\Types\QuoteType\Dtos\QuoteTypeDto.cs" />
+    <Compile Include="Common\Types\QuoteType\Dtos\UpdateQuoteTypeInput.cs" />
+    <Compile Include="Common\Types\QuoteType\IQuoteTypeAppService.cs" />
+    <Compile Include="Common\Types\QuoteType\QuoteTypeAppService.cs" />
+    <Compile Include="Common\Types\RoofType\Dtos\CreateRoofTypeInput.cs" />
+    <Compile Include="Common\Types\RoofType\Dtos\GetRoofTypeInput.cs" />
+    <Compile Include="Common\Types\RoofType\Dtos\GetRoofTypeOutput.cs" />
+    <Compile Include="Common\Types\RoofType\Dtos\RoofTypeDto.cs" />
+    <Compile Include="Common\Types\RoofType\Dtos\UpdateRoofTypeInput.cs" />
+    <Compile Include="Common\Types\RoofType\IRoofTypeAppService.cs" />
+    <Compile Include="Common\Types\RoofType\RoofTypeAppService.cs" />
+    <Compile Include="Common\Types\ServiceType\Dtos\CreateServiceTypeInput.cs" />
+    <Compile Include="Common\Types\ServiceType\Dtos\GetServiceTypeInput.cs" />
+    <Compile Include="Common\Types\ServiceType\Dtos\GetServiceTypeOutput.cs" />
+    <Compile Include="Common\Types\ServiceType\Dtos\ServiceTypeDto.cs" />
+    <Compile Include="Common\Types\ServiceType\Dtos\UpdateServiceTypeInput.cs" />
+    <Compile Include="Common\Types\ServiceType\IServiceTypeAppService.cs" />
+    <Compile Include="Common\Types\ServiceType\ServiceTypeAppService.cs" />
     <Compile Include="MultiTenancy\Dto\CreateTenantInput.cs" />
     <Compile Include="MultiTenancy\ITenantAppService.cs" />
     <Compile Include="MultiTenancy\Dto\TenantListDto.cs" />
@@ -123,6 +233,9 @@
       <Project>{17298ea0-af73-4f30-b6f1-2066100d7d74}</Project>
       <Name>rooferlocator.com.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Sales\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

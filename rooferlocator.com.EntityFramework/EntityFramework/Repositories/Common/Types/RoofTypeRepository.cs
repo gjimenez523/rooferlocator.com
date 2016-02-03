@@ -2,7 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using Abp.EntityFramework;
-using rooferlocator.Common.Types;
+using rooferlocator.com.Common.Types;
 
 namespace rooferlocator.com.EntityFramework.Repositories.Common.Types
 {

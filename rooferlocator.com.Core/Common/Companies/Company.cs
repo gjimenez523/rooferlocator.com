@@ -8,7 +8,7 @@ using Abp.Domain.Entities.Auditing;
 using rooferlocator.com.MultiTenancy;
 using rooferlocator.com.Users;
 
-namespace rooferlocator.Common
+namespace rooferlocator.com.Common
 {
     [Table("RlCompany")]
     public class Company : FullAuditedEntity

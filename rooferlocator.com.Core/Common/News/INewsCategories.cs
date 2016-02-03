@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Abp.Domain.Repositories;
 
-namespace rooferlocator.Common.News
+namespace rooferlocator.com.Common.News
 {
     public interface INewsCategoriesRepository : IRepository<NewsCategories>
     {

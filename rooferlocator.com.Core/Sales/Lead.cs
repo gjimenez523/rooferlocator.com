@@ -7,7 +7,7 @@ using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using rooferlocator.com.MultiTenancy;
 using rooferlocator.com.Users;
-using rooferlocator.Common.Types;
+using rooferlocator.com.Common.Types;
 
 namespace rooferlocator.Sales
 {

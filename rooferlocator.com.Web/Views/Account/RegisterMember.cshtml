@@ -1,0 +1,248 @@
+﻿@using Abp.Extensions
+@model rooferlocator.com.Web.Models.Account.RegisterMemberViewModel
+@section Styles
+{
+    <link href="~/Views/Account/Login.css" rel="stylesheet" />
+}
+
+<script>
+    function showPanel(panelId, itemId) {
+        document.getElementById('CompanyPanel').style.display = 'none';
+        document.getElementById('LicensePanel').style.display = 'none';
+        document.getElementById('ContactPanel').style.display = 'none';
+        document.getElementById(panelId).style.display = 'block';
+
+        document.getElementById("CompanyItem").className = "";
+        document.getElementById("LicenseItem").className = "";
+        document.getElementById("ContactItem").className = "";
+        document.getElementById(itemId).className = 'active';
+    }
+
+    function showLogin() {
+        document.getElementById('LoginArea').style.display = 'block';
+        document.getElementById('ImageSlider').style.display = 'none';
+        document.getElementById('SearchArea').style.display = 'none';
+        if (document.getElementById('InquiryView') != null) document.getElementById('InquiryView').style.display = 'none';
+        if (document.getElementById('RequestView') != null) document.getElementById('RequestView').style.display = 'none';
+        document.getElementById('AboutView').style.display='none';
+        document.getElementById('ContactView').style.display='none';
+        document.getElementById('TermsView').style.display='none';
+    }
+
+    function showHome() {
+        document.getElementById('LoginArea').style.display = 'none';
+        document.getElementById('ImageSlider').style.display = 'block';
+        document.getElementById('SearchArea').style.display = 'block';
+        if (document.getElementById('InquiryView')!= null) document.getElementById('InquiryView').style.display = 'none';
+        if (document.getElementById('RequestView') != null) document.getElementById('RequestView').style.display = 'none';
+        document.getElementById('AboutView').style.display='none';
+        document.getElementById('ContactView').style.display='none';
+        document.getElementById('TermsView').style.display='none';
+    }
+
+    function showInfo(viewName){
+        document.getElementById('AboutView').style.display='none';
+        document.getElementById('ContactView').style.display='none';
+        document.getElementById('TermsView').style.display='none';
+        document.getElementById(viewName).style.display='block';
+    }
+
+    //Need to get the CreditsHero CompanyId for RooferLocator
+    chCompanyId = "@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]";
+</script>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <!--HEADER BEGIN-->
+    <div class="row">
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
+                 style="box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);background-image: -ms-linear-gradient(top, #19447D 20%, #2080BE 100%);">
+                <a href="/Account/Login"><img src="~/images/rooferlocatorlogo.gif" /></a>
+                <span style="width:100%;text-align:center;padding-left:45px;">
+                    <a href="/Account/Login" style="text-align: center; color: white; vertical-align: bottom;">Home</a>
+                    <span style="text-align: center; color: white; vertical-align: bottom;">&nbsp;|&nbsp;</span>
+                    <a href="#AboutView" style="text-align: center; color: white; vertical-align: bottom;" onclick="showInfo('AboutView');">About Us</a>
+                    <span style="text-align: center; color: white; vertical-align: bottom;">&nbsp;|&nbsp;</span>
+                    <a href="#ContactView" style="text-align: center; color: white; vertical-align: bottom;" onclick="showInfo('ContactView');">Contact Us</a>
+                </span>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
+        </div>
+    </div>
+    <!--HEADER END-->
+    <!--CONTENT/MAIN BEGIN-->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                 style="padding-top: 15px; box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:7px;padding-right:7px;padding-top:5px;text-align:center;">
+                    <div class="well bs-component">
+                        <form class="form-horizontal" action="@(Url.Action("RegisterMember", "Register"))" method="POST">
+                            <fieldset>
+                                <legend>Register</legend>
+                                <ul class="nav nav-pills">
+                                    <li id="CompanyItem" role="presentation" class="active" onclick="showPanel('CompanyPanel', 'CompanyItem');"><a href="#CompanyPanel">Company</a></li>
+                                    <li id="LicenseItem" role="presentation" onclick="showPanel('LicensePanel', 'LicenseItem');"><a href="#LicensePanel">License</a></li>
+                                    <li id="ContactItem" role="presentation" onclick="showPanel('ContactPanel', 'ContactItem');"><a href="#ContactPanel">Contact</a></li>
+                                </ul>
+
+                                <input type="hidden" class="form-control" name="UserRefId" value="@Model.UserRefId.ToString()" />
+
+                                <!--BEGIN COMPANY INFO-->
+                                <div id="CompanyPanel" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="display:block;">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input type="text" class="form-control" name="Company.Name" value="@Model.Company.Name"
+                                               placeholder="@L("Company Name")" required>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input type="text" class="form-control" name="Company.Address1" value="@Model.Company.Address1"
+                                               placeholder="@L("Address1")" required>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input type="text" class="form-control" name="Company.Address2" value="@Model.Company.Address2"
+                                               placeholder="@L("Address2")">
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <input type="text" class="form-control" name="Company.City" value="@Model.Company.City"
+                                               placeholder="@L("City")">
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <input type="text" class="form-control" name="Company.State" value="@Model.Company.State"
+                                               placeholder="@L("State")">
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <input type="text" class="form-control" name="Company.Zip" value="@Model.Company.Zip"
+                                               placeholder="@L("Zip")">
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <input type="text" class="form-control" name="Company.ServiceArea" value="@Model.Company.ServiceArea"
+                                               placeholder="@L("Service Area")">
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <input type="text" class="form-control" name="Company.YearEstablished" value="@Model.Company.YearEstablished"
+                                               placeholder="@L("Year Established")">
+                                    </div>
+                                </div>
+                                <!--END COMPANY INFO-->
+                                <!--BEGIN MEMBER INFO-->
+                                <div id="LicensePanel" class="class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"" style="display:none;">
+                                    <div class="form-group">
+                                        <div class="col-lg-12 col-md-12 col-sm-1 col-xs-1">
+                                            <input type="hidden" class="form-control" name="Fullname" value="@Model.FullName"
+                                                   placeholder="@L("Fullname")" required>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-1 col-xs-1">
+                                            <input type="hidden" class="form-control" name="Email" value="@Model.Email"
+                                                   placeholder="@L("Email")" required>
+                                        </div>
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" name="JobTitle" value="@Model.JobTitle"
+                                                   placeholder="@L("JobTitle")" required>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" name="Credential" value="@Model.Credential"
+                                                   placeholder="@L("Credential")" required>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" name="License Description" value="@Model.LicenseDescription"
+                                                   placeholder="@L("LicenseDescription")" required>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" name="LicenseNumber" value="@Model.LicenseNumber"
+                                                   placeholder="@L("LicenseNumber")" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--END MEMBER INFO-->
+                                <!--BEGIN CONTACT INFO-->
+                                <div id="ContactPanel" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="display:none;">
+                                    <div class="form-group">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" name="CellPhone" value="@Model.CellPhone"
+                                                   placeholder="@L("CellPhone")" required>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" name="Fax" value="@Model.Fax"
+                                                   placeholder="@L("Fax")" required>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" name="Phone" value="@Model.Phone"
+                                                   placeholder="@L("Phone")" required>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!--END CONTACT INFO-->
+
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                                        <button type="submit" id="RegisterButton" class="btn btn-primary"><i class="fa fa-sign-in"></i> Finish</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+        </div>
+    </div>
+    <!--CONTENT/MAIN END-->
+    <!--ABOUT US END-->
+    <div id="AboutView" style="display:none;" class="row">
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
+                 style="padding-top: 10px;padding-left:5px; padding-right:5px; text-align: center;box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
+                @Html.Partial("AboutView")
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+        </div>
+    </div>
+    <!--ABOUT US END-->
+    <!--CONTACT US BEGIN-->
+    <div id="ContactView" style="display:none;" class="row">
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
+                 style="padding-top: 10px;padding-left:5px; padding-right:5px; text-align: center;box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
+                @Html.Partial("ContactView")
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+        </div>
+    </div>
+    <!--CONTACT US END-->
+    <!--TERMS BEGIN-->
+    <div id="TermsView" style="display:none;" class="row">
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
+                 style="padding-top: 10px;padding-left:5px; padding-right:5px; text-align: center;box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
+                @Html.Partial("TermsView")
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+        </div>
+    </div>
+    <!--TERMS END-->
+    <!--FOOTER BEGIN-->
+    <div class="row">
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
+                 style="padding-top: 15px; box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
+                <div style="background-image:url('/images/footer-bg.gif'); background-repeat:repeat-x;color:white;padding-top:10px;padding-bottom:10px;">
+                    <a href="#lead" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;">Lead</a> |
+                    <a href="#terms" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;">Terms</a> |
+                    <a href="#Login" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;" onclick="showLogin();">Login</a> |
+                    <a href="#Contact" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;">Contact</a> |
+                    <a href="#Affiliate" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;">Affiliate</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+        </div>
+    </div>
+    <!--FOOTER END-->
+</div>

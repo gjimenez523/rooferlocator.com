@@ -39,6 +39,7 @@
         chCompanyId = "@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]";
         chRoofTypeId = "@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:RoofTypeId"]";
         chServiceTypeId = "@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:ServiceTypeId"]";
+        chWebApiMakeInquiryUrl = "@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero_WebAPI:MakeInquiry"]";
     </script>
 </head>
 <body>
@@ -71,12 +72,14 @@
                 dataType: "json",
                 url: serviceUrl,
                 success: function (data) {
-                    $(element).get(0).options.length = 0;
-                    $(element).get(0).options[0] = new Option(elementFirstOption, "-1");
+                    if ($(element).get(0) != undefined) {
+                        $(element).get(0).options.length = 0;
+                        $(element).get(0).options[0] = new Option(elementFirstOption, "-1");
 
-                    $.each(data.result.criteriaValues, function (index, item) {
-                        $(element).get(0).options[$(element).get(0).options.length] = new Option(item.name, item.name);
-                    });
+                        $.each(data.result.criteriaValues, function (index, item) {
+                            $(element).get(0).options[$(element).get(0).options.length] = new Option(item.name, item.name);
+                        });
+                    }
                 }
             });
         };
@@ -84,13 +87,13 @@
         chGetData(
             "{criteriaId: " + chRoofTypeId + ", companyId: '" + chCompanyId + "'}",
             "http://localhost:6634/api/services/app/Criteria/GetCriteriaValues",
-            "#drpRoofTypes",
+            "#RoofTypeValues",
             "Select Roof Type"
             );
         chGetData(
             "{criteriaId: " + chServiceTypeId + ", companyId: '" + chCompanyId + "'}",
             "http://localhost:6634/api/services/app/Criteria/GetCriteriaValues",
-            "#drpServiceTypes",
+            "#TypeOfService",
             "Please select a Service-Type"
             );
     </script>

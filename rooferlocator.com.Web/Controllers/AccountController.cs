@@ -479,21 +479,21 @@ namespace rooferlocator.com.Web.Controllers
                 CheckModelState();
 
                 //Get tenancy name and tenant
-                if (!_multiTenancyConfig.IsEnabled)
-                {
-                    model.TenancyName = Tenant.DefaultTenantName;
-                }
-                else if (model.TenancyName.IsNullOrEmpty())
-                {
-                    throw new UserFriendlyException(L("TenantNameCanNotBeEmpty"));
-                }
+                //if (!_multiTenancyConfig.IsEnabled)
+                //{
+                //    model.TenancyName = Tenant.DefaultTenantName;
+                //}
+                //else if (model.TenancyName.IsNullOrEmpty())
+                //{
+                //    throw new UserFriendlyException(L("TenantNameCanNotBeEmpty"));
+                //}
 
-                var tenant = await GetActiveTenantAsync(model.TenancyName);
+                //var tenant = await GetActiveTenantAsync(model.TenancyName);
 
                 //Create user
                 var user = new User
                 {
-                    TenantId = tenant.Id,
+                    TenantId = null,
                     Name = model.Name,
                     Surname = model.Surname,
                     EmailAddress = model.EmailAddress,
@@ -519,11 +519,7 @@ namespace rooferlocator.com.Web.Controllers
                         }
                     };
 
-                    if (model.UserName.IsNullOrEmpty())
-                    {
-                        model.UserName = model.EmailAddress;
-                    }
-
+                    model.UserName = model.EmailAddress;
                     model.Password = Users.User.CreateRandomPassword();
 
                     if (string.Equals(externalLoginInfo.Email, model.EmailAddress, StringComparison.InvariantCultureIgnoreCase))
@@ -545,7 +541,7 @@ namespace rooferlocator.com.Web.Controllers
 
                 //Switch to the tenant
                 _unitOfWorkManager.Current.EnableFilter(AbpDataFilters.MayHaveTenant);
-                _unitOfWorkManager.Current.SetFilterParameter(AbpDataFilters.MayHaveTenant, AbpDataFilters.Parameters.TenantId, tenant.Id);
+                _unitOfWorkManager.Current.SetFilterParameter(AbpDataFilters.MayHaveTenant, AbpDataFilters.Parameters.TenantId, null);
 
                 //Add default roles
                 user.Roles = new List<UserRole>();
@@ -564,17 +560,26 @@ namespace rooferlocator.com.Web.Controllers
                     AbpUserManager<Tenant, Role, User>.AbpLoginResult loginResult;
                     if (externalLoginInfo != null)
                     {
-                        loginResult = await _userManager.LoginAsync(externalLoginInfo.Login, tenant.TenancyName);
+                        //loginResult = await _userManager.LoginAsync(externalLoginInfo.Login, tenant.TenancyName);
+                        loginResult = await _userManager.LoginAsync(externalLoginInfo.Login, null);
                     }
                     else
                     {
-                        loginResult = await GetLoginResultAsync(user.UserName, model.Password, tenant.TenancyName);
+                        //loginResult = await GetLoginResultAsync(user.UserName, model.Password, tenant.TenancyName);
+                        loginResult = await GetLoginResultAsync(user.UserName, model.Password, null);
                     }
 
                     if (loginResult.Result == AbpLoginResultType.Success)
                     {
                         await SignInAsync(loginResult.User, loginResult.Identity);
-                        return Redirect(Url.Action("Index", "Home"));
+                        //return Redirect(Url.Action("Index", "Home"));
+                        //return Redirect(Url.Action("RegisterMember", "Register"));
+                        return View("RegisterMember", new RegisterMemberViewModel
+                        {
+                            Email = model.EmailAddress,
+                            FullName = model.Name,
+                            UserRefId = user.Id
+                        });
                     }
 
                     Logger.Warn("New registered user could not be login. This should not be normally. login result: " + loginResult.Result);
@@ -583,11 +588,13 @@ namespace rooferlocator.com.Web.Controllers
                 //If can not login, show a register result page
                 return View("RegisterResult", new RegisterResultViewModel
                 {
-                    TenancyName = tenant.TenancyName,
+                    //TenancyName = tenant.TenancyName,
+                    TenancyName = null,
                     NameAndSurname = user.Name + " " + user.Surname,
                     UserName = user.UserName,
                     EmailAddress = user.EmailAddress,
-                    IsActive = user.IsActive
+                    IsActive = user.IsActive,
+                    IsEmailConfirmationRequired = false
                 });
             }
             catch (UserFriendlyException ex)

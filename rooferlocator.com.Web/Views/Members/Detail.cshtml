@@ -1,0 +1,255 @@
+﻿@using Abp.Web.Mvc.Extensions
+@using rooferlocator.com.MultiTenancy
+@using System.Threading
+@using System.Web.Optimization
+@using System.Security.Claims
+@using Abp.Web.Mvc.Extensions
+@model rooferlocator.com.Common.Members.Dtos.MemberDto
+
+@{
+    var identity = (ClaimsIdentity)User.Identity;
+    IEnumerable<Claim> claims2 = identity.Claims;
+    var role = identity.FindFirst(ClaimTypes.Role).Value;
+}
+@section scripts
+{
+    @Html.IncludeScript("~/Views/Members/Detail.js")
+}
+<div>
+    <script>
+        //Need to get the CreditsHero CompanyId for RooferLocator
+        chCompanyId = "@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]";
+    </script>
+
+    <div id="LoadingArea" style="display:none;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <img id="loader" src="~/App/Main/images/ajax-loader.gif" />
+    </div>
+
+    <div id="MemberArea">
+        <div class="portlet box red-soft">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="glyphicon glyphicon-star-empty"></i>
+                    <span>Member Management</span>
+                </div>
+            </div>
+            <!--BEGIN MEMBER DETAILS-->
+            <div id="Details" class="portlet-body form " style="display:block;">
+                <!--BEGIN USER PANEL-->
+                <div class="portlet box ">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0px">
+                        <div class="caption" style="padding: 10px; color: white; background-color: rgb(255, 151, 47);">
+                            <i class="glyphicon glyphicon-star-empty"></i>
+                            <span>User Information</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body ">
+                        <div id="dCompany" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div id="dFullNaName" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label class="control-label">Full Name</label>
+                            </div>
+                            <div id="dFullName" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <input name="txtFullName" type="text" class="form-control input-circle" value="@Model.FullName" />
+                            </div>
+                            <div id="dJobTitle" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label class="control-label">Job Title</label>
+                            </div>
+                            <div id="dJobTitle" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <input name="txtJobTitle" type="text" class="form-control input-circle" value="@Model.JobTitle" />
+                            </div>
+                            <div id="dCellPhone" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label class="control-label">Cell Phone</label>
+                            </div>
+                            <div id="dCellPhone" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <input name="txtCellPhone" type="text" class="form-control input-circle" value="@Model.CellPhone" />
+                            </div>
+                            <div id="dEmailAddress" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label class="control-label">Email Address</label>
+                            </div>
+                            <div id="dEmailAddress" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon input-circle-left">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                                    <input name="txtEmailAddress" class="form-control input-circle-right" 
+                                           type="email" placeholder="Email Address" value="@Model.Email">
+                                </div>
+                            </div>
+                            <div id="dPhone" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label class="control-label">Phone</label>
+                            </div>
+                            <div id="dPhone" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <input name="txtPhone" type="text" class="form-control input-circle" value="@Model.Phone" />
+                            </div>
+                        </div>
+                        <div id="dCompany" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div id="dUserId" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label class="control-label">User Id</label>
+                            </div>
+                            <div id="dUserId" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <input name="txtUserId" type="text" class="form-control" value="@Model.Id" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--END USER PANEL-->
+                <!--BEGIN COMPANY PANEL-->
+                <div class="portlet box ">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0px">
+                        <div class="caption" style="padding: 10px; color: white; background-color: rgb(255, 151, 47);">
+                            <i class="glyphicon glyphicon-star-empty"></i>
+                            <span>Company Information</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body ">
+                        <div id="dCompany" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div id="dCompany" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Company</b></label>
+                            </div>
+                            <div id="dCompany" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <input name="txtCompany" type="text" class="form-control input-circle" />
+                            </div>
+                            <div id="dContact" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Contact</b></label>
+                            </div>
+                            <div id="dContact" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <input name="txtContact" type="text" class="form-control input-circle" />
+                            </div>
+                            <div id="dJobTitle" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Job Title</b></label>
+                            </div>
+                            <div id="dJobTitle" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <input name="txtJobTitle" type="text" class="form-control"  />
+                            </div>
+                            <div id="dAddress1" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Address1</b></label>
+                            </div>
+                            <div id="dAddress1" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.company.address1 == undefined">---</label>
+                                <input name="txtAddress1" type="text" class="form-control"  />
+                            </div>
+                            <div id="dAddress2" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Address2</b></label>
+                            </div>
+                            <div id="dAddress2" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.company.address2 == undefined">---</label>
+                                <input name="txtAddress2" type="text" class="form-control"  />
+                            </div>
+                            <div id="dState" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>State</b></label>
+                            </div>
+                            <div id="dState" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.company.state == undefined">---</label>
+                                <input name="txtState" type="text" class="form-control input-circle" />
+                            </div>
+                            <div id="dCity" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>City</b></label>
+                            </div>
+                            <div id="dCity" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.company.city == undefined">---</label>
+                                <input name="txtCity" type="text" class="form-control input-circle" />
+                            </div>
+                            <div id="dZip" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Zip</b></label>
+                            </div>
+                            <div id="dZip" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.company.zip == undefined">---</label>
+                                <input name="txtZip" vtype="text" class="form-control"  />
+                            </div>
+                            <div id="dYearEstablished" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Year Established</b></label>
+                            </div>
+                            <div id="dYearEstablished" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.yearEstablished == undefined">---</label>
+                                <input name="txtYearEstablished" type="text" class="form-control"  />
+                            </div>
+                        </div>
+                        <div id="dCompany" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div id="dPhone" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Phone</b></label>
+                            </div>
+                            <div id="dPhone" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.phone == undefined">---</label>
+                                <input name="txtPhone" type="text" class="form-control input-circle"  value="@Model.Phone" />
+                            </div>
+                            <div id="dCellPhone" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Cell Phone</b></label>
+                            </div>
+                            <div id="dContact" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.cellPhone == undefined">---</label>
+                                <input name="txtContact" type="text" class="form-control input-circle" value="@Model.CellPhone" />
+                            </div>
+                            <div id="dFax" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Fax</b></label>
+                            </div>
+                            <div id="dContact" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.fax == undefined">---</label>
+                                <input name="txtContact" type="text" class="form-control" value="@Model.Fax"  />
+                            </div>
+                            <div id="dWebsiteAddress" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Website Address</b></label>                            </div>
+                            <div id="dWebsiteAddress" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.webAddress == undefined">---</label>
+                                <input name="txtWebsiteAddress" type="text" class="form-control input-circle" />
+                            </div>
+                            <div id="dEmailAddress" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Email Address</b></label>
+                            </div>
+                            <div id="dEmailAddress" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.email == undefined">---</label>
+                                <input name="txtEmailAddress" type="text" class="form-control input-circle"  value="@Model.Email" />
+                            </div>
+                            <div id="dServiceArea" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Service Area</b></label>
+                            </div>
+                            <div id="dServiceArea" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.serviceArea == undefined">---</label>
+                                <input name="txtServiceArea" type="text" class="form-control"  />
+                            </div>
+                            <div id="dCriteria" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Criteria</b></label>
+                            </div>
+                            <div id="dCriteria" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.fullName == undefined">---</label>
+                                <label>
+                                    <ul>
+                                        <div ng-repeat="skill in vm.subscriberSkills">
+                                            <li ng-model="skill">{{skill.name}} ({{skill.creditCount}} credits)</li>
+                                        </div>
+                                    </ul>
+                                    {{vm.selectedMember.fullName}}
+                                    @*<input type="text" class="form-control" ng-model="" />*@
+                                </label>
+                            </div>
+                            <div id="dCredential" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>Credential</b></label>
+                            </div>
+                            <div id="dCredential" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.credential == undefined">---</label>
+                                <input name="txtCredential" type="text" class="form-control"  />
+                            </div>
+                            <div id="dLicenseNumber" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>License Number</b></label>
+                            </div>
+                            <div id="dLicenseNumber" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.licenseNumber == undefined">---</label>
+                                <input name="txtLicenseNumber" type="text" class="form-control"  />
+                            </div>
+                            <div id="dLicenseDescription" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label><b>License Description</b></label>
+                            </div>
+                            <div id="dLicenseDescription" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label ng-if="vm.selectedMember.licenseDescription == undefined">---</label>
+                                <input name="txtLicenseDescription" type="text" class="form-control input-circle" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--END COMPANY PANEL-->
+                <button id='btnSave' type="button" class="btn red" style="display:none;"> <i class="fa fa-plus"></i> Save</button>
+                <button id="btnCancel" type="button" class="btn red"> <i class="fa "></i> Cancel</button>
+            </div>
+            <!--END MEMBER DETAILS-->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,108 @@
+﻿@using Abp.Web.Mvc.Extensions
+@using rooferlocator.com.MultiTenancy
+    @model rooferlocator.com.Common.Members.Dtos.GetMembersOutput
+    @section scripts
+    {
+    @Html.IncludeScript("~/Views/Members/Payment.js")
+    }
+    
+    <script>
+        //Need to get the CreditsHero CompanyId for RooferLocator
+        chCompanyId = '@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"];'
+    </script>
+
+    <div ng-controller="app.views.sales.payment as vm" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+         style="background-color:white;border-radius:5px;padding:10px;margin:10px;">
+        <h1>
+            Purchase Credits
+        </h1>
+        <p></p>
+        Payment options are listed below.  Select the payment optoin you want to use for this transaction.
+        <p />
+        <div style="padding:7px;">
+            <img src="/images/logo_CreditCard.png" class="ui-button btn-primary" data-toggle="modal" 
+                 data-target="#authorizeNet" />
+            <hr style="color:gray;" />
+            <img src="~/images/logo_AuthorizeNet.png" class="ui-button btn-primary" data-toggle="modal"
+                 data-target="#paypal" />
+            <hr style="color:gray;" />
+        </div>
+        <!--Load payment gateway forms-->
+        <div class="modal fade" id="authorizeNet">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <img src="/images/logo_CreditCard.png" />
+                    </div>
+
+                    <div class="modal-body  col-lg-12 col-md-12 col-sm-12 col-xs-1" id="authorizeNetBody">
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for=" txtAmount">Amount</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtAmount"
+                                   placeholder="Amount"
+                                   ng-model="vm.paymentGateway.amount" />
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for="txtCardNumber">Credit Card Number</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtCardNumber"
+                                   placeholder="Credit Card Number"
+                                   ng-model="vm.paymentGateway.cardNumber" />
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for="txtExpirationDate">Expiration Date</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtExpirationDate"
+                                   placeholder="Expiration Date"
+                                   ng-model="vm.paymentGateway.expirationDate" />
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for="txtCardCode">CVV Code</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtCardCode"
+                                   placeholder="CVV Code"
+                                   ng-model="vm.paymentGateway.cardCode" />
+                        </div>
+                    </div>
+                    <div class="modal-body" id="authorizeNetResponse">
+                        {{vm.paymentResponse.resultCode}}<br />
+                        {{vm.paymentResponse.message}}
+                    </div>
+
+                    <div id="authorizeNetFooter" class="modal-footer" style="border-top:0px;">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="save('AuthorizeNET')">Make Payment</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="modal fade" id="paypal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <img src="/images/logo_Paypal.png" />
+                    </div>
+                    <div class="modal-body  col-lg-12 col-md-12 col-sm-12 col-xs-1">
+                        <label for="txtAmount">Amount</label>
+                        <input type="text" class="form-control" id="txtAmount"
+                               placeholder="Amount"
+                               ng-model="vm.paymentGateway.amount" />
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="save('Paypal')">Make Payment</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+    </div>

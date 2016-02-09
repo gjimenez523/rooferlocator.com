@@ -1,0 +1,63 @@
+﻿@model CreditsHero.Messaging.Requests.Dtos.GetInquiryResults
+    <!--INQUIRY REQUEST BEGIN-->
+        <form id="InquiryForm" action="@(Url.Action("SendRequest", "Account"))?returnUrl=/" method="POST">
+            <input hidden name="RoofTypeValues" value="@Request.Form["RoofTypeValues"]"/>
+            <input hidden name="TypeOfService" value="@Request.Form["TypeOfService"]" />
+            <input hidden name="TimeOfRepairValues" value="@Request.Form["TimeOfRepairValues"]" />
+            <input hidden name="StateValues" value="@Request.Form["StateValues"]" />
+            <input hidden name="City" value="@Request.Form["City"]" />
+                <h3>We found companies matching your search criteria</h3>
+                <!--INQUIRY RESULTS BEGIN--> 
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-1 table-responsive" style="text-align:center;">
+                    <table class="table table-striped table-bordered table-condensed" id="ResultsArea" style="width:100%">
+                        <thead></thead>
+                        <tbody>
+                            <tr>
+                                <td height="35" align="center" colspan="2">
+                                    <h4>Inquiry Criteria</h4>
+                                </td>
+                            </tr>
+                            <tr><td align="right"><b>Type of Roof:</b></td><td>@Request.Form["RoofTypeValues"]</td></tr>
+                            <tr><td align="right"><b>Type of Service:</b></td><td>@Request.Form["TypeOfService"]</td></tr>
+                            <tr><td align="right"><b>Time of Repair:</b></td><td>@Request.Form["TimeOfRepairValues"]</td></tr>
+                            <tr><td align="right"><b>State:</b></td><td>@Request.Form["StateValues"]</td></tr>
+                            <tr><td align="right"><b>City/Region:</b></td><td>@Request.Form["City"]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--INQUIRY RESULTS END-->
+
+                <!--REQUEST FORM BEGIN-->
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 pull-right" style="text-align:center; border:1px solid black; border-radius:5px;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h4>Please provide your contact information to continue...</h4>
+                        </div>
+                    </div>
+                    <div class="row table-responsive" style="text-align:center;">
+                        @Html.Hidden("InquiryId", Model.InquiryId)
+                        <table class="table" id="ResultsArea" style="width:100%">
+                            <tr><td>First Name*</td> <td>@Html.TextBox("FirstName")</td></tr>
+                            <tr><td>Last Name*</td> <td>@Html.TextBox("LastName")</td></tr>
+                            <tr><td>Email Address*</td> <td>@Html.TextBox("EmailAddress")</td></tr>
+                            <tr><td>Phone Number* </td> <td>@Html.TextBox("PhoneNumber")</td></tr>
+                            <tr><td>Budget* </td> <td>@Html.TextBox("FirstName")</td></tr>
+                            <tr><td>Affiliate </td> <td>@Html.TextBox("Affiliate")</td></tr>
+                            <tr><td>Comments </td> <td>@Html.TextBox("Comments")</td></tr>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <button id="RequestButton" type="submit" src="~/App/Main/images/search2.jpg"
+                                    width="100" height="32"
+                                    style="border: 0px white solid;"
+                                    class="btn btn-primary">
+                                <i class="fa fa-sign-in"></i> Send Request
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--REQUEST FORM END-->
+        </form>
+    <!--INQUIRY REQUEST END-->
+

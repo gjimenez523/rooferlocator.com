@@ -38,6 +38,28 @@ namespace rooferlocator.com.Web
                         url: "/About",
                         icon: "fa fa-info"
                         )
+                ).AddItem(
+                    new MenuItemDefinition(
+                        "Members",
+                        L("Members"),
+                        url: "/Members",
+                        icon: "fa fa-info"
+                        )
+                ).AddItem(
+                    new MenuItemDefinition(
+                        "Register",
+                        L("Register"),
+                        url: "#/register",
+                        icon: "fa fa-info"
+                        )
+                )
+                .AddItem(
+                    new MenuItemDefinition(
+                        "Register",
+                        L("Register"),
+                        url: "#/register",
+                        icon: "fa fa-info"
+                        )
                 );
         }
 

@@ -385,6 +385,7 @@
     <Content Include="Abp\Framework\styles\abp.mixings.less" />
     <Content Include="Abp\Framework\styles\abp.less" />
     <Content Include="Abp\Framework\styles\abp.css.map" />
+    <Content Include="App_Code\CustomHelpers.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -426,6 +427,15 @@
     <Content Include="Views\Account\Login.min.css">
       <DependentUpon>Login.css</DependentUpon>
     </Content>
+    <Content Include="Views\Home\index.js" />
+    <Content Include="Views\Members\Email.js" />
+    <Content Include="Views\Members\Detail.js" />
+    <Content Include="Views\Members\Index.js" />
+    <Content Include="Views\Members\Location.js" />
+    <Content Include="Views\Members\Payment.js" />
+    <Content Include="Views\Members\ServicesOffered.js" />
+    <Content Include="Views\Register\RegisterCreditsHero.js" />
+    <Content Include="Views\Shared\_Layout.js" />
     <Content Include="Views\Tenants\Index.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -443,8 +453,12 @@
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\Results\ChallengeResult.cs" />
+    <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\TenantsController.cs" />
+    <Compile Include="Models\Account\RegisterCreditsHeroViewModel.cs" />
+    <Compile Include="Models\Account\RegisterMemberViewModel.cs" />
     <Compile Include="Models\Layout\UserMenuOrLoginLinkViewModel.cs" />
     <Compile Include="Models\Account\LoginFormViewModel.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
@@ -458,6 +472,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Layout\TopMenuViewModel.cs" />
+    <Compile Include="Models\Member\MemberSummaryViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\comWebViewPageBase.cs" />
   </ItemGroup>
@@ -481,6 +496,18 @@
     <Content Include="Views\Shared\ContactView.cshtml" />
     <Content Include="Views\Shared\TermsView.cshtml" />
     <Content Include="Views\Shared\_PublicLayout.cshtml" />
+    <Content Include="Views\Account\CustomerRequest.cshtml" />
+    <Content Include="Views\Account\CustomerRequestResult.cshtml" />
+    <Content Include="Views\Members\Index.cshtml" />
+    <Content Include="Views\Sales\Index.cshtml" />
+    <Content Include="Views\Sales\Leads\_Index.cshtml" />
+    <Content Include="Views\Register\RegisterCreditsHero.cshtml" />
+    <Content Include="Views\Account\RegisterMember.cshtml" />
+    <Content Include="Views\Members\ServicesOffered.cshtml" />
+    <Content Include="Views\Members\Payment.cshtml" />
+    <Content Include="Views\Members\Email.cshtml" />
+    <Content Include="Views\Members\Location.cshtml" />
+    <Content Include="Views\Members\Detail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -505,6 +532,9 @@
       <Project>{5eb52d3d-09fd-463a-b02a-8d9856bd3724}</Project>
       <Name>rooferlocator.com.WebApi</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

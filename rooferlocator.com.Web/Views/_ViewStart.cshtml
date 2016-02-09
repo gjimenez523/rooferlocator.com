@@ -1,3 +1,10 @@
 ﻿@{
-    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+    if (this.User.Identity.Name == "" || this.Request.Path == "/Register/RegisterMember")
+    {
+        Layout = "~/Views/Shared/_PublicLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }

@@ -77,7 +77,7 @@
                                     Type of Roof:&nbsp;
                                 </td>
                                 <td width="65%" height="35">
-                                    <select id="drpRoofTypes">
+                                    <select id="RoofTypeValues" name="RoofTypeValues">
                                         <option value="-2">Loading Roof Types...</option>
                                     </select>
                                 </td>
@@ -88,7 +88,7 @@
                                     Service:
                                 </td>
                                 <td width="65%" height="35">
-                                    <select id="drpServiceTypes">
+                                    <select id="TypeOfService" name="TypeOfService">
                                         <option value="-2">Loading Service Types...</option>
                                     </select>
                                     @*@Html.DropDownListFor(
@@ -192,9 +192,7 @@
                                     City:
                                 </td>
                                 <td height="35">
-                                    <select id="City">
-                                        
-                                    </select>
+                                    <select id="City" name="City"></select>
                                     @*@Html.DropDownListFor(
                                                  drp => drp.City,
                                         Model.City.Select(c => new SelectListItem
@@ -224,8 +222,10 @@
                 <!--SEARCH END-->
                 <!--LOGIN BEGIN-->
                 <div id="LoginArea" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive"
-                     style="display:none;padding-right:0px;text-align: center;">
-                    <form id="LoginForm" action="@(Url.Action("Login", "Account"))?returnUrl=@(Model.ReturnUrl)" method="POST">
+                     style="display:none;padding-right:50px;padding-left:50px;text-align: center;">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
+                    <form id="LoginForm" action="@(Url.Action("Login", "Account"))?returnUrl=@(Model.ReturnUrl)" 
+                          method="POST" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <table class="table table-condensed ">
                             <tr>
                                 <td>
@@ -287,6 +287,7 @@
                             </tr>
                         </table>
                     </form>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
                 </div>
                 <!--LOGIN BEGIN-->
                 <!--IMAGE BEGIN-->
@@ -300,7 +301,7 @@
     </div>
     <!--CONTENT/MAIN END-->
     <!--INQUIRY REQUEST BEGIN-->
-    @*@if (Model.InquiryResults != null && Model.InquiryResults.InquiryId != 0)
+    @if (Model.InquiryResults != null && Model.InquiryResults.InquiryId != 0)
     {
         <div id="InquiryView" class="row" style="display:block;">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -312,10 +313,10 @@
                 <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
             </div>
         </div>
-    }*@
+    }
     <!--INQUIRY REQUEST END-->
     <!--SEND REQUEST BEGIN-->
-    @*@if (Model.RequestResults != null && Model.RequestResults.Id != 0)
+    @if (Model.RequestResults != null && Model.RequestResults.Id != 0)
     {
         <div id="RequestView" class="row" style="display:block;">
             <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
@@ -325,7 +326,7 @@
             </div>
             <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
         </div>
-    }*@
+    }
 
     <!--ABOUT US END-->
     <div id="AboutView" style="display:none;" class="row">

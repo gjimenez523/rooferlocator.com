@@ -62,7 +62,7 @@
 
             abp.ajax({
                 type: 'POST',
-                url: "http://CreditsHero.azurewebsites.net/api/services/cd/Inquiry/MakeInquiry",
+                url: chWebApiMakeInquiryUrl,
                 data: JSON.stringify(inquiry)
             })
             .done(function (data, status, xhr) {

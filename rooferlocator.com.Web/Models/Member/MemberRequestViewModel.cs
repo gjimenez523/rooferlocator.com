@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace rooferlocator.com.Web.Models.Member
 {
-    public class MemberSummaryViewModel : IInputDto
+    public class MemberRequestViewModel : IInputDto
     {
         /// <summary>
         /// Not required for single-tenant applications.
@@ -17,13 +17,11 @@ namespace rooferlocator.com.Web.Models.Member
         public int CreditsRemainingCount { get; set; }
         public CreditsHero.Subscribers.Dtos.SubscribersInquiriesDto SubscriberInquiries { get; set; }
         public List<CreditsHero.Subscribers.Dtos.SubscribersRequestDto> SubscriberRequests { get; set; }
-        public MemberQuotesViewModel SubscriberQuotes { get; set; }
         
-        public MemberSummaryViewModel()
+        public MemberRequestViewModel()
         {
             SubscriberInquiries = new SubscribersInquiriesDto();
             SubscriberRequests = new List<SubscribersRequestDto>();
-            SubscriberQuotes = new MemberQuotesViewModel();
         }
     }
 }

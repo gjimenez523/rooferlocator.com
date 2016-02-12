@@ -18,5 +18,14 @@ namespace rooferlocator.com.EntityFramework.Repositories.Common
                 .Include(member => member.User)
                 .ToList<Member>();
         }
+
+        public List<Member> GetMembersWithCompany(int memberId)
+        {
+            var query = GetAll();
+            return query.Include(member => member.Company)
+                .Include(member => member.User)
+                .Where(member => member.UserRefId == memberId)
+                .ToList<Member>();
+        }
     }
 }

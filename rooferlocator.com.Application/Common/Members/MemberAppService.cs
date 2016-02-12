@@ -32,15 +32,25 @@ namespace rooferlocator.com.Common.Members
 
         public Dtos.GetMembersOutput GetMembers(Dtos.GetMemberInput input)
         {
-            //Called specific GetAllWithPeople method of task repository.
-            var members = _memberRepository.GetMembersWithCompany();
-
-            //Used AutoMapper to automatically convert List<Task> to List<TaskDto>.
-            //We must declare mappings to be able to use AutoMapper
-            return new Dtos.GetMembersOutput
+            if (input.MemberId != null)
             {
-                Members = Mapper.Map<List<Dtos.MemberDto>>(members)
-            };
+                var members = _memberRepository.GetMembersWithCompany(input.MemberId.Value);
+                
+                return new Dtos.GetMembersOutput
+                {
+                    Members = Mapper.Map<List<Dtos.MemberDto>>(members)
+                };
+            }
+            else
+            {
+                //Called specific GetAllWithPeople method of task repository.
+                var members = _memberRepository.GetMembersWithCompany();
+                
+                return new Dtos.GetMembersOutput
+                {
+                    Members = Mapper.Map<List<Dtos.MemberDto>>(members)
+                };
+            }
         }
 
         public SubscribersSkillsDto GetMemberSubscriptions(GetSubscribersInput input)
@@ -150,13 +160,13 @@ namespace rooferlocator.com.Common.Members
             return subscriberSkillsResults;
         }
 
-        public CreditsHero.Subscribers.Dtos.SubscribersInquiriesDto GetMemberRequests(GetSubscribersInput input)
+        public CreditsHero.Subscribers.Dtos.SubscribersRequestsDto GetMemberRequests(GetSubscribersInput input)
         {
             var creditsHeroFormat = String.Format("{0}api/services/app/Subscriber/GetSubscribersRequests", System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefix"]);
             //var creditsHeroFormat = "http://CreditsHero.azurewebsites.net/api/services/cd/Subscriber/GetSubscribersRequests";
             //var creditsHeroFormat = "http://localhost:6234/api/services/cd/Subscriber/GetSubscribersRequests";
             var timelineUrl = string.Format(creditsHeroFormat);
-            CreditsHero.Subscribers.Dtos.SubscribersInquiriesDto subscriberSkillsResults;
+            CreditsHero.Subscribers.Dtos.SubscribersRequestsDto subscriberSkillsResults;
 
             //Serialize object to JSON
             MemoryStream jsonStream = new MemoryStream();
@@ -179,11 +189,113 @@ namespace rooferlocator.com.Common.Members
                     var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
 
                     Newtonsoft.Json.Linq.JObject jObject2 = results.result;
-                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<SubscribersInquiriesDto>(jObject2.ToString());
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<SubscribersRequestsDto>(jObject2.ToString());
                     subscriberSkillsResults = itemResult;
                 }
             }
             return subscriberSkillsResults;
+        }
+
+        public CreditsHero.Subscribers.Dtos.SubscribersRequestDetailsDto GetMemberRequestDetails(GetSubscribersRequestDetailInput input)
+        {
+            var creditsHeroFormat = String.Format("{0}api/services/app/Subscriber/GetSubscribersRequestDetails", System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            var timelineUrl = string.Format(creditsHeroFormat);
+            CreditsHero.Subscribers.Dtos.SubscribersRequestDetailsDto subscriberSkillsResults;
+
+            //Serialize object to JSON
+            MemoryStream jsonStream = new MemoryStream();
+
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            Stream newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<SubscribersRequestDetailsDto>(jObject2.ToString());
+                    subscriberSkillsResults = itemResult;
+                }
+            }
+            return subscriberSkillsResults;
+        }
+
+        public CreditsHero.Messaging.Dtos.SubscriberQuotesDto GetMemberQuotes(GetSubscribersInput input)
+        {
+            var creditsHeroFormat = String.Format("{0}api/services/app/Quotes/GetSubscriberQuotes", System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            var timelineUrl = string.Format(creditsHeroFormat);
+            CreditsHero.Messaging.Dtos.SubscriberQuotesDto subscriberQuotes;
+
+            //Serialize object to JSON
+            MemoryStream jsonStream = new MemoryStream();
+
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            Stream newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<SubscriberQuotesDto>(jObject2.ToString());
+                    subscriberQuotes = itemResult;
+                }
+            }
+            return subscriberQuotes;
+        }
+
+        public GetQuotesResults SendQuote(GetQuotesInput input)
+        {
+            var creditsHeroFormat = String.Format("{0}api/services/app/Quotes/SendQuote", System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            var timelineUrl = string.Format(creditsHeroFormat);
+            CreditsHero.Messaging.Dtos.GetQuotesResults quoteResults;
+
+            //Serialize object to JSON
+            MemoryStream jsonStream = new MemoryStream();
+
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            Stream newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<GetQuotesResults>(jObject2.ToString());
+                    quoteResults = itemResult;
+                }
+            }
+            return quoteResults;
         }
 
         public void SendEmail(NotificationInput input)

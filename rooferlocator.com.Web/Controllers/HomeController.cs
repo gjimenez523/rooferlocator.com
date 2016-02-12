@@ -5,6 +5,8 @@ using rooferlocator.com.Common.Members;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Collections.Generic;
+using CreditsHero.Subscribers.Dtos;
+using CreditsHero.Messaging.Dtos;
 
 namespace rooferlocator.com.Web.Controllers
 {
@@ -44,9 +46,31 @@ namespace rooferlocator.com.Web.Controllers
                 input.SubscribersId = creditsHeroSubscriber.Id;
 
                 Models.Member.MemberSummaryViewModel results = new Models.Member.MemberSummaryViewModel();
+                Models.Member.MemberQuotesViewModel resultsQuotes = new Models.Member.MemberQuotesViewModel();
+                List<SubscribersInquiryDto> subscriberInquiries = _memberAppService.GetMemberInquiries(input).SubscriberInquiryList;
+                List<SubscribersRequestDto> subscriberRequests = _memberAppService.GetMemberRequests(input).SubscriberRequestList;
+                List<SubscriberQuoteDto> subscriberQuotes = _memberAppService.GetMemberQuotes(input).SubscriberQuotesList;
+
+                results.SubscriberInquiries.SubscriberInquiryList = new List<SubscribersInquiryDto>();
 
                 results.CreditsRemainingCount = 0;
-                results.SubscriberInquiriesCount = _memberAppService.GetMemberInquiries(input).SubscriberInquiryList.Count;
+                results.SubscriberInquiriesCount = subscriberInquiries.Count;
+                //Build Inquiry Model
+                results.SubscriberInquiries.SubscriberInquiryList = subscriberInquiries;
+                //Build Requests Model
+                results.SubscriberRequests = subscriberRequests;
+                foreach(var item in subscriberQuotes)
+                {
+                    var subscriberRequestItem = results.SubscriberRequests.Find(x => x.RequestId == item.RequestId);
+                    if (subscriberRequestItem != null)
+                    {
+                        results.SubscriberRequests.Remove(subscriberRequestItem);
+                    }
+                }
+                //Build Quotes Model
+                resultsQuotes.SubscriberQuotes = subscriberQuotes;
+                results.SubscriberQuotes = resultsQuotes;
+
 
                 return View(results);
             }

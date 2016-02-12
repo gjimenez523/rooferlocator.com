@@ -1,7 +1,8 @@
-﻿﻿using Abp.Application.Services;
+﻿using Abp.Application.Services;
 using rooferlocator.com.Common.Members.Dtos;
 using CreditsHero.Subscribers.Dtos;
 using System.Collections.Generic;
+using CreditsHero.Messaging.Dtos;
 
 namespace rooferlocator.com.Common.Members
 {
@@ -11,7 +12,10 @@ namespace rooferlocator.com.Common.Members
         CreditsHero.Subscribers.Dtos.SubscribersDto GetMember(GetSubscribersInput input);
         SubscribersSkillsDto GetMemberSubscriptions(GetSubscribersInput input);
         SubscribersInquiriesDto GetMemberInquiries(GetSubscribersInput input);
-        SubscribersInquiriesDto GetMemberRequests(GetSubscribersInput input);
+        SubscribersRequestsDto GetMemberRequests(GetSubscribersInput input);
+        SubscribersRequestDetailsDto GetMemberRequestDetails(GetSubscribersRequestDetailInput input);
+        SubscriberQuotesDto GetMemberQuotes(GetSubscribersInput input);
+        GetQuotesResults SendQuote(GetQuotesInput input);
         void UpdateMember(UpdateMemberInput input);
         void CreateMember(CreateMemberInput input);
     }

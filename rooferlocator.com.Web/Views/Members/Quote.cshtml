@@ -1,0 +1,206 @@
+﻿@using Abp.Web.Mvc.Extensions
+    @model rooferlocator.com.Web.Models.Member.MemberRequestDetailViewModel
+    @section scripts
+    {
+    @Html.IncludeScript("~/Views/Members/Quote.js")
+    }
+    
+    <script>
+        //Need to get the CreditsHero CompanyId for RooferLocator
+        chCompanyId = '@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"];'
+    </script>
+
+    
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+         style="background-color:white;border-radius:5px;padding:10px;margin:10px;">
+        
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <div class="row" style="text-align:center;">
+                <h3><strong>Send a quote to @Model.SubscriberRequestDetails[0].RequestFullName</strong></h3>
+            </div>
+            <div class="container">
+                <div class="portlet box blue">
+                    <div class="portlet-title"></div>
+                    <div class="portlet-body">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <i class="fa fa-user fa-5x"></i>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <strong><h4>@Model.SubscriberRequestDetails[0].MemberFullName</h4></strong>
+                                RlCompany.Name<br />
+                                @Model.SubscriberRequestDetails[0].MemberEmail <br />
+                                @Model.SubscriberRequestDetails[0].MemberSmsNumber <br />
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            </div>
+                        </div>
+                        @using (Html.BeginForm("SendQuote", "Members", FormMethod.Post, null))
+                        {
+                            <input type="hidden" id="requestId" name="requestId" value="@Model.RequestId" />
+                            <input type="hidden" id="subscriberId" name="subscriberId" value="@Model.SubscriberId" />
+
+                            <div class="form-group">
+                                <label>Price:</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon input-circle-left">
+                                        <i class="fa fa-dollar"></i>
+                                    </span>
+                                    <input name="txtPrice" type="text" class="form-control input-circle-right" placeholder="Your Quote Price" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Message:</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon input-circle-left">
+                                        <i class="fa fa-sticky-note"></i>
+                                    </span>
+                                    <textarea name="txtMessage" class="form-control input-circle-right" placeholder="Put your message here"></textarea>
+                                </div>
+                            </div>
+                            <div class="row" style="text-align:center;">
+                                <button class="btn blue" type="submit">
+                                    Send Your Quote to @Model.SubscriberRequestDetails[0].RequestFullName
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"></div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div id="rowRequestHeader" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                    <div class="row"><i class="fa fa-5x fa-user "></i></div>
+                    <div class="row"><strong><h2>@Model.SubscriberRequestDetails[0].RequestFullName</h2></strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="text-align:center;">
+                        <i class="fa fa-sticky-note-o"></i>&nbsp;&nbsp;<strong style="font-size:18pt;">@Model.SubscriberRequestDetails[0].QuotesSent</strong>
+                        <span class="row"><h6 style="padding:0px;margin:0px;">pros have quoted</h6></span>
+                        @*<div class="row">Only x more pros can respond, so act fast!</div>*@
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="border-left:1px solid gainsboro;text-align:center;">
+                        <i class="fa fa-credit-card"></i>&nbsp;&nbsp;<strong style="font-size:18pt;">@Model.SubscriberRequestDetails[0].TotalCredits</strong>
+                        <span class="row"><h6 style="padding:0px;margin:0px;">credits</h6></span>
+                        <span class="row"><h6 style="padding:0px;margin:0px;">Quote on this request for @Model.SubscriberRequestDetails[0].TotalCredits credits. Credits never expire.</h6></span>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"></div>
+                </div>
+            </div>
+
+            <div id="rowRequestDetail" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row note note-info" style="text-align:center;">Request Details</div>
+                        @foreach (var item in Model.SubscriberRequestDetails)
+                        {
+                                <div class="row" style="text-align:center;background-color:gainsboro;margin-left:15px;margin-right:15px;padding:2px;">
+                                    <span class="body">@item.CriteriaName</span>
+                                </div>
+                                <div class="row" style="text-align:center;">
+                                    <span><i class="fa fa-check"></i></span>
+                                    <span class="body">@item.CriteriaValue</span>
+                                </div>
+                        }
+                </div>
+            </div>
+        </div>
+
+
+        <!--Load payment gateway forms-->
+        <div class="modal fade" id="authorizeNet">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <img src="/images/logo_CreditCard.png" />
+                    </div>
+
+                    <div class="modal-body  col-lg-12 col-md-12 col-sm-12 col-xs-1" id="authorizeNetBody">
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for=" txtAmount">Amount</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtAmount"
+                                   placeholder="Amount"
+                                   ng-model="vm.paymentGateway.amount" />
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for="txtCardNumber">Credit Card Number</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtCardNumber"
+                                   placeholder="Credit Card Number"
+                                   ng-model="vm.paymentGateway.cardNumber" />
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for="txtExpirationDate">Expiration Date</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtExpirationDate"
+                                   placeholder="Expiration Date"
+                                   ng-model="vm.paymentGateway.expirationDate" />
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for="txtCardCode">CVV Code</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtCardCode"
+                                   placeholder="CVV Code"
+                                   ng-model="vm.paymentGateway.cardCode" />
+                        </div>
+                    </div>
+                    <div class="modal-body" id="authorizeNetResponse">
+                        {{vm.paymentResponse.resultCode}}<br />
+                        {{vm.paymentResponse.message}}
+                    </div>
+
+                    <div id="authorizeNetFooter" class="modal-footer" style="border-top:0px;">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="save('AuthorizeNET')">Make Payment</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="modal fade" id="paypal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <img src="/images/logo_Paypal.png" />
+                    </div>
+                    <div class="modal-body  col-lg-12 col-md-12 col-sm-12 col-xs-1">
+                        <label for="txtAmount">Amount</label>
+                        <input type="text" class="form-control" id="txtAmount"
+                               placeholder="Amount"
+                               ng-model="vm.paymentGateway.amount" />
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="save('Paypal')">Make Payment</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+    </div>

@@ -107,7 +107,7 @@
                                 <label><b>Company</b></label>
                             </div>
                             <div id="dCompany" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <input name="txtCompany" type="text" class="form-control input-circle" />
+                                <input name="txtCompany" type="text" class="form-control input-circle" value="@Model.Company.Name" />
                             </div>
                             <div id="dContact" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>Contact</b></label>
@@ -119,49 +119,43 @@
                                 <label><b>Job Title</b></label>
                             </div>
                             <div id="dJobTitle" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <input name="txtJobTitle" type="text" class="form-control"  />
+                                <input name="txtJobTitle" type="text" class="form-control input-circle" value="@Model.JobTitle"  />
                             </div>
                             <div id="dAddress1" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>Address1</b></label>
                             </div>
                             <div id="dAddress1" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.company.address1 == undefined">---</label>
-                                <input name="txtAddress1" type="text" class="form-control"  />
+                                <input name="txtAddress1" type="text" class="form-control input-circle" value="@Model.Company.Address1"    />
                             </div>
                             <div id="dAddress2" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>Address2</b></label>
                             </div>
                             <div id="dAddress2" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.company.address2 == undefined">---</label>
-                                <input name="txtAddress2" type="text" class="form-control"  />
+                                <input name="txtAddress2" type="text" class="form-control input-circle" value="@Model.Company.Address2" />
                             </div>
                             <div id="dState" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>State</b></label>
                             </div>
                             <div id="dState" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.company.state == undefined">---</label>
-                                <input name="txtState" type="text" class="form-control input-circle" />
+                                <input name="txtState" type="text" class="form-control input-circle" value="@Model.Company.State" />
                             </div>
                             <div id="dCity" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>City</b></label>
                             </div>
                             <div id="dCity" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.company.city == undefined">---</label>
-                                <input name="txtCity" type="text" class="form-control input-circle" />
+                                <input name="txtCity" type="text" class="form-control input-circle" value="@Model.Company.City" />
                             </div>
                             <div id="dZip" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>Zip</b></label>
                             </div>
                             <div id="dZip" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.company.zip == undefined">---</label>
-                                <input name="txtZip" vtype="text" class="form-control"  />
+                                <input name="txtZip" vtype="text" class="form-control input-circle" value="@Model.Company.Zip"  />
                             </div>
                             <div id="dYearEstablished" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>Year Established</b></label>
                             </div>
                             <div id="dYearEstablished" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.yearEstablished == undefined">---</label>
-                                <input name="txtYearEstablished" type="text" class="form-control"  />
+                                <input name="txtYearEstablished" type="text" class="form-control input-circle"  value="@Model.Company.YearEstablished" />
                             </div>
                         </div>
                         <div id="dCompany" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -169,21 +163,18 @@
                                 <label><b>Phone</b></label>
                             </div>
                             <div id="dPhone" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.phone == undefined">---</label>
                                 <input name="txtPhone" type="text" class="form-control input-circle"  value="@Model.Phone" />
                             </div>
                             <div id="dCellPhone" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>Cell Phone</b></label>
                             </div>
                             <div id="dContact" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.cellPhone == undefined">---</label>
                                 <input name="txtContact" type="text" class="form-control input-circle" value="@Model.CellPhone" />
                             </div>
                             <div id="dFax" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>Fax</b></label>
                             </div>
                             <div id="dContact" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.fax == undefined">---</label>
                                 <input name="txtContact" type="text" class="form-control" value="@Model.Fax"  />
                             </div>
                             <div id="dWebsiteAddress" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -203,14 +194,12 @@
                                 <label><b>Service Area</b></label>
                             </div>
                             <div id="dServiceArea" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.serviceArea == undefined">---</label>
-                                <input name="txtServiceArea" type="text" class="form-control"  />
+                                <input name="txtServiceArea" type="text" class="form-control input-circle" value="@Model.Company.ServiceArea"  />
                             </div>
                             <div id="dCriteria" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>Criteria</b></label>
                             </div>
                             <div id="dCriteria" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.fullName == undefined">---</label>
                                 <label>
                                     <ul>
                                         <div ng-repeat="skill in vm.subscriberSkills">
@@ -218,28 +207,24 @@
                                         </div>
                                     </ul>
                                     {{vm.selectedMember.fullName}}
-                                    @*<input type="text" class="form-control" ng-model="" />*@
                                 </label>
                             </div>
                             <div id="dCredential" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>Credential</b></label>
                             </div>
                             <div id="dCredential" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.credential == undefined">---</label>
                                 <input name="txtCredential" type="text" class="form-control"  />
                             </div>
                             <div id="dLicenseNumber" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>License Number</b></label>
                             </div>
                             <div id="dLicenseNumber" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.licenseNumber == undefined">---</label>
                                 <input name="txtLicenseNumber" type="text" class="form-control"  />
                             </div>
                             <div id="dLicenseDescription" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label><b>License Description</b></label>
                             </div>
                             <div id="dLicenseDescription" class="form-body col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label ng-if="vm.selectedMember.licenseDescription == undefined">---</label>
                                 <input name="txtLicenseDescription" type="text" class="form-control input-circle" />
                             </div>
                         </div>

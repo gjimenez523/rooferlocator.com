@@ -47,8 +47,8 @@
                             Your Available Credits@*Your Requests*@
                         </div>
                     </div>
-                    <a class="more" href="javascript:;">
-                        View more <i class="m-icon-swapright m-icon-white"></i>
+                    <a class="more" href="~/members/Payment">
+                        Purchase more <i class="m-icon-swapright m-icon-white"></i>
                     </a>
                 </div>
                 }
@@ -95,23 +95,140 @@
                 }
             </div>
         </div>
-
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div commission-snapshot id="customerDetail" style="display:block;"
-                     class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                    @*@{Html.RenderPartial("~/App/Main/Views/sales/index.cshtml");}*@
-                </div>
-                <div customer-agreements id="customerAgreementList" style="display:block;"
-                     class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                    @*@{Html.RenderPartial("~/App/Main/Views/sales/leads/index.cshtml");}*@
-                </div>
-                <div customer-orders id="customerOrderList" style="display:none;"
-                     class="col-lg-12 col-md-12 col-sm-6 col-xs-12 ">
-                    @*@{Html.RenderPartial("~/App/Main/Views/sales/orderList.cshtml");}*@
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-social-dribbble"></i>
+                            <span class="caption-subject bold uppercase">Pending Requests</span>
+                        </div>
+                        <div class="actions">
+                            @*<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-cloud-upload"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-wrench"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-trash"></i>
+                        </a>*@
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div id="customerRequests" class="table-scrollable">
+                            @using (Html.BeginForm("Quote", "Members", FormMethod.Post, null))
+                            {
+
+                                {
+                                    int prevRequestId = 0;
+                                    string criteriaListRequestBegin = "";
+                                    string criteriaListRequestList = "";
+                                    string criteriaListRequestEnd = "";
+                                    string criteriaList = "";
+                                    foreach (var item in Model.SubscriberRequests)
+                                    {
+                                        if (item.RequestId == prevRequestId)
+                                        {
+                                            criteriaListRequestList += "<h6>" + item.CriteriaValueName + "</h6>";
+                                        }
+                                        else
+                                        {
+                                            criteriaList += criteriaListRequestBegin + criteriaListRequestList + criteriaListRequestEnd;
+                                            criteriaListRequestBegin = "";
+                                            criteriaListRequestList = "";
+                                            criteriaListRequestEnd = "";
+
+                                            criteriaListRequestBegin += "   <div class='row static-info' style='border-bottom:1px solid gainsboro;'>";
+                                            criteriaListRequestBegin += "               <div class='col-md-6 name'><strong><h4>";
+                                            criteriaListRequestBegin += item.RequestorName + "</h4></strong>";
+                                            criteriaListRequestList += "<h6>" + item.CriteriaValueName + "</h6>";
+                                            criteriaListRequestEnd += "               </div>";
+                                            criteriaListRequestEnd += "               <div class='col-md-6' style='text-align:right;'>";
+                                            criteriaListRequestEnd += "                   <button class='btn blue' type='submit' id='btnQuote' name='RequestId' value='" + item.RequestId + "'> <i class='fa reload'></i> Quote</button>";
+                                            criteriaListRequestEnd += "               </div>";
+                                            criteriaListRequestEnd += "   </div>";
+
+                                            prevRequestId = item.RequestId;
+                                        }
+                                    }
+                                    criteriaList += criteriaListRequestBegin + criteriaListRequestList + criteriaListRequestEnd;
+                                    @(new HtmlString(criteriaList))
+                                }
+
+
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-social-dribbble"></i>
+                            <span class="caption-subject bold uppercase">Pending Quotes</span>
+                        </div>
+                        <div class="actions">
+                            @*<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-cloud-upload"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-wrench"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-trash"></i>
+                        </a>*@
+                        </div>
+                    </div>
+                    @using (Html.BeginForm("Quote", "Members", FormMethod.Post, null))
+                    {
+                    
+                        <div class="portlet-body ">
+                        <div id="customerQuotes" class="tab-content">
+                            <div class="tab-pane active">
+                            @{
+                                int prevRequestId_Quote = 0;
+                                string criteriaList = "";
+                                //criteriaList += "<div class='mt-actions'>";
+                                foreach (var item in Model.SubscriberQuotes.SubscriberQuotes)
+                                {
+                                    if (item.RequestId == prevRequestId_Quote)
+                                    {
+                                        //criteriaList += item.CriteriaName + ":" + item.CriteriaValue;
+                                    }
+                                    else
+                                    {
+                                        criteriaList += "   <div class='row static-info' style='border-bottom:1px solid gainsboro;'>";
+                                        //criteriaList += "       <span class='mt-action-img'><i class='fa fa-user'></i></span>";
+                                        //criteriaList += "       <span class='mt-action-body'>";
+                                        //criteriaList += "           <div class='mt-action-row'>";
+                                        criteriaList += "               <div class='col-md-6 name'><strong><h4>";
+                                        criteriaList += item.RequestFullName + "</h4></strong><h6>" +
+                                                        item.QuoteMessage;
+                                        criteriaList += "               </h6></div>";
+                                        //criteriaList += "               <div class='mt-action-datetime'></div>";
+                                        criteriaList += "               <div class='col-md-6' style='text-align:right;'>";
+                                        criteriaList += "                   <span class='badge'><strong>" +
+                                                                                item.QuotesSubmitted + "</strong> quotes submitted</span><br/><i class='fa fa-dollar'>" + item.QuoteCost + "</i>";
+                                        criteriaList += "               </div>";
+                                        //criteriaList += "           </div>";
+                                        //criteriaList += "       </span>";
+                                        criteriaList += "   </div>";
+
+                                        prevRequestId_Quote = item.RequestId;
+                                    }
+                                }
+                                //criteriaList += "</div>";
+                            }
+                                @(new HtmlString(criteriaList))
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        
             <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 ">
                 <div customer-company id="customerCompany" style="display:none;">
                     @*@{Html.RenderPartial("~/App/Main/Views/common/company/detail.cshtml");}*@

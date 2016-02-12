@@ -1,12 +1,10 @@
 ﻿@using Abp.Web.Mvc.Extensions
 @using rooferlocator.com.MultiTenancy
-@*@model Abp.Application.Services.Dto.ListResultOutput<rooferlocator.com.MultiTenancy.Dto.TenantListDto>
-    *@
-    @model rooferlocator.com.Common.Members.Dtos.GetMembersOutput
-    @section scripts
-    {
-    @Html.IncludeScript("~/Views/Members/ServicesOffered.js")
-    }
+@model rooferlocator.com.Web.Models.Member.MemberServicesViewModel
+@section scripts
+{
+@Html.IncludeScript("~/Views/Members/ServicesOffered.js")
+}
     <script>
         //Need to get the CreditsHero CompanyId for RooferLocator
         chCompanyId = '@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]';
@@ -65,13 +63,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="types in vm.rooftypes">
-                                            <td><b>{{types.description}}</b></td>
+                                        @foreach (var item in Model.RoofTypes.RoofTypes)
+                                        {
+                                        <tr>
+                                            <td><b>@item.Description</b></td>
                                             <td style="margin:0px;">
                                                 <button ng-click="vm.addRoofType(types)" type="button" class="btn red"> <i class="fa reload"></i> Add</button>
                                                 <button ng-click="vm.deleteRoofType(types)" type="button" class="btn red"> <i class="fa reload"></i> Delete</button>
                                             </td>
                                         </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -114,13 +115,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="types in vm.servicetypes">
-                                            <td><b>{{types.description}}</b></td>
+                                        @foreach (var item in Model.ServiceTypes.ServiceTypes)
+                                        {
+                                        <tr>
+                                            <td><b>@item.Description</b></td>
                                             <td style="margin:0px;">
                                                 <button ng-click="vm.addServiceType(types)" type="button" class="btn red"> <i class="fa reload"></i> Add</button>
                                                 <button ng-click="vm.deleteServiceType(types)" type="button" class="btn red"> <i class="fa reload"></i> Delete</button>
                                             </td>
                                         </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -132,3 +136,4 @@
 
         </div>
     </div>
+

@@ -50,10 +50,11 @@ namespace rooferlocator.com.Web.Controllers
                 List<SubscribersInquiryDto> subscriberInquiries = _memberAppService.GetMemberInquiries(input).SubscriberInquiryList;
                 List<SubscribersRequestDto> subscriberRequests = _memberAppService.GetMemberRequests(input).SubscriberRequestList;
                 List<SubscriberQuoteDto> subscriberQuotes = _memberAppService.GetMemberQuotes(input).SubscriberQuotesList;
+                SubscribersCreditsDto subscriberCredits = _memberAppService.GetMemberCredits(input);
 
                 results.SubscriberInquiries.SubscriberInquiryList = new List<SubscribersInquiryDto>();
 
-                results.CreditsRemainingCount = 0;
+                results.CreditsRemainingCount = subscriberCredits.TotalCredits;
                 results.SubscriberInquiriesCount = subscriberInquiries.Count;
                 //Build Inquiry Model
                 results.SubscriberInquiries.SubscriberInquiryList = subscriberInquiries;

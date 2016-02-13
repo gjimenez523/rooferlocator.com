@@ -3,6 +3,7 @@ using rooferlocator.com.Common.Members.Dtos;
 using CreditsHero.Subscribers.Dtos;
 using System.Collections.Generic;
 using CreditsHero.Messaging.Dtos;
+using CreditsHero.Subscribers.Dtos.PaymentGatewayDtos;
 
 namespace rooferlocator.com.Common.Members
 {
@@ -15,7 +16,10 @@ namespace rooferlocator.com.Common.Members
         SubscribersRequestsDto GetMemberRequests(GetSubscribersInput input);
         SubscribersRequestDetailsDto GetMemberRequestDetails(GetSubscribersRequestDetailInput input);
         SubscriberQuotesDto GetMemberQuotes(GetSubscribersInput input);
+        SubscribersCreditsDto GetMemberCredits(GetSubscribersInput input);
         GetQuotesResults SendQuote(GetQuotesInput input);
+        PaymentResponseDto MakePayment(PaymentAuthorizeNetDto input);
+        PaymentResponseDto MakePayment(PaymentPaypalDto input);
         void UpdateMember(UpdateMemberInput input);
         void CreateMember(CreateMemberInput input);
     }

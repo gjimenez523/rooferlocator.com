@@ -1,17 +1,20 @@
 ﻿@using Abp.Web.Mvc.Extensions
-@using rooferlocator.com.MultiTenancy
-    @model rooferlocator.com.Common.Members.Dtos.GetMembersOutput
-    @section scripts
-    {
-    @Html.IncludeScript("~/Views/Members/Payment.js")
-    }
+
+@model rooferlocator.com.Web.Models.Member.MemberPaymentViewModel
+@section scripts
+{
+@Html.IncludeScript("~/Views/Members/Payment.js")
+}
     
     <script>
         //Need to get the CreditsHero CompanyId for RooferLocator
         chCompanyId = '@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"];'
     </script>
 
-    <div ng-controller="app.views.sales.payment as vm" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+    <input type="hidden" id="subscriberId" name="subscriberId" value="" />
+@using (Html.BeginForm("PurchaseCredits", "Members", FormMethod.Post, null))
+{
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
          style="background-color:white;border-radius:5px;padding:10px;margin:10px;">
         <h1>
             Purchase Credits
@@ -19,14 +22,63 @@
         <p></p>
         Payment options are listed below.  Select the payment optoin you want to use for this transaction.
         <p />
-        <div style="padding:7px;">
-            <img src="/images/logo_CreditCard.png" class="ui-button btn-primary" data-toggle="modal" 
-                 data-target="#authorizeNet" />
-            <hr style="color:gray;" />
-            <img src="~/images/logo_AuthorizeNet.png" class="ui-button btn-primary" data-toggle="modal"
-                 data-target="#paypal" />
-            <hr style="color:gray;" />
+        
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <div class="container">
+                <div class="portlet box blue">
+                    <div class="portlet-title"></div>
+                    <div class="portlet-body">
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label>Credits:</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon input-circle-left">
+                                        <i class="fa fa-dollar"></i>
+                                    </span>
+                                    <input id="txtCredits" name="txtCredits" type="text" 
+                                           onchange="document.getElementById('txtTotal').value = (parseFloat(document.getElementById('txtCostPerCredit').value) * parseFloat(document.getElementById('txtCredits').value)).toFixed(2); document.getElementById('txtAmount').value = document.getElementById('txtTotal').value"
+                                           class="form-control input-circle-right" placeholder="Credits For Purchase" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label>Cost Per Credit:</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon input-circle-left">
+                                        <i class="fa fa-dollar"></i>
+                                    </span>
+                                    <input id="txtCostPerCredit" name="txtCostPerCredit" type="text" readonly class="form-control input-circle-right" value="@Model.CostPerCredit" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label>Total Purchase Cost:</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon input-circle-left">
+                                        <i class="fa fa-dollar"></i>
+                                    </span>
+                                    <input id="txtTotal" name="txtTotal" type="text" readonly class="form-control input-circle-right" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="text-align:center;">
+                            <img src="/images/logo_CreditCard.png" class="ui-button btn-primary" data-toggle="modal"
+                                    data-target="#authorizeNet" />
+                            <hr style="color:gray;" />
+                            <img src="~/images/logo_Paypal.png" class="ui-button btn-primary" data-toggle="modal"
+                                    data-target="#paypal" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
+
+
         <!--Load payment gateway forms-->
         <div class="modal fade" id="authorizeNet">
             <div class="modal-dialog">
@@ -37,19 +89,20 @@
                     </div>
 
                     <div class="modal-body  col-lg-12 col-md-12 col-sm-12 col-xs-1" id="authorizeNetBody">
+                        <input type="hidden" id="txtTransactionType" name="txtTransactionType" value="AuthorizeNet" />
                         <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
                             <label for=" txtAmount">Amount</label>
                         </div>
                         <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
-                            <input type="text" class="form-control" id="txtAmount"
-                                   placeholder="Amount"
+                            <input type="text" class="form-control" id="txtAmount" name="txtAmount"
+                                   placeholder="Amount" readonly
                                    ng-model="vm.paymentGateway.amount" />
                         </div>
                         <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
                             <label for="txtCardNumber">Credit Card Number</label>
                         </div>
                         <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
-                            <input type="text" class="form-control" id="txtCardNumber"
+                            <input type="text" class="form-control" id="txtCardNumber" name="txtCardNumber"
                                    placeholder="Credit Card Number"
                                    ng-model="vm.paymentGateway.cardNumber" />
                         </div>
@@ -57,7 +110,7 @@
                             <label for="txtExpirationDate">Expiration Date</label>
                         </div>
                         <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
-                            <input type="text" class="form-control" id="txtExpirationDate"
+                            <input type="text" class="form-control" id="txtExpirationDate" name="txtExpirationDate"
                                    placeholder="Expiration Date"
                                    ng-model="vm.paymentGateway.expirationDate" />
                         </div>
@@ -65,19 +118,18 @@
                             <label for="txtCardCode">CVV Code</label>
                         </div>
                         <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
-                            <input type="text" class="form-control" id="txtCardCode"
+                            <input type="text" class="form-control" id="txtCardCode" name="txtCardCode"
                                    placeholder="CVV Code"
                                    ng-model="vm.paymentGateway.cardCode" />
                         </div>
                     </div>
                     <div class="modal-body" id="authorizeNetResponse">
-                        {{vm.paymentResponse.resultCode}}<br />
-                        {{vm.paymentResponse.message}}
+                        
                     </div>
 
                     <div id="authorizeNetFooter" class="modal-footer" style="border-top:0px;">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" ng-click="save('AuthorizeNET')">Make Payment</button>
+                        <button type="submit" class="btn btn-primary">Make Payment</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -106,3 +158,4 @@
         </div><!-- /.modal -->
 
     </div>
+}

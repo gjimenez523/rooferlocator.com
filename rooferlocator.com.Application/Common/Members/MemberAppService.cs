@@ -13,6 +13,7 @@ using CreditsHero.Messaging.Dtos;
 using CreditsHero.Messaging.Requests.Dtos;
 using System.IO;
 using System.Net;
+using CreditsHero.Subscribers.Dtos.PaymentGatewayDtos;
 
 namespace rooferlocator.com.Common.Members
 {
@@ -262,6 +263,108 @@ namespace rooferlocator.com.Common.Members
                 }
             }
             return subscriberQuotes;
+        }
+
+        public SubscribersCreditsDto GetMemberCredits(GetSubscribersInput input)
+        {
+            var creditsHeroFormat = String.Format("{0}api/services/app/Subscriber/GetSubscriberCredits", System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            var timelineUrl = string.Format(creditsHeroFormat);
+            SubscribersCreditsDto subscriberCredits;
+
+            //Serialize object to JSON
+            MemoryStream jsonStream = new MemoryStream();
+
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            Stream newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<SubscribersCreditsDto>(jObject2.ToString());
+                    subscriberCredits = itemResult;
+                }
+            }
+            return subscriberCredits;
+        }
+
+        public PaymentResponseDto MakePayment(PaymentAuthorizeNetDto input)
+        {
+            var creditsHeroFormat = String.Format("{0}api/services/app/Subscriber/MakeAuthorizationNetPurchase", System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            var timelineUrl = string.Format(creditsHeroFormat);
+            PaymentResponseDto paymentResults;
+
+            //Serialize object to JSON
+            MemoryStream jsonStream = new MemoryStream();
+
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            Stream newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<PaymentResponseDto>(jObject2.ToString());
+                    paymentResults = itemResult;
+                }
+            }
+            return paymentResults;
+        }
+
+        public PaymentResponseDto MakePayment(PaymentPaypalDto input)
+        {
+            var creditsHeroFormat = String.Format("{0}api/services/app/Susbcribers/MakePaypalPurchase", System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            var timelineUrl = string.Format(creditsHeroFormat);
+            PaymentResponseDto paymentResults;
+
+            //Serialize object to JSON
+            MemoryStream jsonStream = new MemoryStream();
+
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            Stream newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<PaymentResponseDto>(jObject2.ToString());
+                    paymentResults = itemResult;
+                }
+            }
+            return paymentResults;
         }
 
         public GetQuotesResults SendQuote(GetQuotesInput input)

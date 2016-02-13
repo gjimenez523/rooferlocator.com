@@ -7,6 +7,10 @@ using Abp.Application.Services;
 using Abp.Domain.Repositories;
 using AutoMapper;
 using rooferlocator.com.Common.Companies;
+using CreditsHero.Common.Companies.Dtos;
+using System.IO;
+using System.Net;
+using CreditsHero.Company.Dtos;
 
 namespace rooferlocator.com.Common.Companies
 {
@@ -22,6 +26,74 @@ namespace rooferlocator.com.Common.Companies
         public CompanyAppService(ICompanyRepository companyRepository)
         {
             _companyRepository = companyRepository;
+        }
+
+        public CompanyDto GetCompany(CreditsHero.Common.Companies.Dtos.GetCompanyInput input)
+        {
+            var creditsHeroFormat = String.Format("{0}api/services/app/Company/GetCompany", System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            var timelineUrl = string.Format(creditsHeroFormat);
+            CompanyDto companyResult;
+
+            //Serialize object to JSON
+            MemoryStream jsonStream = new MemoryStream();
+
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            Stream newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<CompanyDto>(jObject2.ToString());
+                    companyResult = itemResult;
+                }
+            }
+            return companyResult;
+        }
+
+        public CreditsHero.Company.Dtos.CompanyConfigsDto GetCompanyConfig(CreditsHero.Common.Companies.Dtos.GetCompanyInput input)
+        {
+            var creditsHeroFormat = String.Format("{0}api/services/app/Company/GetCompanyConfig", System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            var timelineUrl = string.Format(creditsHeroFormat);
+            CompanyConfigsDto companyConfigList;
+
+            //Serialize object to JSON
+            MemoryStream jsonStream = new MemoryStream();
+
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            Stream newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<CompanyConfigsDto>(jObject2.ToString());
+                    companyConfigList = itemResult;
+                }
+            }
+            return companyConfigList;
         }
 
         public Dtos.GetCompaniesOutput GetCompanies(Dtos.GetCompanyInput input)

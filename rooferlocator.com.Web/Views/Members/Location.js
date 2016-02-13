@@ -4,76 +4,100 @@
 });
 
 //(function () {
-//    var controllerId = 'app.views.home';
-    
+//    var controllerId = 'app.views.common.types.location.list';
+
 //    angular.module('app').controller(controllerId, [
-//        '$rootScope', '$scope',
-//        function ($rootScope, $scope) {
+//        '$rootScope', '$scope', '$state', 'abp.services.app.location',
+//        function ($rootScope, $scope, $state, locationService) {
 //            var vm = this;
 //            //Layout logic...
 
-//            $scope.handleClick = function (controllerId) {
-//                $rootScope.sharedService.prepForBroadcast($rootScope.selectedCustomer, controllerId);
-//            };
+//            vm.locations = [{}];
+//            vm.states = [{}];
+//            vm.locationInput = {};
+//            vm.selectedLocation = {};
 
-//            $scope.handleLocationClick = function (controllerId) {
-//                $rootScope.sharedService.prepForBroadcast($rootScope.selectedCustomer, controllerId);
-//            };
-//        }]);
+//            //Get All Locations list
+//            vm.getLocations = function () {
+//                locationService.getLocations(
+//                        vm.locationInput
+//                        ).success(function (data) {
+//                            vm.locations = data.locations
+//                        }).error(function (msg) {
+//                            abp.notify.info("Locations Not Loaded.");
+//                        });
+//            }
 
-//    angular.module('app').factory(
-//        'customerSharedService',
-//        function ($rootScope) {
-//            $rootScope.sharedService = {};
-//            $rootScope.selectedCustomer = null;
-//            $rootScope.selectedLocation = null
-//            $rootScope.sharedService.message = '';
+//            //Get States list
+//            vm.getStates = function () {
+//                locationService.getStates(
+//                        ).success(function (data) {
+//                            vm.states = data.locations
+//                        }).error(function (msg) {
+//                            abp.notify.info("States Not Loaded.");
+//                        });
+//            }
 
-//            $rootScope.sharedService.prepForBroadcast = function (msg, controlId) {
-//                this.message = msg;
-//                $rootScope.sharedService.message = msg;
-//                this.broadcastItem(msg, controlId);
+//            //Get Cities list
+//            vm.getCities = function (state) {
+//                locationService.getCities(
+//                    state.state
+//                        ).success(function (data) {
+//                            vm.locations = data.locations
+//                        }).error(function (msg) {
+//                            abp.notify.info("Cities Not Loaded.");
+//                        });
+//            }
 
-//                //document.getElementById('customerDetail').style.display = 'none';
-//                document.getElementById('customerPayment').style.display = 'none';
-//                document.getElementById('customerAgreement').style.display = 'none';
-//                document.getElementById('customerAgreementList').style.display = 'none';
-//                document.getElementById('customerOrder').style.display = 'none';
-//                document.getElementById('customerOrderList').style.display = 'none';
-//                document.getElementById('customerLocation').style.display = 'none';
-//                document.getElementById('customerCompany').style.display = 'none';
-
-//                if (document.getElementById(controlId) != undefined)
-//                    document.getElementById(controlId).style.display = 'block';
-
-//                if (controlId == 'customerPayment'
-//                    || controlId == 'customerSales'
-//                    || controlId == 'customerAgreement'
-//                    || controlId == 'customerOrder') {
-//                    //document.getElementById('customerAgreement').style.display = 'block';
-//                    document.getElementById('customerAgreementList').style.display = 'block';
-//                    document.getElementById('customerOrderList').style.display = 'block';
-//                }
-//            };
-
-//            $rootScope.sharedService.broadcastItem = function (msg, controlId) {
-//                $rootScope.$broadcast(controlId);
-//            };
-
-//            return $rootScope.sharedService;
-//        });
-
-//    angular.module('app').directive(
-//        'editCustomer',
-//        function (customerSharedService) {
-//            return {
-//                restrict: 'A',
-//                link: function ($scope, $attrs, customerSharedService) {
-//                    $scope.$on('customerSelected', function () {
-//                        $scope.message = 'Directive: ' + $scope.sharedService.message;
+//            //Save Location
+//            vm.saveType = function () {
+//                if (vm.selectedLocation.id == undefined) {
+//                    vm.selectedLocation.state = vm.selectedLocation.state.state;
+//                    locationService.createLocation(
+//                    vm.selectedLocation
+//                    ).success(function () {
+//                        vm.getCities($scope.item);
+//                        $scope.showList();
+//                        abp.notify.info("Location added.");
+//                    }).error(function (msg) {
+//                        abp.notify.info("Location was not added.");
 //                    });
 //                }
-//            };
-//        });
+//                else {
+//                    locationService.updateLocation(
+//                        vm.selectedLocation
+//                        ).success(function () {
+//                            vm.getCities($scope.item);
+//                            $scope.showList();
+//                            abp.notify.info("Location updated.");
+//                        }).error(function (msg) {
+//                            abp.notify.info("Location was not updated.");
+//                        });
+//                }
+//            }
 
+//            //Delete Location
+//            vm.deleteItem = function (type) {
+//                vm.selectedLocation = type;
+//                vm.selectedLocation.isDeleted = 1;
+//                vm.saveType();
+//            }
+
+//            //Show Details panel
+//            $scope.showDetails = function (type) {
+//                vm.selectedLocation = type;
+//                document.getElementById('Details').style.display = 'block';
+//                document.getElementById('List').style.display = 'none';
+//            }
+
+//            //Show List panel
+//            $scope.showList = function () {
+//                document.getElementById('Details').style.display = 'none';
+//                document.getElementById('List').style.display = 'block';
+//            }
+
+//            //Get list of RoofTypes
+//            vm.getStates();
+//        }
+//    ]);
 //})();

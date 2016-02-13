@@ -1,6 +1,5 @@
 ﻿@using Abp.Web.Mvc.Extensions
-@using rooferlocator.com.MultiTenancy
-@model rooferlocator.com.Common.Members.Dtos.GetMembersOutput
+@model rooferlocator.com.Web.Models.Member.MemberLocationsViewModel
 @section scripts
 {
 @Html.IncludeScript("~/Views/Members/Location.js")
@@ -21,13 +20,7 @@
                 </div>
                 <div class="portlet-input input-inline input-medium">
                     <div class="form-body">
-                        <select class="form-control"
-                                id="drpStates"
-                                ng-options="location as location.state for location in vm.states "
-                                ng-model="item"
-                                ng-change="vm.getCities(item)">
-                            <option value="">-- Select State--</option>
-                        </select>
+                        @Html.DropDownList("States", ViewData["States"] as List<SelectListItem>, new { @class="form-control" })
                     </div>
                 </div>
             </div>

@@ -1,6 +1,11 @@
 ﻿@using Abp.Web.Mvc.Extensions
 @using rooferlocator.com.MultiTenancy
 @model rooferlocator.com.Web.Models.Member.MemberServicesViewModel
+@{
+    var role = TempData["Role"] as String;
+    var categories = TempData["Categories"] as CreditsHero.Common.Dtos.GetCriteriaOutput;
+    var criteriaList = TempData["CriteriaList"] as System.Collections.Hashtable;
+}
 @section scripts
 {
 @Html.IncludeScript("~/Views/Members/ServicesOffered.js")
@@ -11,129 +16,225 @@
         chRoofTypeId = '@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:RoofTypeId"]';
         chServiceTypeId= '@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:ServiceTypeId"]';
     </script>
-    <div ng-controller="app.views.common.types.servicesoffered as vm">
-        <div class="portlet box red-soft">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class="glyphicon glyphicon-star-empty"></i>
-                    <span>Services Management</span>
-                </div>
-                <div class="actions">
-                    <div class="portlet-input input-inline input-medium">
-                        <div class="input-group">
+    <div id="panelServicesOffered" style="">
+    <div class="portlet box red-soft">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="glyphicon glyphicon-star-empty"></i>
+                <span>Services Management</span>
+            </div>
+            <div class="actions">
+                <div class="portlet-input input-inline input-medium">
+                    @*<div class="input-group">
                             <input type="text" class="form-control input-circle-left" placeholder="search...">
                             <span class="input-group-btn">
                                 <button class="btn btn-circle-right btn-default" type="submit">Go!</button>
                             </span>
-                        </div>
-                    </div>
+                        </div>*@
                 </div>
             </div>
-            <!--BEGIN ROOFTYPES LIST-->
-            <div class="portlet portlet-sortable box red-soft">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="glyphicon glyphicon-star-empty"></i>
-                        <span>Type of Roof</span>
-                    </div>
-                    <div class="tools">
-                        <a href="javascript:;" class="hide">
-                        </a>
-                        <a ng-click="vm.refreshAgreement()" class="reload">
-                        </a>
-                        <a href="javascript:;" class="fullscreen"></a>
-                        <a href="javascript:;" class="remove">
-                        </a>
-                    </div>
-                </div>
-
-                <div id="RoofTypeList" class="portlet-body form " style="display:block;">
-                    <div class="portlet-body form ">
-                        <form role="form">
-                            <div class="table-responsive">
-                                <table class=" table table-striped table-bordered table-hover">
-                                    <thead class="flip-content">
-                                        <tr>
-                                            <th>
-                                                <h6>Description</h6>
-                                            </th>
-                                            <th>
-                                                <h6>Action</h6>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.RoofTypes.RoofTypes)
-                                        {
-                                        <tr>
-                                            <td><b>@item.Description</b></td>
-                                            <td style="margin:0px;">
-                                                <button ng-click="vm.addRoofType(types)" type="button" class="btn red"> <i class="fa reload"></i> Add</button>
-                                                <button ng-click="vm.deleteRoofType(types)" type="button" class="btn red"> <i class="fa reload"></i> Delete</button>
-                                            </td>
-                                        </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!--END ROOFTYPES LIST-->
-            <!--BEGIN SERVICETYPES LIST-->
-            <div class="portlet portlet-sortable box red-soft">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="glyphicon glyphicon-star-empty"></i>
-                        <span>Type of Service</span>
-                    </div>
-                    <div class="tools">
-                        <a href="javascript:;" class="hide">
-                        </a>
-                        <a ng-click="vm.refreshAgreement()" class="reload">
-                        </a>
-                        <a href="javascript:;" class="fullscreen"></a>
-                        <a href="javascript:;" class="remove">
-                        </a>
-                    </div>
-                </div>
-
-                <div id="ServiceList" class="portlet-body form " style="display:block;">
-                    <div class="portlet-body form ">
-                        <form role="form">
-                            <div class="table-responsive">
-                                <table class=" table table-striped table-bordered table-hover">
-                                    <thead class="flip-content">
-                                        <tr>
-                                            <th>
-                                                <h6>Description</h6>
-                                            </th>
-                                            <th>
-                                                <h6>Action</h6>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.ServiceTypes.ServiceTypes)
-                                        {
-                                        <tr>
-                                            <td><b>@item.Description</b></td>
-                                            <td style="margin:0px;">
-                                                <button ng-click="vm.addServiceType(types)" type="button" class="btn red"> <i class="fa reload"></i> Add</button>
-                                                <button ng-click="vm.deleteServiceType(types)" type="button" class="btn red"> <i class="fa reload"></i> Delete</button>
-                                            </td>
-                                        </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!--END SERVICETYPES LIST-->
-
         </div>
+
+
+        <div class="portlet-body">
+            <div class="row">
+                @if (role != "Admin")
+                {
+                    string form = "<form id='formServicesOffered' name='formServicesOffered' action='/Members/AddSubscribersValue' method='post'>";
+                    @(new HtmlString(form))
+                }
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                    <div class="tab-content">
+                        @{
+                            int countCriteria = 0;
+                            foreach (var item in categories.Criteria)
+                            {
+                                if (countCriteria == 0)
+                                {
+                                    <div class="tab-pane active in" id="tc_@item.Id" style="font-size:16px;">
+                                        <h3>@item.Name</h3>
+                                        Click <i class="fa fa-check-square-o"></i> next to the service that you want recieve/remove notifications for.<br />
+                                        <p>
+                                            <div class="form-group form-md-line-input">
+                                                @{
+                                                    //Find CriteriaList
+                                                    foreach (var criteriaItem in (List<CreditsHero.Common.Dtos.CriteriaValuesDto>)criteriaList[item.Id])
+                                                    {
+                                                        <div class="md-checkbox-list">
+                                                            <div class="md-checkbox">
+                                                                @if (role == "Admin")
+                                                                {
+                                                                    <input class="md-check" id="checkbox_@criteriaItem.Id" name="@criteriaItem.Id" type="checkbox"
+                                                                           checked="@criteriaItem.IsSelected">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input class="md-check" id="checkbox_@criteriaItem.Id" name="@criteriaItem.Id" type="checkbox"
+                                                                           checked="@criteriaItem.IsSelected"
+                                                                           onclick="$('#panelServicesOffered')[0].style.display='none';$('#formServicesOffered').submit();">
+                                                                }
+                                                                <label for="checkbox_@criteriaItem.Id">
+                                                                    <span class="inc"></span>
+                                                                    <span class="check"></span>
+                                                                    <span class="box"></span> @criteriaItem.Name@*criteriaItem.Description*@
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                    if (role == "Admin")
+                                                    {
+                                                        using (Html.BeginForm("AddCriteriaValue", "Members", FormMethod.Post, new { id = "formNewCriteriaValue" }))
+                                                        {
+                                                            <div>
+                                                                <input type="hidden" id="txtCriteriaId_@item.Id" name="txtCriteriaId_@item.Id" value="@item.Id" />
+                                                                <input id="txtNewCriteriaValue_@item.Id" name="txtNewCriteriaValue_@item.Id" type="text" placeholder="Name" />
+                                                                <input type="text" id="txtNewCriteriaValueCredits_@item.Id" name="txtNewCriteriaValueCredits_@item.Id" placeholder="Credits" />
+                                                                <button class="btn red" type="submit" id="btn_@item.Id" onclick="$('#btn_@item.Id')[0].style.display = 'none';">
+                                                                    <i class="fa fa-plus-circle"></i>
+                                                                    Submit
+                                                                </button>
+                                                            </div>
+                                                        }
+                                                    }
+                                                }
+                                            </div>
+                                        </p>
+                                    </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="tab-pane fade" id="tc_@item.Id">
+                                                            <h3>@item.Name</h3>
+                                                            Click <i class="fa fa-check-square-o"></i> next to the service that you want recieve/remove notifications for.<br />
+                                                            <p>
+                                                                <div class="form-group form-md-line-input">
+                                                                    @{
+                                                                        //Find CriteriaList
+                                                                        foreach (var criteriaItem in (List<CreditsHero.Common.Dtos.CriteriaValuesDto>)criteriaList[item.Id])
+                                                                        {
+                                                                            <div class="md-checkbox-list">
+                                                                                <div class="md-checkbox">
+                                                                                    @if (role == "Admin")
+                                                                                    {
+                                                                                        <input class="md-check" id="checkbox_@criteriaItem.Id" name="@criteriaItem.Id" type="checkbox"
+                                                                                               checked="@criteriaItem.IsSelected">
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <input class="md-check" id="checkbox_@criteriaItem.Id" name="@criteriaItem.Id" type="checkbox"
+                                                                                               checked="@criteriaItem.IsSelected"
+                                                                                               onclick="$('#panelServicesOffered')[0].style.display = 'none'; $('#formServicesOffered').submit();">
+                                                                                    }
+                                                                                    <label for="checkbox_@criteriaItem.Id">
+                                                                                        <span class="inc"></span>
+                                                                                        <span class="check"></span>
+                                                                                        <span class="box"></span> @criteriaItem.Name @*criteriaItem.Description*@
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+
+                                                                        if (role == "Admin")
+                                                                        {
+                                                                            using (Html.BeginForm("AddCriteriaValue", "Members", FormMethod.Post, new { id = "formNewCriteriaValue" }))
+                                                                            {
+                                                                                <div>
+                                                                                    <input type="hidden" id="txtCriteriaId_@item.Id" name="txtCriteriaId_@item.Id" />
+                                                                                    <input id="txtNewCriteriaValue_@item.Id" name="txtNewCriteriaValue_@item.Id" type="text" placeholder="Name" />
+                                                                                    <input type="text" id="txtNewCriteriaValueCredits_@item.Id" name="txtNewCriteriaValueCredits_@item.Id" placeholder="Credits" />
+                                                                                    <button class="btn red" type="submit" id="btn_@item.Id" onclick="$('#btn_@item.Id')[0].style.display = 'none';">
+                                                                                        <i class="fa fa-plus-circle"></i>
+                                                                                        Submit
+                                                                                    </button>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </p>
+                                                        </div>
+                                                                            }
+                                                                            countCriteria++;
+                                                                        }
+
+                                                                        if (role == "Admin")
+                                                                        {
+                                                                            <div class="tab-pane fade" id="tc_AddNewCriteria">
+                                                                                <h3>Add New</h3>
+                                                                                Fill in the Name for the new criteria a user can search for and, a subscriber can recieve notifications on.<br />
+                                                                                <p>
+                                                                                    <div class="form-group form-md-line-input">
+                                                                                        @using (Html.BeginForm("AddCriteria", "Members", FormMethod.Post, new { id = "formNewCriteria" }))
+                                                                                        {
+                                                                                            <input type="text" id="txtCriteriaName" name="txtCriteriaName" placeholder="Name" />
+                                                                                            <button id="btnAddNewCriteria" class="btn red" type="submit" onclick="$('#btnAddNewCriteria')[0].style.display = 'none';">
+                                                                                                <i class="fa fa-plus-circle"></i>
+                                                                                                Submit
+                                                                                            </button>
+                                                                                        }
+                                                                                    </div>
+                                                                                </p>
+                                                                            </div>
+                                                                        }
+                        }
+
+                    </div>
+                </div>
+
+
+                @if (role != "Admin")
+                {
+                    string formEnd = "</form>";
+                    @(new HtmlString(formEnd))
+                }
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <ul class="nav nav-tabs tabs-right">
+                        @{
+                            int count = 0;
+                            foreach (var item in categories.Criteria)
+                            {
+                                if (count == 0)
+                                {
+                                    <li class="active">
+                                        @if (role == "Admin")
+                                        {
+                                            <a aria-expanded="true" href="#tc_@item.Id" data-toggle="tab" onclick="$('#txtCriteriaId_@item.Id')[0].value=@item.Id;"> @item.Name </a>
+                                        }
+                                        else
+                                        {
+                                            <a aria-expanded="true" href="#tc_@item.Id" data-toggle="tab"> @item.Name </a>
+                                        }
+
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        @if (role == "Admin")
+                                        {
+                                            <a aria-expanded="false" href="#tc_@item.Id" data-toggle="tab" onclick="$('#txtCriteriaId_@item.Id')[0].value=@item.Id;"> @item.Name </a>
+                                        }
+                                        else
+                                        {
+                                            <a aria-expanded="false" href="#tc_@item.Id" data-toggle="tab"> @item.Name </a>
+                                        }
+                                    </li>
+                                }
+                                count++;
+                            }
+                            if (role == "Admin")
+                            {
+                                <li>
+                                    <a href="#tc_AddNewCriteria" data-toggle="tab"><i class="fa fa-plus-circle"></i>Add New</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
     </div>
+</div>
 

@@ -31,6 +31,7 @@
     <link href="~/Assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
     <link href="~/Assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Assets/global/plugins/bootstrap-switch/css/bootstrap-switch.css" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <link href="~/Assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
@@ -128,104 +129,31 @@
                     <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
                     <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                     <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+                        
                         @if (role == "Admin")
                         {
-                        <!--BEGIN ADMIN SIDEBAR-->
-                        <li class="nav-item start active open">
-                            <a href="/" class="nav-link nav-toggle">
-                                <i class="icon-home"></i>
-                                <span class="title">Dashboard</span>
-                                <span id="mnuDashboard" name="mnuDashboard" class="selected"></span>
-                            </a>
-                        </li>
-                        <li class="heading">
-                            <h3 class="uppercase">Admin</h3>
-                        </li>
-                        <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-diamond"></i>
-                                <span class="title">Member Management</span>
-                                <span id="mnuMemberManagement"></span>
-                                <span id="mnuMemberManagementArrow" class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item  ">
-                                    <a href="/members" class="nav-link ">
-                                        <span class="title">User Management</span>
-                                        <span id="mnuUserManagement"></span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="ui_buttons.html" class="nav-link ">
-                                        <span class="title">Lead Management</span>
-                                        <span id="mnuLeadManagement"></span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="ui_confirmations.html" class="nav-link ">
-                                        <span class="title">Service Management</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="ui_icons.html" class="nav-link ">
-                                        <span class="title">Quote Type Management</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-settings"></i>
-                                <span class="title">Tips</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item  ">
-                                    <a href="form_controls.html" class="nav-link ">
-                                        <span class="title">Tips Management</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="form_controls_md.html" class="nav-link ">
-                                        <span class="title">Tips Categories</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-briefcase"></i>
-                                <span class="title">News</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item  ">
-                                    <a href="form_controls.html" class="nav-link ">
-                                        <span class="title">News Management</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="form_controls_md.html" class="nav-link ">
-                                        <span class="title">News Categories</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-briefcase"></i>
-                                <span class="title">Sales</span>
-                            </a>
-                        </li>
-                        <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-briefcase"></i>
-                                <span class="title">Register</span>
-                            </a>
-                        </li>
-                        <!--END ADMIN SIDEBAR-->
+                            System.Collections.Hashtable menuRegister = new System.Collections.Hashtable();
+                            System.Collections.Hashtable menuItemsMembers = new System.Collections.Hashtable();
+                            System.Collections.Hashtable menuItemsTips = new System.Collections.Hashtable();
+                            System.Collections.Hashtable menuItemsNews = new System.Collections.Hashtable();
+                            System.Collections.Hashtable menuItemsReports = new System.Collections.Hashtable();
+                            menuItemsMembers.Add("User Management", "/members");
+                            menuItemsMembers.Add("Service Management", "/members/ServicesOffered");
+                            menuItemsMembers.Add("Quote Type Management", "/members/ServicesOffered");
+                            //menuItemsMembers.Add("Operating Areas", "/members/Location");
+                            //menuItemsMembers.Add("Register Subscriber", "/members/Register");
+                            menuItemsTips.Add("Management", "/members/Payment");
+                            menuItemsTips.Add("Categories", "/members/Payment");
+                            menuItemsNews.Add("Management", "/members/Payment");
+                            menuItemsNews.Add("Categories", "/members/Payment");
+                            menuItemsReports.Add("None at this time", "");
+                            //menuItemsReports.Add("Sales", "");
+                            @CustomHelpers.MainMenu(((System.Web.HttpRequestWrapper)this.Request).FilePath)
+                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "Admin", "Member Management", menuItemsMembers, "fa fa-users")
+                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "Tips", "Tips Management", menuItemsTips, "fa fa-users")
+                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "News", "News Management", menuItemsNews, "fa fa-users")
+                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "", "Reports", menuItemsReports, "fa fa-list-ul")
                         }
-
                         @if (role == "Member")
                         {
                         <!--BEGIN MEMBER SIDEBAR-->
@@ -236,10 +164,10 @@
                             menuItems.Add("Operating Areas", "/members/Location");
                             menuItems.Add("Help Desk", "/members/Email");
                             menuItems.Add("Payment Center", "/members/Payment");
-                            menuItemsReports.Add("Leads Requested", "/reports/LeadsRequested");
+                            menuItemsReports.Add("None at this time", "");
                             @CustomHelpers.MainMenu(((System.Web.HttpRequestWrapper)this.Request).FilePath)
-                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "Admin", "Company Profile", menuItems)
-                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "Reports", "Reports", menuItemsReports)
+                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "Admin", "Company Profile", menuItems, "fa fa-users")
+                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "Reports", "Reports", menuItemsReports, "fa fa-users")
                         }
                         <!--END MEMBER SIDEBAR-->
                     </ul>
@@ -274,6 +202,27 @@
     </div>
     <!-- END CONTAINER-->
 
+    <div class="modal fade" id="serviceResponse">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body  col-lg-12 col-md-12 col-sm-12 col-xs-1">
+                    <label for="txtFriendlyMessage">
+                        @if (Request["FriendlyMessage"] != null)
+                        {
+                            <span>@Request["FriendlyMessage"]</span>
+                        }
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 
     @Scripts.Render("~/Bundles/vendor/js/bottom")
     @Scripts.Render("~/Bundles/js")
@@ -297,6 +246,7 @@
     <script src="~/Assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <script src="~/Assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
     <script src="~/Assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="~/Assets/global/plugins/bootstrap-switch/js/bootstrap-switch.js" type="text/javascript"></script>
     <script src="~/Assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
     <!-- END CORE PLUGINS -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->

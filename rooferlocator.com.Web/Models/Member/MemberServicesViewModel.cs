@@ -10,9 +10,8 @@ namespace rooferlocator.com.Web.Models.Member
 {
     public class MemberServicesViewModel : IInputDto
     {
-        public GetServiceTypeOutput ServiceTypes { get; set; }
-        public GetRoofTypeOutput RoofTypes { get; set; }
-        
+        public GetCriteriaValuesOutput CriteriaValues { get; set; }
+
         public MemberServicesViewModel()
         {
         }

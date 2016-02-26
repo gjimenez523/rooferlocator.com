@@ -1,0 +1,113 @@
+﻿@helper MainMenu(string SelectedItem)
+{
+if (SelectedItem == "/")
+{
+        <li class="nav-item start active ">
+            <a href="/" class="nav-link nav-toggle">
+                <i class="icon-home"></i>
+                <span class="title">Home</span>
+                <span id="mnuHome" name="mnuHome" class="selected"></span>
+            </a>
+        </li>
+}
+else
+{
+        <li class="nav-item">
+            <a href="/" class="nav-link nav-toggle">
+                <i class="icon-home"></i>
+                <span class="title">Home</span>
+            </a>
+        </li>
+    }
+}
+
+@helper MenuContainer(string SelectedItem, string Heading, String SubHeading, System.Collections.Hashtable Items, string iconClass)
+{
+if (Heading != "")
+{
+        <li class="heading">
+            <h3 class="uppercase">@Heading</h3>
+        </li>
+}
+
+if (Items.ContainsValue(SelectedItem))
+{
+        <li class='nav-item open'>
+            <a href="javascript:;" class="nav-link nav-toggle">
+                <i class="@iconClass"></i>
+                <span class="title">@SubHeading</span>
+                <span class="arrow open"></span>
+            </a>
+            <ul class="sub-menu" style="display:block;">
+                @foreach (string item in Items.Keys)
+                {
+                    if (SelectedItem == Items[item].ToString())
+                    {
+                        <li class="nav-item active open">
+                            @if (Items[item] == "")
+                            {
+                                <span class="title">@item</span>
+                                <span class="selected"></span>
+                            }
+                            else
+                            {
+                                <a href="@Items[item]" class="nav-link ">
+                                    <span class="title">@item</span>
+                                    <span class="selected"></span>
+                                </a>
+                            }
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item ">
+                            @if (Items[item] == "")
+                            {
+                                <span class="title">@item</span>
+                            }
+                            else
+                            {
+                                <a href="@Items[item]" class="nav-link ">
+                                    <span class="title">@item</span>
+                                </a>
+                            }
+                        </li>
+                    }
+                }
+            </ul>
+        </li>
+}
+else
+{
+        <li class='nav-item'>
+            <a href="javascript:;" class="nav-link nav-toggle">
+                <i class="@iconClass"></i>
+                <span class="title">@SubHeading</span>
+                <span class="arrow"></span>
+            </a>
+            <ul class="sub-menu">
+                @foreach (string item in Items.Keys)
+        {
+                    <li class="nav-item  ">
+                        @if (Items[item] == "")
+                        {
+                            <div class="nav-link" style="padding-left:20px;">
+                                <span class="title">@item</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <a href="@Items[item]" class="nav-link ">
+                                <span class="title">@item</span>
+                                @if (SelectedItem == Items[item].ToString())
+                                { <span class="selected"></span>}
+                                else {<span class=""></span>}
+                            </a>
+                        }
+                    </li>
+                }
+            </ul>
+        </li>
+}
+}
+}

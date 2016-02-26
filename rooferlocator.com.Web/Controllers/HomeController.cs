@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Collections.Generic;
 using CreditsHero.Subscribers.Dtos;
 using CreditsHero.Messaging.Dtos;
+using rooferlocator.com.Common.Members.Dtos;
 
 namespace rooferlocator.com.Web.Controllers
 {
@@ -77,7 +78,23 @@ namespace rooferlocator.com.Web.Controllers
             }
             else
             {
-                return View();
+                GetMemberInput memberInput = new GetMemberInput() { CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]) };
+                GetMembersOutput subscribersOutput = _memberAppService.GetMembers(memberInput);
+                Models.Member.MemberSummaryViewModel member = new Models.Member.MemberSummaryViewModel();
+
+                Decimal totalSpend = 0.0M;
+                Decimal totalCredits = 0.0M;
+                foreach (var item in subscribersOutput.Members)
+                {
+                    totalSpend += item.SubscriberExt.TotalSpend.HasValue ? item.SubscriberExt.TotalSpend.Value : 0.0M;
+                    totalCredits += item.SubscriberExt.TotalCredits.HasValue ? item.SubscriberExt.TotalCredits.Value : 0.0M;
+                }
+
+                member.TotalCredits = totalCredits;
+                member.TotalSpend = totalSpend;
+                member.TotalMembers = subscribersOutput.Members.Count;
+
+                return View(member);
             }
         }
 	}

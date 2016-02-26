@@ -6,6 +6,7 @@ using rooferlocator.com.Users;
 using rooferlocator.com.Common.Companies.Dtos;
 using rooferlocator.com.Sessions.Dto;
 using Abp.AutoMapper;
+using CreditsHero.Subscribers.Dtos;
 
 namespace rooferlocator.com.Common.Members.Dtos
 {
@@ -14,6 +15,8 @@ namespace rooferlocator.com.Common.Members.Dtos
     {
         public virtual CompanyDto Company { get; set; }
         public virtual UserLoginInfoDto User {get; set;}
+        public virtual SubscribersSkillsDto SubscriberSkills { get; set; }
+        public virtual SubscribersDto SubscriberExt { get; set; }
 
         public string FullName { get; set; }
         public string JobTitle { get; set; }

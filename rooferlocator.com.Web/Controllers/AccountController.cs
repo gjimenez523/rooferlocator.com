@@ -110,7 +110,7 @@ namespace rooferlocator.com.Web.Controllers
                 InquiryResults = new CreditsHero.Messaging.Requests.Dtos.GetInquiryResults(),
                 RequestResults = new CreditsHero.Messaging.Dtos.RequestsDto(),
                 ReturnUrl = returnUrl,
-                IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled
+                IsMultiTenancyEnabled = false
             };
 
             var creditsHeroFormat = String.Format("{0}api/services/app/Inquiry/MakeInquiry", WebConfigurationManager.AppSettings["creditsHero:WebServiceApiPrefix"]);
@@ -167,6 +167,7 @@ namespace rooferlocator.com.Web.Controllers
 
             emailInput = new CreditsHero.Messaging.Dtos.NotificationInput()
             {
+                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]),
                 EmailFrom = "no-reply@rooferlocator.com",
                 EmailSubject = String.Format("New Inquiry at RooferLocator.com"),
                 EmailMessage = String.Format("Hello Administrator: \n  An inquiry/search has been submitted at RooferLocator.com.\n\n Following are the details of the inquiry:\n Roof Type = {0} \n Service Type = {1} \n Time Of Repair = {2} \n State = {3} \n City = {4}",
@@ -201,16 +202,7 @@ namespace rooferlocator.com.Web.Controllers
                 }
             }
 
-            return View("Login", loginFormModel);
-            //new LoginFormViewModel
-            //{
-            //    InquiryResults = inquiryResults,
-            //    RequestResults = new CreditsHero.Messaging.Dtos.RequestsDto(),
-            //    RoofTypeValues = roofTypes.RoofTypes.Cast<CreditsHero.Common.Dtos.CriteriaValuesDto>().ToList(),
-            //    TypeOfService = serviceTypes.ServiceTypes.Cast<CreditsHero.Common.Dtos.CriteriaValuesDto>().ToList(),
-            //    ReturnUrl = returnUrl,
-            //    IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled
-            //});
+            return View("CustomerRequest", loginFormModel.InquiryResults);
         }
 
         [HttpPost]
@@ -278,14 +270,6 @@ namespace rooferlocator.com.Web.Controllers
             SetupLoginModel(ref loginFormModel, inquiryModel.InquiryResults, requestResults, string.Empty);
 
             return View("Login", loginFormModel);
-            //{
-            //    InquiryResults = inquiryModel.InquiryResults,
-            //    RequestResults = requestResults,
-            //    RoofTypeValues = roofTypes.RoofTypes.Cast<CreditsHero.Common.Dtos.CriteriaValuesDto>().ToList(),
-            //    TypeOfService = serviceTypes.ServiceTypes.Cast<CreditsHero.Common.Dtos.CriteriaValuesDto>().ToList(),
-            //    ReturnUrl = returnUrl,
-            //    IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled
-            //});
         }
 
         private void BuildInquiry(ref List<KeyValuePair<string, string>> inquiryValues)

@@ -15,6 +15,8 @@ using CreditsHero.Messaging.Dtos;
 using rooferlocator.com.Common.Types.Dtos;
 using CreditsHero.Common.Companies.Dtos;
 using CreditsHero.Subscribers.Dtos.PaymentGatewayDtos;
+using System.Linq;
+using CreditsHero.Common.Dtos;
 
 namespace rooferlocator.com.Web.Controllers
 {
@@ -43,27 +45,48 @@ namespace rooferlocator.com.Web.Controllers
             _locationService = locationService;
         }
 
-        public async Task<ActionResult> Index()
+        private string GetUserRole()
         {
+            //Get the users Identity
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims2 = identity.Claims;
             var role = identity.FindFirst(ClaimTypes.Role).Value;
+            return role;
+        }
 
+        private async Task<Users.User> GetUser()
+        {
+            //Get the ConciergesWorldwide user
             var user = await _userManager.GetUserByIdAsync(AbpSession.UserId.Value);
+            return user;
+        }
 
+        private async Task<CreditsHero.Subscribers.Dtos.GetSubscribersInput> BuildCreditsHeroSubscriberInput(Users.User appUser)
+        {
+            //Build the Credits Hero Subscriber/User input object.  This object is used throughout the site in order
+            //  to retrieve CreditsHeros' version of the user/subscriber
             CreditsHero.Subscribers.Dtos.GetSubscribersInput input = new CreditsHero.Subscribers.Dtos.GetSubscribersInput()
             {
-                SubscribersId = Int32.Parse(user.Id.ToString()),
+                SubscribersId = Int32.Parse(appUser.Id.ToString()),
                 CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
-                SubscribersEmail = user.EmailAddress,
-                SubscribersName = user.UserName
+                SubscribersEmail = appUser.EmailAddress,
+                SubscribersName = appUser.UserName
             };
 
             var creditsHeroSubscriber = _memberAppService.GetMember(input);
             input.SubscribersId = creditsHeroSubscriber.Id;
 
+            return input;
+        }
+
+        public async Task<ActionResult> Index()
+        {
+            string role = GetUserRole();
+            Users.User user = await GetUser();
+
             if (role == "Member")
             {
+                CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
                 //Get Member Info (credits hero)
                 var outputSubscriber = _memberAppService.GetMember(input);
 
@@ -77,13 +100,7 @@ namespace rooferlocator.com.Web.Controllers
                 var outputSubscriptions = _memberAppService.GetMemberSubscriptions(input);
 
                 rooferlocator.com.Common.Members.Dtos.MemberDto output = outputMember.Members[0];
-                //rooferlocator.com.Common.Members.Dtos.MemberDto output = new Common.Members.Dtos.MemberDto()
-                //{
-                //    Id = creditsHeroSubscriber.Id,
-                //    Email = creditsHeroSubscriber.Email,
-                //    Phone = creditsHeroSubscriber.SmsNumber,
-                //    FullName = creditsHeroSubscriber.FullName
-                //};
+                output.SubscriberSkills = outputSubscriptions;
 
                 return View("Detail", output);
             }
@@ -92,30 +109,65 @@ namespace rooferlocator.com.Web.Controllers
                 var output = _memberAppService.GetMembers(
                     new Common.Members.Dtos.GetMemberInput()
                     {
+                        CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
                         MemberId = null
                     });
                 return View("Index", output);
             }
         }
 
-        public ActionResult ServicesOffered()
+        public async Task<ActionResult> ServicesOffered()
         {
-            var roofTypes = _roofTypeService.GetRoofTypes(new CreditsHero.Common.Dtos.GetCriteriaInput()
-            {
-                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
-                CriteriaId = 0
-            });
+            string role = GetUserRole();
+            Users.User user = await GetUser();
+            TempData.Add("Role", role);
 
-            var serviceTypes = _serviceTypeService.GetServiceTypes(new CreditsHero.Common.Dtos.GetCriteriaInput()
+            #region Get Category List
+            var categories = _memberAppService.GetCriteria(new GetSubscribersInput() { CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]) });
+            TempData.Add("Categories", categories);
+            #endregion
+
+            #region Get Criteria List
+            System.Collections.Hashtable criteriaList = new System.Collections.Hashtable();
+            List<CreditsHero.Common.Dtos.CriteriaValuesDto> criteriaList2 = new List<CreditsHero.Common.Dtos.CriteriaValuesDto>();
+            foreach (var item in categories.Criteria)
             {
-                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
-                CriteriaId = 0
-            });
+                var service = _memberAppService.GetCriteriaValues(new CreditsHero.Common.Dtos.GetCriteriaInput()
+                {
+                    CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
+                    CriteriaId = item.Id
+                });
+                criteriaList.Add(item.Id, service.CriteriaValues);
+                //criteriaList2.Concat<CreditsHero.Common.Dtos.CriteriaValuesDto>(service.CriteriaValues);
+                criteriaList2.AddRange(service.CriteriaValues);
+            }
+            TempData.Add("CriteriaList", criteriaList);
+            #endregion
+
+            #region Get members Criteria List
+            if (role != "Admin")
+            {
+                CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
+
+                var selectedMemberCriteria = _memberAppService.GetMemberSubscriptions(input);
+
+                foreach (var item in selectedMemberCriteria.SubscriberSkills)
+                {
+                    foreach (var item2 in criteriaList2)
+                    {
+                        item2.IsSelected = item.Value.Exists(x => x.Name == item2.Name);
+                    }
+
+                }
+            }
+            #endregion
+
+            Common.Types.Dtos.GetCriteriaValuesOutput listResults = new Common.Types.Dtos.GetCriteriaValuesOutput();
+            listResults.CriteriaList = criteriaList2;
 
             MemberServicesViewModel output = new MemberServicesViewModel()
             {
-                RoofTypes = roofTypes,
-                ServiceTypes = serviceTypes
+                CriteriaValues = listResults
             };
 
             return View(output);
@@ -123,23 +175,9 @@ namespace rooferlocator.com.Web.Controllers
 
         public async Task<ActionResult> Payment()
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims2 = identity.Claims;
-            var role = identity.FindFirst(ClaimTypes.Role).Value;
-
-            //Get Subscriber entity
-            var user = await _userManager.GetUserByIdAsync(AbpSession.UserId.Value);
-
-            CreditsHero.Subscribers.Dtos.GetSubscribersInput input = new CreditsHero.Subscribers.Dtos.GetSubscribersInput()
-            {
-                SubscribersId = Int32.Parse(user.Id.ToString()),
-                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
-                SubscribersEmail = user.EmailAddress,
-                SubscribersName = user.UserName
-            };
-
-            var creditsHeroSubscriber = _memberAppService.GetMember(input);
-            input.SubscribersId = creditsHeroSubscriber.Id;
+            string role = GetUserRole();
+            Users.User user = await GetUser();
+            CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
 
             //Get Company entity so we can use the cost per credits
             var company = _companyService2.GetCompany(new CreditsHero.Common.Companies.Dtos.GetCompanyInput() { CompanyId = input.CompanyId.Value.ToString() });
@@ -147,7 +185,7 @@ namespace rooferlocator.com.Web.Controllers
             //Build Payment entity
             MemberPaymentViewModel memberPayment = new MemberPaymentViewModel()
             {
-                SubscriberId = creditsHeroSubscriber.Id,
+                SubscriberId = input.SubscribersId.Value,
                 CompanyId = input.CompanyId.Value,
                 CostPerCredit = company.CostPerCredit,
                 Credits = 0
@@ -155,25 +193,12 @@ namespace rooferlocator.com.Web.Controllers
 
             return View(memberPayment);
         }
+
         public async Task<ActionResult> PurchaseCredits()
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims2 = identity.Claims;
-            var role = identity.FindFirst(ClaimTypes.Role).Value;
-
-            //Get Subscriber entity
-            var user = await _userManager.GetUserByIdAsync(AbpSession.UserId.Value);
-
-            CreditsHero.Subscribers.Dtos.GetSubscribersInput input = new CreditsHero.Subscribers.Dtos.GetSubscribersInput()
-            {
-                SubscribersId = Int32.Parse(user.Id.ToString()),
-                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
-                SubscribersEmail = user.EmailAddress,
-                SubscribersName = user.UserName
-            };
-
-            var creditsHeroSubscriber = _memberAppService.GetMember(input);
-            input.SubscribersId = creditsHeroSubscriber.Id;
+            string role = GetUserRole();
+            Users.User user = await GetUser();
+            CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
 
             var companyInput = new CreditsHero.Common.Companies.Dtos.GetCompanyInput() { CompanyId = input.CompanyId.Value.ToString() };
             //Get Company entity so we can use the cost per credits
@@ -182,7 +207,7 @@ namespace rooferlocator.com.Web.Controllers
             //Get Company Configuration
             var companyConfig = _companyService2.GetCompanyConfig(companyInput);
 
-            //Determine type of payment
+            //TODO:Determine type of payment
 
             //Build PaymentAuthorize.NET data object
             PaymentAuthorizeNetDto payment = new PaymentAuthorizeNetDto()
@@ -208,7 +233,6 @@ namespace rooferlocator.com.Web.Controllers
             var output = _memberAppService.MakePayment(payment);
             return Redirect((Url.Action("Index", "Home")));
         }
-
 
         public ActionResult Email()
         {
@@ -272,37 +296,158 @@ namespace rooferlocator.com.Web.Controllers
 
             return View(results);
         }
+
         public async Task<ActionResult> SendQuote()
         {
-            //Get the subscribers email to pass into CreditsHero in order to retreive summary
-            var user = await _userManager.GetUserByIdAsync(AbpSession.UserId.Value);
-
-            CreditsHero.Subscribers.Dtos.GetSubscribersInput input = new CreditsHero.Subscribers.Dtos.GetSubscribersInput()
-            {
-                SubscribersId = Int32.Parse(user.Id.ToString()),
-                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
-                SubscribersEmail = user.EmailAddress,
-                SubscribersName = user.UserName
-            };
-
-            var creditsHeroSubscriber = _memberAppService.GetMember(input);
-            input.SubscribersId = creditsHeroSubscriber.Id;
+            string role = GetUserRole();
+            Users.User user = await GetUser();
+            CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
 
             CreditsHero.Messaging.Dtos.GetQuotesInput inputQuote = new CreditsHero.Messaging.Dtos.GetQuotesInput()
             {
                 Cost = Decimal.Parse(Request.Form["txtPrice"]),
+                TotalCredits = Decimal.Parse(Request.Form["totalCredits"]),
                 Message = Request.Form["txtMessage"],
                 RequestRefId = Int32.Parse(Request.Form["RequestId"]),
-                SubscriberRefId = creditsHeroSubscriber.Id
+                SubscriberRefId = input.SubscribersId.Value,
+                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"])
             };
 
-            //Models.Member.MemberRequestDetailViewModel results = new Models.Member.MemberRequestDetailViewModel();
             GetQuotesResults results = _memberAppService.SendQuote(inputQuote);
-            //results.SubscriberRequestDetails = new List<SubscribersRequestDetailDto>();
-
-            //results.SubscriberRequestDetails = quoteResults;
 
             return Redirect((Url.Action("Index", "Home")));
+        }
+
+        public async Task<ActionResult> UpdateQuote()
+        {
+            string role = GetUserRole();
+            Users.User user = await GetUser();
+            CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
+
+            CreditsHero.Messaging.Dtos.GetQuotesInput inputQuote = new CreditsHero.Messaging.Dtos.GetQuotesInput()
+            {
+                QuoteId = Int32.Parse(Request.Form.Keys[0].ToString()),
+                QuoteStatus = "Hired",
+                SubscriberRefId = input.SubscribersId.Value,
+                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"])
+            };
+
+            GetQuotesResults results = _memberAppService.UpdateQuote(inputQuote);
+
+            return Redirect((Url.Action("Index", "Home")));
+        }
+
+        public async Task<ActionResult> SendAdminEmail()
+        {
+            string role = GetUserRole();
+            Users.User user = await GetUser();
+            CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
+
+            CreditsHero.Messaging.Dtos.NotificationInput inputNotification = new CreditsHero.Messaging.Dtos.NotificationInput()
+            {
+                EmailFrom = input.SubscribersEmail,
+                EmailTo = null,
+                EmailMessage = String.Format("{0}<p/>Company:{1}<br/>SubscriberId:{2}", Request.Form["txtMessage"], input.CompanyId, input.SubscribersId),
+                EmailSubject = String.Format("Notification From {0}", input.SubscribersName),
+                CompanyId = input.CompanyId.Value
+            };
+
+            var notificationResults = _memberAppService.SendEmail(inputNotification);
+            rooferlocator.com.Web.Models.ServiceResponse response = new Models.ServiceResponse()
+            {
+                FriendlyMessage = notificationResults.ResponseMessage
+            };
+
+            return Redirect((Url.Action("Index", "Home", response)));
+        }
+
+        public async Task<ActionResult> AddSubscribersValue()
+        {
+            string role = GetUserRole();
+            Users.User user = await GetUser();
+            CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
+
+            CreateSubscribersValuesInput inputValues = new CreateSubscribersValuesInput();
+
+            var selectedMemberCriteria = _memberAppService.GetMemberSubscriptions(input);
+
+            foreach (var requestItem in Request.Form.Keys)
+            {
+                foreach (var item in selectedMemberCriteria.SubscriberSkills)
+                {
+                    var selectedItem = item.Value.Find(x => x.Id == Int32.Parse(requestItem.ToString()));
+                    inputValues.SubscribersId = input.SubscribersId.Value;
+
+                    if (selectedItem == null)
+                    {
+                        inputValues.CriteriaValuesRefId = Int32.Parse(requestItem.ToString());
+                        inputValues.IsDeleted = Request.Form.GetValues(requestItem.ToString())[0] == "on" ? false : true;
+                    }
+                    else
+                    {
+                        inputValues.CriteriaValuesRefId = selectedItem.Id;
+                        inputValues.IsDeleted = Request.Form.GetValues(selectedItem.Id.ToString())[0] == "on" ? false : true;
+                    }
+
+                    _memberAppService.AddSubscribersValue(inputValues);
+                }
+            }
+
+            //Need to do this to clean up the skills that have been removed from the list
+            foreach (var item in selectedMemberCriteria.SubscriberSkills)
+            {
+                var unselectedItems = item.Value.Where(x => !Request.Form.AllKeys.Any(i => i == x.Id.ToString())).ToList();
+                foreach (var unselectedItem in unselectedItems)
+                {
+                    inputValues.SubscribersId = input.SubscribersId.Value;
+                    inputValues.CriteriaValuesRefId = unselectedItem.Id;
+                    inputValues.IsDeleted = true;
+                    _memberAppService.AddSubscribersValue(inputValues);
+                }
+            }
+
+
+            rooferlocator.com.Web.Models.ServiceResponse response = new Models.ServiceResponse()
+            {
+                FriendlyMessage = "Service Updated."
+            };
+
+            return Redirect((Url.Action("ServicesOffered", "Members", response)));
+        }
+
+        public async Task<ActionResult> AddCriteriaValue()
+        {
+            //TODO:  Need to update CriteriaRefId
+            var criteriaResults = _memberAppService.AddCriteriaValue(new CreditsHero.Common.Dtos.CreateCriteriaValuesInput()
+            {
+                CreditCount = Int32.Parse(Request.Form[2].ToString()),
+                Name = Request.Form[1].ToString(),
+                CriteriaRefId = Int32.Parse(Request.Form[0].ToString())
+            });
+
+            rooferlocator.com.Web.Models.ServiceResponse response = new Models.ServiceResponse()
+            {
+                FriendlyMessage = "Service Updated."
+            };
+
+            return Redirect((Url.Action("ServicesOffered", "Members", response)));
+        }
+        
+        public async Task<ActionResult> AddCriteria()
+        {
+            Company currentCompany = new Company() { Id = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]) };
+            var criteriaResults = _memberAppService.AddCriteria(new CreditsHero.Common.Dtos.CreateCriteriaInput()
+            {
+                Company = currentCompany,
+                Name = Request["txtCriteriaName"].ToString()
+            });
+
+            rooferlocator.com.Web.Models.ServiceResponse response = new Models.ServiceResponse()
+            {
+                FriendlyMessage = "Service Updated."
+            };
+
+            return Redirect((Url.Action("ServicesOffered", "Members", response)));
         }
     }
 }

@@ -16,15 +16,20 @@ namespace rooferlocator.com.Web.Models.Member
         /// </summary>
         public int SubscriberInquiriesCount { get; set; }
         public Decimal CreditsRemainingCount { get; set; }
+        public Decimal TotalCredits { get; set; }
+        public Decimal TotalSpend { get; set; }
+        public int TotalMembers { get; set; }
         public CreditsHero.Subscribers.Dtos.SubscribersInquiriesDto SubscriberInquiries { get; set; }
         public List<CreditsHero.Subscribers.Dtos.SubscribersRequestDto> SubscriberRequests { get; set; }
+        public List<CreditsHero.Subscribers.Dtos.SubscribersDto> SubscribersExt { get; set; }
         public MemberQuotesViewModel SubscriberQuotes { get; set; }
-        
+
         public MemberSummaryViewModel()
         {
             SubscriberInquiries = new SubscribersInquiriesDto();
             SubscriberRequests = new List<SubscribersRequestDto>();
             SubscriberQuotes = new MemberQuotesViewModel();
+            SubscribersExt = new List<SubscribersDto>();
         }
     }
 }

@@ -11,6 +11,7 @@ namespace rooferlocator.com.Common.Types.Dtos
     {
         public string Code { get; set; }
         public string Description { get; set; }
+        public bool IsSelected { get; set; }
         public long? CreatorUserId { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime? LastModificationTime { get; set; }

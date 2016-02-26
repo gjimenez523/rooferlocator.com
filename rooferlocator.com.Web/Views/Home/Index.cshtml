@@ -10,249 +10,249 @@
     var role = identity.FindFirst(ClaimTypes.Role).Value;
 }
 
+
+@{
+    ViewBag.ActiveMenu = "Home"; //The menu item will be active for this page.
+}
+
 <div class="portlet box">
     <div class="portlet-body">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-10">
                 @if (role == "Admin")
                 {
-                <div id="adminStat1" class="dashboard-stat blue-madison">
-                    <div class="visual">
-                        <i class="fa fa-briefcase fa-icon-medium"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            3,031
+                    <div id="adminStat1" class="dashboard-stat blue-madison">
+                        <div class="visual">
+                            <i class="fa fa-briefcase fa-icon-medium"></i>
                         </div>
-                        <div class="desc">
-                            Approved Members
+                        <div class="details">
+                            <div class="number">
+                                @Model.TotalMembers.ToString()
+                            </div>
+                            <div class="desc">
+                                Active Members
+                            </div>
                         </div>
+                        <a class="more" href="javascript:;">
+                            @*View more*@ &nbsp;<i class="m-icon-swapright m-icon-white"></i>
+                        </a>
                     </div>
-                    <a class="more" href="javascript:;">
-                        View more <i class="m-icon-swapright m-icon-white"></i>
-                    </a>
-                </div>
                 }
                 @if (role == "Member")
                 {
-                <div id="memberStat1" class="dashboard-stat blue-madison" style="display:block;">
-                    <div class="visual">
-                        <i class="fa fa-briefcase fa-icon-medium"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            @Convert.ToInt32(Model.CreditsRemainingCount)
+                    <div id="memberStat1" class="dashboard-stat blue-madison" style="display:block;">
+                        <div class="visual">
+                            <i class="fa fa-briefcase fa-icon-medium"></i>
                         </div>
-                        <div class="desc">
-                            Your Available Credits@*Your Requests*@
+                        <div class="details">
+                            <div class="number">
+                                @Convert.ToInt32(Model.CreditsRemainingCount)
+                            </div>
+                            <div class="desc">
+                                Your Available Credits@*Your Requests*@
+                            </div>
                         </div>
+                        <a class="more" href="~/members/Payment">
+                            Purchase more <i class="m-icon-swapright m-icon-white"></i>
+                        </a>
                     </div>
-                    <a class="more" href="~/members/Payment">
-                        Purchase more <i class="m-icon-swapright m-icon-white"></i>
-                    </a>
-                </div>
                 }
             </div>
 
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 @if (role == "Admin")
                 {
-                <div id="adminStat2" class="dashboard-stat red-intense">
-                    <div class="visual">
-                        <i class="fa fa-shopping-cart"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            231
+                    <div id="adminStat2" class="dashboard-stat red-intense">
+                        <div class="visual">
+                            <i class="fa fa-shopping-cart"></i>
                         </div>
-                        <div class="desc">
-                            New Members
+                        <div class="details">
+                            <div class="number">
+                                @Model.TotalCredits
+                            </div>
+                            <div class="desc">
+                                Total Credits Purchased
+                            </div>
                         </div>
+                        <a class="more" href="javascript:;">
+                            @*View more*@ &nbsp;<i class="m-icon-swapright m-icon-white"></i>
+                        </a>
                     </div>
-                    <a class="more" href="javascript:;">
-                        View more <i class="m-icon-swapright m-icon-white"></i>
-                    </a>
-                </div>
                 }
                 @if (role == "Member")
                 {
-                <div id="memberStat2" class="dashboard-stat red-intense" style="display:block;">
-                    <div class="visual">
-                        <i class="fa fa-shopping-cart"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            @Model.SubscriberInquiriesCount
+                    <div id="memberStat2" class="dashboard-stat red-intense" style="display:block;">
+                        <div class="visual">
+                            <i class="fa fa-shopping-cart"></i>
                         </div>
-                        <div class="desc">
-                            Your Inquiries
+                        <div class="details">
+                            <div class="number">
+                                @Model.SubscriberInquiriesCount
+                            </div>
+                            <div class="desc">
+                                Your Inquiries
+                            </div>
                         </div>
+                        <a class="more" href="javascript:;">
+                            View more <i class="m-icon-swapright m-icon-white"></i>
+                        </a>
                     </div>
-                    <a class="more" href="javascript:;">
-                        View more <i class="m-icon-swapright m-icon-white"></i>
-                    </a>
-                </div>
                 }
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div class="portlet light bordered">
-                    <div class="portlet-title">
-                        <div class="caption">
-                            <i class="icon-social-dribbble"></i>
-                            <span class="caption-subject bold uppercase">Pending Requests</span>
+        @if (role == "Member")
+        {
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="portlet light bordered">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-social-dribbble"></i>
+                                <span class="caption-subject bold uppercase">Pending Requests</span>
+                            </div>
+                            <div class="actions">
+                                @*<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="icon-cloud-upload"></i>
+                                    </a>
+                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="icon-wrench"></i>
+                                    </a>
+                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="icon-trash"></i>
+                                    </a>*@
+                            </div>
                         </div>
-                        <div class="actions">
-                            @*<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i class="icon-cloud-upload"></i>
-                        </a>
-                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i class="icon-wrench"></i>
-                        </a>
-                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i class="icon-trash"></i>
-                        </a>*@
-                        </div>
-                    </div>
-                    <div class="portlet-body">
-                        <div id="customerRequests" class="table-scrollable">
-                            @using (Html.BeginForm("Quote", "Members", FormMethod.Post, null))
-                            {
-
+                        <div class="portlet-body">
+                            <div id="customerRequests" class="table-scrollable">
+                                @using (Html.BeginForm("Quote", "Members", FormMethod.Post, null))
                                 {
                                     int prevRequestId = 0;
                                     string criteriaListRequestBegin = "";
                                     string criteriaListRequestList = "";
                                     string criteriaListRequestEnd = "";
                                     string criteriaList = "";
-                                    foreach (var item in Model.SubscriberRequests)
+                                    if (Model != null)
                                     {
-                                        if (item.RequestId == prevRequestId)
+                                        foreach (var item in Model.SubscriberRequests)
                                         {
-                                            criteriaListRequestList += "<h6>" + item.CriteriaValueName + "</h6>";
+                                            if (item.RequestId == prevRequestId)
+                                            {
+                                                criteriaListRequestList += "<h6>" + item.CriteriaValueName + "</h6>";
+                                            }
+                                            else
+                                            {
+                                                criteriaList += criteriaListRequestBegin + criteriaListRequestList + criteriaListRequestEnd;
+                                                criteriaListRequestBegin = "";
+                                                criteriaListRequestList = "";
+                                                criteriaListRequestEnd = "";
+
+                                                criteriaListRequestBegin += "   <div class='row static-info' style='border-bottom:1px solid gainsboro;'>";
+                                                criteriaListRequestBegin += "               <div class='col-md-6 name'><strong><h4>";
+                                                criteriaListRequestBegin += item.RequestorName + "</h4></strong>";
+                                                criteriaListRequestList += "<h6>" + item.CriteriaValueName + "</h6>";
+                                                criteriaListRequestEnd += "               </div>";
+                                                criteriaListRequestEnd += "               <div class='col-md-6' style='text-align:right;'>";
+                                                criteriaListRequestEnd += "                   <button class='btn blue' type='submit' id='btnQuote' name='RequestId' value='" + item.RequestId + "'> <i class='fa reload'></i> Quote</button>";
+                                                criteriaListRequestEnd += "               </div>";
+                                                criteriaListRequestEnd += "   </div>";
+
+                                                prevRequestId = item.RequestId;
+                                            }
                                         }
-                                        else
-                                        {
-                                            criteriaList += criteriaListRequestBegin + criteriaListRequestList + criteriaListRequestEnd;
-                                            criteriaListRequestBegin = "";
-                                            criteriaListRequestList = "";
-                                            criteriaListRequestEnd = "";
-
-                                            criteriaListRequestBegin += "   <div class='row static-info' style='border-bottom:1px solid gainsboro;'>";
-                                            criteriaListRequestBegin += "               <div class='col-md-6 name'><strong><h4>";
-                                            criteriaListRequestBegin += item.RequestorName + "</h4></strong>";
-                                            criteriaListRequestList += "<h6>" + item.CriteriaValueName + "</h6>";
-                                            criteriaListRequestEnd += "               </div>";
-                                            criteriaListRequestEnd += "               <div class='col-md-6' style='text-align:right;'>";
-                                            criteriaListRequestEnd += "                   <button class='btn blue' type='submit' id='btnQuote' name='RequestId' value='" + item.RequestId + "'> <i class='fa reload'></i> Quote</button>";
-                                            criteriaListRequestEnd += "               </div>";
-                                            criteriaListRequestEnd += "   </div>";
-
-                                            prevRequestId = item.RequestId;
-                                        }
-                                    }
-                                    criteriaList += criteriaListRequestBegin + criteriaListRequestList + criteriaListRequestEnd;
-                                    @(new HtmlString(criteriaList))
-                                }
-
-
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div class="portlet light bordered">
-                    <div class="portlet-title">
-                        <div class="caption">
-                            <i class="icon-social-dribbble"></i>
-                            <span class="caption-subject bold uppercase">Pending Quotes</span>
-                        </div>
-                        <div class="actions">
-                            @*<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i class="icon-cloud-upload"></i>
-                        </a>
-                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i class="icon-wrench"></i>
-                        </a>
-                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i class="icon-trash"></i>
-                        </a>*@
-                        </div>
-                    </div>
-                    @using (Html.BeginForm("Quote", "Members", FormMethod.Post, null))
-                    {
-                    
-                        <div class="portlet-body ">
-                        <div id="customerQuotes" class="tab-content">
-                            <div class="tab-pane active">
-                            @{
-                                int prevRequestId_Quote = 0;
-                                string criteriaList = "";
-                                //criteriaList += "<div class='mt-actions'>";
-                                foreach (var item in Model.SubscriberQuotes.SubscriberQuotes)
-                                {
-                                    if (item.RequestId == prevRequestId_Quote)
-                                    {
-                                        //criteriaList += item.CriteriaName + ":" + item.CriteriaValue;
-                                    }
-                                    else
-                                    {
-                                        criteriaList += "   <div class='row static-info' style='border-bottom:1px solid gainsboro;'>";
-                                        //criteriaList += "       <span class='mt-action-img'><i class='fa fa-user'></i></span>";
-                                        //criteriaList += "       <span class='mt-action-body'>";
-                                        //criteriaList += "           <div class='mt-action-row'>";
-                                        criteriaList += "               <div class='col-md-6 name'><strong><h4>";
-                                        criteriaList += item.RequestFullName + "</h4></strong><h6>" +
-                                                        item.QuoteMessage;
-                                        criteriaList += "               </h6></div>";
-                                        //criteriaList += "               <div class='mt-action-datetime'></div>";
-                                        criteriaList += "               <div class='col-md-6' style='text-align:right;'>";
-                                        criteriaList += "                   <span class='badge'><strong>" +
-                                                                                item.QuotesSubmitted + "</strong> quotes submitted</span><br/><i class='fa fa-dollar'>" + item.QuoteCost + "</i>";
-                                        criteriaList += "               </div>";
-                                        //criteriaList += "           </div>";
-                                        //criteriaList += "       </span>";
-                                        criteriaList += "   </div>";
-
-                                        prevRequestId_Quote = item.RequestId;
+                                        criteriaList += criteriaListRequestBegin + criteriaListRequestList + criteriaListRequestEnd;
+                                        @(new HtmlString(criteriaList))
                                     }
                                 }
-                                //criteriaList += "</div>";
-                            }
-                                @(new HtmlString(criteriaList))
+                            </div>
                         </div>
                     </div>
                 </div>
-                }
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="portlet light bordered">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-social-dribbble"></i>
+                                <span class="caption-subject bold uppercase">Pending Quotes</span>
+                            </div>
+                            <div class="actions">
+                                @*<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="icon-cloud-upload"></i>
+                                    </a>
+                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="icon-wrench"></i>
+                                    </a>
+                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="icon-trash"></i>
+                                    </a>*@
+                            </div>
+                        </div>
+                        @using (Html.BeginForm("UpdateQuote", "Members", FormMethod.Post, new { id = "quoteUpdate" }))
+                        {
+                            if (role == "Member")
+                            {
+                                <div class="portlet-body ">
+                                    <div id="customerQuotes" class="tab-content">
+                                        <div class="tab-pane active">
+                                            @{
+                                                int prevRequestId_Quote = 0;
+                                                string criteriaList = "";
+                                                //criteriaList += "<div class='mt-actions'>";
+                                                foreach (var item in Model.SubscriberQuotes.SubscriberQuotes)
+                                                {
+                                                    if (item.RequestId == prevRequestId_Quote)
+                                                    {
+                                                        //criteriaList += item.CriteriaName + ":" + item.CriteriaValue;
+                                                    }
+                                                    else
+                                                    {
+                                                        criteriaList += "   <div class='row static-info' style='border-bottom:1px solid gainsboro;'>";
+                                                        //criteriaList += "       <span class='mt-action-img'><i class='fa fa-user'></i></span>";
+                                                        //criteriaList += "       <span class='mt-action-body'>";
+                                                        //criteriaList += "           <div class='mt-action-row'>";
+                                                        criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 name pull-left'><strong><h4>";
+                                                        criteriaList += item.RequestFullName + "</h4></strong><h6>" +
+                                                                        item.QuoteMessage;
+                                                        criteriaList += "               </div>";
+                                                        criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 name' style='text-align:center;border-right:1px solid gainsboro;border-left:1px solid gainsboro;'>";
+                                                        criteriaList += "                   <strong><h4>";
+                                                        criteriaList += "                       <span class='badge' style='background-color:#fe9230;width:100%;padding:8px;height:auto;margin:3px;'>";
+                                                        criteriaList += "                           <span style='font-size:14px;'> Quotes submitted</span>";
+                                                        criteriaList += "                               <strong style='font-size:16px;'>" + item.QuotesSubmitted + "</strong>";
+                                                        criteriaList += "                           </span>";
+                                                        criteriaList += "                       </span>";
+                                                        criteriaList += "                       <span class='badge' style='background-color:green;width:100%;padding:8px;height:auto;'>";
+                                                        criteriaList += "                           <span style='font-size:14px;'> Your quote</span>";
+                                                        criteriaList += "                               <strong style='font-size:16px;'><i class='fa fa-dollar'></i>" + item.QuoteCost + "</strong>";
+                                                        criteriaList += "                           </span>";
+                                                        criteriaList += "                       </span>";
+                                                        criteriaList += "                   </h4></strong>";
+                                                        criteriaList += "               </div>";
+                                                        //criteriaList += "               <div class='mt-action-datetime'></div>";
+                                                        criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 pull-right' style='text-align:right;'>";
+                                                        criteriaList += "                   Hired?<br/>";
+                                                        criteriaList += "                   <div class='bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-on' style='width: 94px;'><div class='bootstrap-switch-container' style='width: 138px; margin-left: 0px;'>";
+                                                        criteriaList += "                       <input class='make-switch' name='" + item.QuoteId + "' id='" + item.QuoteId + "' type='checkbox' data-off-text='No' data-on-text='Yes' onchange=\"$('#quoteUpdate').submit();\">";
+                                                        criteriaList += "                   </div></div>";
+                                                        criteriaList += "               </div>";
+                                                        //criteriaList += "           </div>";
+                                                        //criteriaList += "       </span>";
+                                                        criteriaList += "   </div>";
+
+                                                        prevRequestId_Quote = item.RequestId;
+                                                    }
+                                                }
+                                                //criteriaList += "</div>";
+                                            }
+                                            @(new HtmlString(criteriaList))
+                                        </div>
+                                    </div>
+                                </div>
+                                                    }
+                                                }
+                    </div>
+                </div>
             </div>
-        
-            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 ">
-                <div customer-company id="customerCompany" style="display:none;">
-                    @*@{Html.RenderPartial("~/App/Main/Views/common/company/detail.cshtml");}*@
-                </div>
-
-                <div customer-location id="customerLocation" style="display:none;">
-                    @*@{Html.RenderPartial("~/App/Main/Views/common/location/detail.cshtml");}*@
-                </div>
-
-                <div customer-payment id="customerPayment" style="display:none;">
-                    @*@{Html.RenderPartial("~/App/Main/Views/customer/payment.cshtml");}*@
-                </div>
-
-                <div customer-agreement id="customerAgreement" style="display:none;">
-                    @*@{Html.RenderPartial("~/App/Main/Views/sales/agreement.cshtml");}*@
-                </div>
-
-                <div customer-order id="customerOrder" style="display:none;">
-                    @*@{Html.RenderPartial("~/App/Main/Views/sales/order.cshtml");}*@
-                </div>
-                <div customer-order id="customerShipping" style="display:block;">
-                    @*@{Html.RenderPartial("~/App/Main/Views/sales/shipping.cshtml");}*@
-                </div>
-            </div>
-        </div>
+                                                }
     </div>
 </div>

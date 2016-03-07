@@ -1,0 +1,150 @@
+﻿@using Abp.Web.Mvc.Extensions
+@using rooferlocator.com.MultiTenancy
+@using System.Threading
+@using System.Web.Optimization
+@using System.Security.Claims
+@using Abp.Web.Mvc.Extensions
+@model rooferlocator.com.Common.Members.Dtos.GetMembersOutput
+
+@{
+    var identity = (ClaimsIdentity)User.Identity;
+    IEnumerable<Claim> claims2 = identity.Claims;
+    var role = identity.FindFirst(ClaimTypes.Role).Value;
+}
+@section scripts
+{
+    @Html.IncludeScript("~/Views/Customers/Index.js")
+}
+<div>
+    <script>
+        //Need to get the CreditsHero CompanyId for RooferLocator
+        chCompanyId = "@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]";
+    </script>
+
+    <div id="LoadingArea" style="display:none;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <img id="loader" src="~/App/Main/images/ajax-loader.gif" />
+    </div>
+
+    <div id="MemberArea">
+        <div class="portlet box red-soft">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="glyphicon glyphicon-star-empty"></i>
+                    <span>Customer Requests</span>
+                </div>
+                <div class="actions">
+                    @*<div class="btn-group">
+                        <a class="btn btn-circle btn-default btn-sm" ng-click="handleClick('customerDetail')" data-toggle="dropdown">
+                            <i class="fa fa-user"></i> Add
+                        </a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-circle btn-default btn-sm" ng-click="handleClick('customerSales');" data-toggle="dropdown">
+                            <i class="fa fa-user"></i> Active
+                        </a>
+                    </div>
+                    <div class="btn-group">
+                        <a id="NewMember" class="btn btn-circle btn-default btn-sm">
+                            <i class="fa fa-user"></i> New
+                        </a>
+                    </div>
+                    <div class="portlet-input input-inline input-medium">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-circle-left" placeholder="search...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-circle-right btn-default" type="submit">Go!</button>
+                            </span>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+            <!--BEGIN MEMBER LIST-->
+            @if (role == "Customer")
+            {
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-social-dribbble"></i>
+                            <span class="caption-subject bold uppercase">Pending Quotes</span>
+                        </div>
+                        <div class="actions">
+                            @*<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                    <i class="icon-cloud-upload"></i>
+                                </a>
+                                <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                    <i class="icon-wrench"></i>
+                                </a>
+                                <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                    <i class="icon-trash"></i>
+                                </a>*@
+                        </div>
+                    </div>
+                    @using (Html.BeginForm("UpdateQuote", "Members", FormMethod.Post, new { id = "quoteUpdate" }))
+                    {
+                        if (role == "Member")
+                        {
+                            <div class="portlet-body ">
+                                <div id="customerQuotes" class="tab-content">
+                                    <div class="tab-pane active">
+                                        @{
+                                            int prevRequestId_Quote = 0;
+                                            string criteriaList = "";
+                                            //criteriaList += "<div class='mt-actions'>";
+                                            //foreach (var item in Model.SubscriberQuotes.SubscriberQuotes)
+                                            //{
+                                            //    if (item.RequestId == prevRequestId_Quote)
+                                            //    {
+                                            //        //criteriaList += item.CriteriaName + ":" + item.CriteriaValue;
+                                            //    }
+                                            //    else
+                                            //    {
+                                            //        criteriaList += "   <div class='row static-info' style='border-bottom:1px solid gainsboro;'>";
+                                            //        //criteriaList += "       <span class='mt-action-img'><i class='fa fa-user'></i></span>";
+                                            //        //criteriaList += "       <span class='mt-action-body'>";
+                                            //        //criteriaList += "           <div class='mt-action-row'>";
+                                            //        criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 name pull-left'><strong><h4>";
+                                            //        criteriaList += item.RequestFullName + "</h4></strong><h6>" +
+                                            //                        item.QuoteMessage;
+                                            //        criteriaList += "               </div>";
+                                            //        criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 name' style='text-align:center;border-right:1px solid gainsboro;border-left:1px solid gainsboro;'>";
+                                            //        criteriaList += "                   <strong><h4>";
+                                            //        criteriaList += "                       <span class='badge' style='background-color:#fe9230;width:100%;padding:8px;height:auto;margin:3px;'>";
+                                            //        criteriaList += "                           <span style='font-size:14px;'> Quotes submitted</span>";
+                                            //        criteriaList += "                               <strong style='font-size:16px;'>" + item.QuotesSubmitted + "</strong>";
+                                            //        criteriaList += "                           </span>";
+                                            //        criteriaList += "                       </span>";
+                                            //        criteriaList += "                       <span class='badge' style='background-color:green;width:100%;padding:8px;height:auto;'>";
+                                            //        criteriaList += "                           <span style='font-size:14px;'> Your quote</span>";
+                                            //        criteriaList += "                               <strong style='font-size:16px;'><i class='fa fa-dollar'></i>" + item.QuoteCost + "</strong>";
+                                            //        criteriaList += "                           </span>";
+                                            //        criteriaList += "                       </span>";
+                                            //        criteriaList += "                   </h4></strong>";
+                                            //        criteriaList += "               </div>";
+                                            //        //criteriaList += "               <div class='mt-action-datetime'></div>";
+                                            //        criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 pull-right' style='text-align:right;'>";
+                                            //        criteriaList += "                   Hired?<br/>";
+                                            //        criteriaList += "                   <div class='bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-on' style='width: 94px;'><div class='bootstrap-switch-container' style='width: 138px; margin-left: 0px;'>";
+                                            //        criteriaList += "                       <input class='make-switch' name='" + item.QuoteId + "' id='" + item.QuoteId + "' type='checkbox' data-off-text='No' data-on-text='Yes' onchange=\"$('#quoteUpdate').submit();\">";
+                                            //        criteriaList += "                   </div></div>";
+                                            //        criteriaList += "               </div>";
+                                            //        //criteriaList += "           </div>";
+                                            //        //criteriaList += "       </span>";
+                                            //        criteriaList += "   </div>";
+
+                                            //        prevRequestId_Quote = item.RequestId;
+                                            //    }
+                                            //}
+                                            //criteriaList += "</div>";
+                                        }
+                                        @(new HtmlString(criteriaList))
+                                    </div>
+                                </div>
+                            </div>
+                                                }
+                                            }
+                </div>
+            }
+            <!--END MEMBER LIST-->
+        </div>
+    </div>
+</div>

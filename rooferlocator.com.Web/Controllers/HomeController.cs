@@ -61,7 +61,7 @@ namespace rooferlocator.com.Web.Controllers
                 results.SubscriberInquiries.SubscriberInquiryList = subscriberInquiries;
                 //Build Requests Model
                 results.SubscriberRequests = subscriberRequests;
-                foreach(var item in subscriberQuotes)
+                foreach (var item in subscriberQuotes)
                 {
                     var subscriberRequestItem = results.SubscriberRequests.Find(x => x.RequestId == item.RequestId);
                     if (subscriberRequestItem != null)
@@ -75,6 +75,10 @@ namespace rooferlocator.com.Web.Controllers
 
 
                 return View(results);
+            }
+            else if (role == "Customer")
+            {
+                return View();
             }
             else
             {

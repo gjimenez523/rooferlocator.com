@@ -128,6 +128,7 @@ namespace rooferlocator.com.Web.Controllers
 
                 emailInput = new CreditsHero.Messaging.Dtos.NotificationInput()
                 {
+                    CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
                     EmailFrom = "no-reply@rooferlocator.com",
                     EmailSubject = String.Format("New Subscriber at RooferLocator.com"),
                     EmailMessage = String.Format("Hello Administrator: \n  A subscriber has been submitted at RooferLocator.com.\n\n Following are the Subscribers details:\n\n User Details \n\n FullName = {0} \n Email = {1} \n SMS Number (Cell Phone) = {2} \n\n  Company Details \n\n Company Name = {3} \n State = {4} \n City = {5}",

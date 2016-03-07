@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="EntityFramework\comDbContext.cs" />
     <Compile Include="EntityFramework\Repositories\Common\Companies\CompanyRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\Common\Customers\CustomerRepository.cs" />
     <Compile Include="EntityFramework\Repositories\Common\Members\MemberRepository.cs" />
     <Compile Include="EntityFramework\Repositories\Common\News\NewsCategoriesRepository.cs" />
     <Compile Include="EntityFramework\Repositories\Common\News\NewsRepository.cs" />

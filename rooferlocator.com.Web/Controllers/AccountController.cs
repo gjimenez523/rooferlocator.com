@@ -96,6 +96,65 @@ namespace rooferlocator.com.Web.Controllers
             return Json(loginFormModel, JsonRequestBehavior.AllowGet);
         }
 
+        public object SendEmail(CreditsHero.Messaging.Requests.Dtos.GetInquiryInput inquiryInput,
+            string emailFrom, string emailSubject, string emailTo, string emailBodyOverride)
+        {
+            MemoryStream jsonStream = new MemoryStream();
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(inquiryInput);
+            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+            //Send Inquiry Email to Admin
+            var creditsHeroFormat = String.Format("{0}api/services/app/Notification/SendEmailNotification", WebConfigurationManager.AppSettings["creditsHero:WebServiceApiPrefix"]);
+            CreditsHero.Messaging.Dtos.NotificationInput emailInput = new CreditsHero.Messaging.Dtos.NotificationInput();
+            var timelineUrl = string.Format(creditsHeroFormat);
+            CreditsHero.Messaging.Requests.Dtos.GetInquiryResults inquiryResults;
+            List<KeyValuePair<string, string>> inquiryValues = new List<KeyValuePair<string, string>>();
+            inquiryValues = inquiryInput.QueryRequest;
+
+            if(emailBodyOverride == string.Empty)
+            {
+                emailBodyOverride = String.Format("<!DOCTYPE html><html lang=en xmlns='http://www.w3.org/1999/xhtml'><head><meta charset=utf-8 /><title></title><link rel='stylesheet' href='/Content/bootstrap-cosmo.min.css' /></head><body style='background-color:gainsboro;text-align:center;padding:0px;margin:0px'><div class='row' style='padding:0px;margin:0px;'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='padding:0px;margin:0px'> <div class='row'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8); background-image: -ms-linear-gradient(rgb(25, 68, 125) 20%, rgb(32, 128, 190) 100%);'> <img src='/images/rooferlocatorlogo.gif' /> <div class='row' style='padding:0px;margin:0px;height:50px;font-family:Arial;font-size:24pt'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border:2px solid white;border-radius:5px; background:white;'> <div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'>Inquiry</div></div><div class='row' style='color:black'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='font-size:16px;'>Hello Administrator: <br/> An inquiry/search has been submitted at RooferLocator.com.<p/> Following are the details of the inquiry:<p/> <strong>Roof Type = {0}</strong> <br/> <strong>Service Type = {1}</strong> <br/> <strong>Time Of Repair = {2}</strong> <br/> <strong>State = {3}</strong> <br/> <strong>City = {4}</strong></div></div><div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'>Comment</div></div><div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border-top:1px solid gainsboro;padding:10px;color:black'> <div>{1}</div></div></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2' style='padding:0px;margin:0px'></div></div></body></html>",
+                    inquiryValues[0].Value,
+                    inquiryValues[1].Value,
+                    inquiryValues[2].Value,
+                    inquiryValues[3].Value,
+                    inquiryValues[4].Value);
+            }
+
+            emailInput = new CreditsHero.Messaging.Dtos.NotificationInput()
+            {
+                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]),
+                EmailFrom = emailFrom,
+                EmailSubject = String.Format(emailSubject),
+                EmailMessage = emailBodyOverride,
+                EmailTo = emailTo
+            };
+
+            jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(emailInput);
+            byteArray = Encoding.UTF8.GetBytes(jsonData);
+            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+
+            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+            creditsHeroRequest.ContentLength = byteArray.Length;
+            creditsHeroRequest.Method = "POST";
+            Stream newStream = creditsHeroRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+            using (timeLineResponse)
+            {
+                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                {
+                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
+                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<CreditsHero.Messaging.Requests.Dtos.GetInquiryResults>(jObject2.ToString());
+                    inquiryResults = itemResult;
+                    return inquiryResults;
+                }
+            }
+        }
+
         [HttpPost]
         [DisableAuditing]
         public ActionResult Inquiry(FormCollection collection, LoginFormViewModel inquiryModel, string returnUrl = "")
@@ -113,6 +172,7 @@ namespace rooferlocator.com.Web.Controllers
                 IsMultiTenancyEnabled = false
             };
 
+            #region Inquiry
             var creditsHeroFormat = String.Format("{0}api/services/app/Inquiry/MakeInquiry", WebConfigurationManager.AppSettings["creditsHero:WebServiceApiPrefix"]);
             //var creditsHeroFormat = "http://CreditsHero.azurewebsites.net/api/services/cd/Inquiry/MakeInquiry";
             //var creditsHeroFormat = "http://localhost:6234/api/services/cd/Inquiry/MakeInquiry";
@@ -134,7 +194,7 @@ namespace rooferlocator.com.Web.Controllers
 
             string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(inquiryInput);
             byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
-
+            
             HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
             creditsHeroRequest.ContentType = "application/json;charset=utf-8";
             creditsHeroRequest.ContentLength = byteArray.Length;
@@ -154,61 +214,26 @@ namespace rooferlocator.com.Web.Controllers
                     inquiryResults = itemResult;
                 }
             }
+            #endregion
 
             SetupLoginModel(ref loginFormModel, inquiryResults, new CreditsHero.Messaging.Dtos.RequestsDto(), string.Empty);// , inquiryValues[3].Key);
 
-            //Send Inquiry Email to Admin
-            var serviceUrl = String.Format("{0}api/services/app/Notification/SendEmailNotification", WebConfigurationManager.AppSettings["creditsHero:WebServiceApiPrefix"]);
-            //var serviceUrl = string.Format("http://CreditsHero.azurewebsites.net/api/services/cd/Notification/SendEmailNotification");
-            CreditsHero.Messaging.Dtos.NotificationInput emailInput = new CreditsHero.Messaging.Dtos.NotificationInput();
-
-            //Serialize object to JSON
-            jsonStream = new MemoryStream();
-
-            emailInput = new CreditsHero.Messaging.Dtos.NotificationInput()
-            {
-                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]),
-                EmailFrom = "no-reply@rooferlocator.com",
-                EmailSubject = String.Format("New Inquiry at RooferLocator.com"),
-                EmailMessage = String.Format("Hello Administrator: \n  An inquiry/search has been submitted at RooferLocator.com.\n\n Following are the details of the inquiry:\n Roof Type = {0} \n Service Type = {1} \n Time Of Repair = {2} \n State = {3} \n City = {4}",
-                    inquiryValues[0].Value,
-                    inquiryValues[1].Value,
-                    inquiryValues[2].Value,
-                    inquiryValues[3].Value,
-                    inquiryValues[4].Value),
-                EmailTo = System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:AdminEmailAddress"]
-            };
-
-            jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(emailInput);
-            byteArray = Encoding.UTF8.GetBytes(jsonData);
-
-            creditsHeroRequest = (HttpWebRequest)WebRequest.Create(serviceUrl);
-            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
-            creditsHeroRequest.ContentLength = byteArray.Length;
-            creditsHeroRequest.Method = "POST";
-            newStream = creditsHeroRequest.GetRequestStream();
-            newStream.Write(byteArray, 0, byteArray.Length);
-            newStream.Close();
-            timeLineResponse = creditsHeroRequest.GetResponse();
-            using (timeLineResponse)
-            {
-                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
-                {
-                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
-
-                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
-                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<CreditsHero.Messaging.Requests.Dtos.GetInquiryResults>(jObject2.ToString());
-                    inquiryResults = itemResult;
-                }
-            }
-
+            #region Email
+            //Send administrator email for Inquiry
+            SendEmail(inquiryInput, "no-reply@rooferlocator.com", "New Inquiry at RooferLocator.com",
+                System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:AdminEmailAddress"], string.Empty);
+            #endregion
+            
             return View("CustomerRequest", loginFormModel.InquiryResults);
         }
 
         [HttpPost]
-        [DisableAuditing]
-        public ActionResult SendRequest(FormCollection collection, LoginFormViewModel inquiryModel, string returnUrl = "")
+        [UnitOfWork]
+        public virtual async Task<ActionResult> SendRequest(FormCollection collection, LoginFormViewModel inquiryModel,
+            string returnUrl = "")
         {
+            string generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 2);
+
             if (string.IsNullOrWhiteSpace(returnUrl))
             {
                 returnUrl = Request.ApplicationPath;
@@ -222,6 +247,7 @@ namespace rooferlocator.com.Web.Controllers
                 IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled
             };
 
+            #region Request
             var creditsHeroFormat = String.Format("{0}api/services/app/Requests/CreateRequests", WebConfigurationManager.AppSettings["creditsHero:WebServiceApiPrefix"]);
             //var creditsHeroFormat = "http://CreditsHero.azurewebsites.net/api/services/cd/Requests/CreateRequests";
             //var creditsHeroFormat = "http://localhost:6234/api/services/cd/Requests/CreateRequests";
@@ -266,10 +292,107 @@ namespace rooferlocator.com.Web.Controllers
                     requestResults = itemResult;
                 }
             }
+            #endregion
 
             SetupLoginModel(ref loginFormModel, inquiryModel.InquiryResults, requestResults, string.Empty);
 
-            return View("Login", loginFormModel);
+            #region User
+            try
+            {
+                User user;
+
+                //See if user exists (based on email address)
+                user = _userManager.FindByEmail(requestInput.Email);
+
+                if (user == null)
+                {
+                    var fullName = requestInput.FullName.Split(' ');
+                    //Create user
+                    user = new User
+                    {
+                        TenantId = null,
+                        Name = fullName[0],
+                        Surname = fullName[fullName.Length-1],
+                        EmailAddress = requestInput.Email,
+                        IsActive = true,
+                        UserName = requestInput.Email,
+                        Password = new PasswordHasher().HashPassword(generatedPassword),
+                        IsEmailConfirmed = false,
+                        IsDeleted = false,
+                        CreationTime = DateTime.Now
+                    };
+
+                    //Switch to the tenant
+                    _unitOfWorkManager.Current.EnableFilter(AbpDataFilters.MayHaveTenant);
+                    _unitOfWorkManager.Current.SetFilterParameter(AbpDataFilters.MayHaveTenant, AbpDataFilters.Parameters.TenantId, null);
+
+                    //Add default roles
+                    user.Roles = new List<UserRole>();
+                    foreach (var customerRole in _roleManager.Roles.Where(r => r.Name == "Customer").ToList())
+                    {
+                        user.Roles.Add(new UserRole { RoleId = customerRole.Id });
+                    }
+
+                    //Save user
+                    var result = _userManager.Create(user);
+
+                    //Send email to user with password
+                    SendEmail(
+                        new CreditsHero.Messaging.Requests.Dtos.GetInquiryInput()
+                        {
+                            CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]),
+                            QueryRequest = inquiryValues
+                        },
+                        System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:EmailReply"],
+                        "Welcome to Roofer Locator",
+                        user.EmailAddress,
+                        String.Format("<!DOCTYPE html><html lang=en xmlns='http://www.w3.org/1999/xhtml'><head><meta charset=utf-8 /><title></title><link rel='stylesheet' href='/Content/bootstrap-cosmo.min.css' /></head><body style='background-color:gainsboro;text-align:center;padding:0px;margin:0px'><div class='row' style='padding:0px;margin:0px;'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='padding:0px;margin:0px'> <div class='row'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8); background-image: -ms-linear-gradient(rgb(25, 68, 125) 20%, rgb(32, 128, 190) 100%);'> <img src='{0}/images/rooferlocatorlogo.gif' /> <div class='row' style='padding:0px;margin:0px;height:50px;font-family:Arial;font-size:24pt'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border:2px solid white;border-radius:5px; background:white;'> <div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'>Welcome</div></div><div class='row' style='color:black'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='font-size:16px;'>Welcome to RooferLocator.com! <p/><div style='font-size:22px;'> The following are your credentials<p/> Username = {1} <br/> Password = {2}</div></div></div><div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'></div></div><div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border-top:1px solid gainsboro;padding:10px;color:black'> <div></div></div></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2' style='padding:0px;margin:0px'></div></div></body></html>"
+                        , System.Web.Configuration.WebConfigurationManager.AppSettings["dashboardHero:DashboardPrefix"], user.EmailAddress, generatedPassword));
+
+                    AbpUserManager<Tenant, Role, User>.AbpLoginResult loginResult;
+                    loginResult = await GetLoginResultAsync(user.UserName, generatedPassword, null);
+
+                    if (loginResult.Result == AbpLoginResultType.Success)
+                    {
+                        await SignInAsync(loginResult.User, loginResult.Identity);
+                        return Redirect(Url.Action("Index", "Customers"));
+                    }
+                }
+
+                //Directly login if possible
+                if (user.IsActive)
+                {
+                    AbpUserManager<Tenant, Role, User>.AbpLoginResult loginResult;
+                    loginResult = await GetLoginResultAsync(user.UserName, user.Password, null);
+                    
+                    if (loginResult.Result == AbpLoginResultType.Success)
+                    {
+                        await SignInAsync(loginResult.User, loginResult.Identity);
+                        //return Redirect(Url.Action("Index", "Home"));
+                        //return Redirect(Url.Action("RegisterMember", "Register"));
+                        return Redirect(Url.Action("Index", "Customers"));
+                    }
+
+                    Logger.Warn("New registered user could not be login. This should not be normally. login result: " + loginResult.Result);
+                }
+
+                //If can not login, show a register result page
+                return View("CustomerRequestResult", new CreditsHero.Messaging.Dtos.RequestsDto
+                {
+                    Email = user.EmailAddress,
+                    FullName = user.Name + " " + user.Surname,
+                    Id = Int32.Parse(user.Id.ToString())
+                });
+            }
+            catch (UserFriendlyException ex)
+            {
+                ViewBag.IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled;
+                ViewBag.ErrorMessage = ex.Message;
+
+                //If can not login, show a register result page
+                return View("CustomerRequestResult", new CreditsHero.Messaging.Dtos.RequestsDto());
+            }
+            #endregion
         }
 
         private void BuildInquiry(ref List<KeyValuePair<string, string>> inquiryValues)

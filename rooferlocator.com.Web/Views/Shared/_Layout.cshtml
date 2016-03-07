@@ -116,6 +116,8 @@
                     <!-- END MENU TOGGLER -->
                 </div>
             </div>*@
+            @if (role != "Customer")
+            {
             <div class="page-sidebar-wrapper">
                 <!-- BEGIN SIDEBAR -->
                 <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
@@ -161,7 +163,7 @@
                             System.Collections.Hashtable menuItemsReports = new System.Collections.Hashtable();
                             menuItems.Add("Company Profile", "/members");
                             menuItems.Add("Services Offered", "/members/ServicesOffered");
-                            menuItems.Add("Operating Areas", "/members/Location");
+                            //menuItems.Add("Operating Areas", "/members/Location");
                             menuItems.Add("Help Desk", "/members/Email");
                             menuItems.Add("Payment Center", "/members/Payment");
                             menuItemsReports.Add("None at this time", "");
@@ -175,6 +177,7 @@
                 </div>
                 <!-- END SIDEBAR -->
             </div>
+            }
             <div class="page-fixed-main-content">
                 <!-- BEGIN PAGE BASE CONTENT -->
                 <div class="container">

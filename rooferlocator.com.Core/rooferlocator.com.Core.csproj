@@ -96,6 +96,8 @@
     <Compile Include="Authorization\Roles\StaticRoleNames.cs" />
     <Compile Include="Common\Companies\Company.cs" />
     <Compile Include="Common\Companies\ICompany.cs" />
+    <Compile Include="Common\Customers\ICustomer.cs" />
+    <Compile Include="Common\Customers\Customer.cs" />
     <Compile Include="Common\Members\IMember.cs" />
     <Compile Include="Common\Members\Member.cs" />
     <Compile Include="Common\News\INews.cs" />

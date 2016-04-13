@@ -21,7 +21,7 @@ namespace rooferlocator.com.Web
                         L("HomePage"),
                         url: "/",
                         icon: "fa fa-home",
-                        requiresAuthentication: true
+                        requiresAuthentication: false
                         )
                 ).AddItem(
                     new MenuItemDefinition(

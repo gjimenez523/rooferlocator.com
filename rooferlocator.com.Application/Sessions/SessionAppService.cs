@@ -17,10 +17,11 @@ namespace rooferlocator.com.Sessions
                 User = (await GetCurrentUserAsync()).MapTo<UserLoginInfoDto>()
             };
 
-            if (AbpSession.TenantId.HasValue)
-            {
-                output.Tenant = (await GetCurrentTenantAsync()).MapTo<TenantLoginInfoDto>();
-            }
+            //NOTE:  This was commented becuase of integration with MyDesignHeroes
+            //if (AbpSession.TenantId.HasValue)
+            //{
+            //    output.Tenant = (await GetCurrentTenantAsync()).MapTo<TenantLoginInfoDto>();
+            //}
 
             return output;
         }

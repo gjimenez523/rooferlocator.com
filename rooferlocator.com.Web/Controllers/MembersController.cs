@@ -61,6 +61,111 @@ namespace rooferlocator.com.Web.Controllers
             return user;
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Detail()
+        {
+            //Get UserId
+            long userId = long.Parse(Request.Form["Command"].Split('_')[1]);
+            rooferlocator.com.Web.Models.ServiceResponse response = new Models.ServiceResponse();
+            var user = await _userManager.GetUserByIdAsync(userId);
+
+            //Determine if we are Deleting, Resetting, or Activating user
+            if (Request.Form["Command"].Contains("ResetPassword"))
+            {
+                #region ResetPassword Command
+                //Generate password reset code for user
+                string resetCode = System.Web.Security.Membership.GeneratePassword(5, 2);
+
+                //Save user with password reset code
+                user.PasswordResetCode = resetCode;
+                await _userManager.UpdateAsync(user);
+
+                //Send email to user with password reset code
+                string role = GetUserRole();
+                CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
+
+                //NOTE: If EmailTo/EmailFrom is null then email is submitted/replyto to configured admin
+                CreditsHero.Messaging.Dtos.NotificationInput inputNotification = new CreditsHero.Messaging.Dtos.NotificationInput()
+                {
+                    EmailFrom = null,
+                    EmailTo = user.EmailAddress,
+                    EmailMessage = String.Format("<!DOCTYPE html><html lang=en xmlns=http://www.w3.org/1999/xhtml><head><meta charset=utf-8 /><title></title></head><body style='background-color:#3d1617;text-align:center;padding:0px;margin:0px'><div class='col-lg-3 col-md-3 col-sm-3 col-xs-3' style='background:white'></div><div class='col-lg-4 col-md-4 col-sm-4 col-xs-4' style='padding:0px;margin:0px'><div class=row><div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'><img style='width:100%' src=http://www.conciergesworldwide.com/images/imgHeader.jpg /></div></div><div class=row style='padding:10px;height:50px;font-family:Arial;font-size:24pt'><div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border:2px solid white;border-radius:5px'><div class=row style='background-color:gainsboro'><div>Password Reset</div></div><div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='padding:10px;color:white'><div style='font-size:16;'>Hello {0}, </p> To reset your password, you will need to enter the following Password Reset Code using the link below. Your password reset code is:<p/><div style='font-size:22;padding:10px;margin:10px;'>{1}</div> <p/></div></div><div class=row style='background-color:gainsboro'><div><a href='{2}{3}'>Click here to reset your password</a></div></div><div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border-top:1px solid gainsboro;padding:10px;color:white'><div></div></div></div></div><div class=row></div></div><div class='col-lg-3 col-md-3 col-sm-3 col-xs-3' style='padding:0px;margin:0px'></div></body></html>"
+                        , user.Name
+                        , user.PasswordResetCode
+                        , System.Web.Configuration.WebConfigurationManager.AppSettings["dashboardHero:DashboardPrefix"]
+                        , "/Account/ResetPassword"),
+                    EmailSubject = String.Format("Password Reset", input.SubscribersName),
+                    CompanyId = input.CompanyId.Value
+                };
+
+                var notificationResults = _memberAppService.SendEmail(inputNotification);
+                response = new Models.ServiceResponse()
+                {
+                    FriendlyMessage = notificationResults.ResponseMessage
+                };
+
+                return Redirect((Url.Action("Index", "Members", response)));
+                #endregion
+            }
+            else if (Request.Form["Command"].Contains("UserDetails"))
+            {
+                #region ShowDetails Command
+                CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
+                //Get Member Info (credits hero)
+                var outputSubscriber = _memberAppService.GetMember(input);
+
+                //Get Member Info
+                var outputMember = _memberAppService.GetMembers(new Common.Members.Dtos.GetMemberInput()
+                {
+                    MemberId = Int32.Parse(user.Id.ToString())
+                });
+
+                //Get Member Subscriptions
+                var outputSubscriptions = _memberAppService.GetMemberSubscriptions(input);
+
+                rooferlocator.com.Common.Members.Dtos.MemberDto output = outputMember.Members[0];
+                output.SubscriberSkills = outputSubscriptions;
+
+                return View("Detail", output);
+                #endregion
+            }
+            else if (Request.Form["Command"].Contains("Activate"))
+            {
+                #region ActivateUser Command
+                user.IsDeleted = false;
+                var results = await _userManager.UpdateAsync(user);
+
+                if (results.Succeeded)
+                {
+                    response = new Models.ServiceResponse()
+                    {
+                        FriendlyMessage = "Member has been removed."
+                    };
+                }
+
+                return Redirect((Url.Action("Index", "Members", response)));
+                #endregion
+            }
+            else if (Request.Form["Command"].Contains("Delete"))
+            {
+                #region DeleteUser Command
+                user.IsDeleted = true;
+                var results = await _userManager.UpdateAsync(user);
+
+                if (results.Succeeded)
+                {
+                    response = new Models.ServiceResponse()
+                    {
+                        FriendlyMessage = "Member has been removed."
+                    };
+                }
+
+                return Redirect((Url.Action("Index", "Members", response)));
+                #endregion
+            }
+            return View();
+        }
+
         private async Task<CreditsHero.Subscribers.Dtos.GetSubscribersInput> BuildCreditsHeroSubscriberInput(Users.User appUser)
         {
             //Build the Credits Hero Subscriber/User input object.  This object is used throughout the site in order
@@ -194,6 +299,59 @@ namespace rooferlocator.com.Web.Controllers
             return View(memberPayment);
         }
 
+        public async Task<ActionResult> PostProcessPayment()
+        {
+            string role = GetUserRole();
+            Users.User user = await GetUser();
+            CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
+
+            var companyInput = new CreditsHero.Common.Companies.Dtos.GetCompanyInput() { CompanyId = input.CompanyId.Value.ToString() };
+            //Get Company entity so we can use the cost per credits
+            var company = _companyService2.GetCompany(companyInput);
+
+            //Get Company Configuration
+            var companyConfig = _companyService2.GetCompanyConfig(companyInput);
+
+            PaymentResponseDto paymentResponse = new PaymentResponseDto();
+            PaymentDto payment = new PaymentDto();
+
+            //TODO: Determine type of payment
+            //PayPal Post Payment Process
+            payment = new PaymentPaypalDto()
+            {
+                CompanyConfigurationSettings = companyConfig,
+                CompanyId = company.Id,
+                PayerId = Request.QueryString["PayerID"],
+                PaymentGuid = Request.QueryString["Guid"],
+                PaymentId = Request.QueryString["PaymentId"],
+                Token = Request.QueryString["Token"],
+                PaymentGatewayType = "PayPal",
+                PaymentMethod = "PayPal",
+                SubscribersEmail = input.SubscribersEmail,
+                SubscribersId = input.SubscribersId,
+                SubscribersName = input.SubscribersName,
+                TaxAmount = 0,
+                TransactionType = "PayPalExecute"
+            };
+            paymentResponse = _memberAppService.MakePayment(payment as PaymentPaypalDto);
+            if (paymentResponse.AuthCode == "created")
+            {
+                return Redirect(paymentResponse.ResponseCode);
+            }
+            else
+            {
+                rooferlocator.com.Web.Models.ServiceResponse response = new Models.ServiceResponse()
+                {
+                    FriendlyMessage = paymentResponse.MessageCode == "sale"
+                        ? String.Format("Payment accepted.  Transaction #: ", paymentResponse.TransactionId)
+                        : String.Format("Processing Payment.  Transaction #: ", paymentResponse.TransactionId)
+                };
+
+                return Redirect((Url.Action("Index", "Home", response)));
+            }
+            //?guid = 3772 & paymentId = PAY - 5UN73352KF9557105K3KJ2JY & token = EC - 1BC22799SN423381H & PayerID = WWWCHTZE5U74L
+        }
+
         public async Task<ActionResult> PurchaseCredits()
         {
             string role = GetUserRole();
@@ -209,26 +367,34 @@ namespace rooferlocator.com.Web.Controllers
 
             //TODO:Determine type of payment
 
-            //Build PaymentAuthorize.NET data object
-            PaymentAuthorizeNetDto payment = new PaymentAuthorizeNetDto()
+            //Build Stripe data payment
+            PaymentStripeDto payment = new PaymentStripeDto()
             {
-                Credits = Int32.Parse(Request.Form["txtCredits"]),
-                SubscribersId = input.SubscribersId,
-                SubscribersEmail = input.SubscribersEmail,
-                SubscribersName = input.SubscribersName,
-                Amount = Decimal.Parse(Request.Form["txtTotal"]),
-                CardCode = Request.Form["txtCardCode"],
-                CompanyId = company.Id,
-                MarketType = 0, //Request.Form[],
-                ExpirationDate = Request.Form["txtExpirationDate"],
-                PaymentGatewayType = "AuthorizeNET", //Request.Form[],
-                PaymentMethod = "ChargeCreditCard", //Request.Form[],
-                PurchaseDescription = String.Format("Purchase made by {0}, email {1}, ID {2}", input.SubscribersName, input.SubscribersEmail, input.SubscribersId.ToString()),
-                TaxAmount = Decimal.Parse(Request.Form["txtAmount"]),
-                TransactionType = "AuthorizeAndCapture",
-                CardNumber = Request.Form["txtCardNumber"],
-                CompanyConfigurationSettings = companyConfig
+                AddressCity = Request.Form[""],
+                AddressLine1 = Request.Form[""],
+                AddressLine2 = Request.Form[""],
             };
+
+            //Build PaymentAuthorize.NET data object
+            //PaymentAuthorizeNetDto payment = new PaymentAuthorizeNetDto()
+            //{
+            //    Credits = Int32.Parse(Request.Form["txtCredits"]),
+            //    SubscribersId = input.SubscribersId,
+            //    SubscribersEmail = input.SubscribersEmail,
+            //    SubscribersName = input.SubscribersName,
+            //    Amount = Decimal.Parse(Request.Form["txtTotal"]),
+            //    CardCode = Request.Form["txtCardCode"],
+            //    CompanyId = company.Id,
+            //    MarketType = 0, //Request.Form[],
+            //    ExpirationDate = Request.Form["txtExpirationDate"],
+            //    PaymentGatewayType = "AuthorizeNET", //Request.Form[],
+            //    PaymentMethod = "ChargeCreditCard", //Request.Form[],
+            //    PurchaseDescription = String.Format("Purchase made by {0}, email {1}, ID {2}", input.SubscribersName, input.SubscribersEmail, input.SubscribersId.ToString()),
+            //    TaxAmount = Decimal.Parse(Request.Form["txtAmount"]),
+            //    TransactionType = "AuthorizeAndCapture",
+            //    CardNumber = Request.Form["txtCardNumber"],
+            //    CompanyConfigurationSettings = companyConfig
+            //};
 
             var output = _memberAppService.MakePayment(payment);
             return Redirect((Url.Action("Index", "Home")));
@@ -263,17 +429,11 @@ namespace rooferlocator.com.Web.Controllers
 
         public async Task<ActionResult> Quote(string requestId)
         {
+            requestId = requestId == null ? Request.Form["PassRequestId"] : requestId;
+            Models.Member.MemberRequestDetailViewModel results = new Models.Member.MemberRequestDetailViewModel();
             //Get the subscribers email to pass into CreditsHero in order to retreive summary
             var user = await _userManager.GetUserByIdAsync(AbpSession.UserId.Value);
 
-            CreditsHero.Subscribers.Dtos.GetSubscribersRequestDetailInput inputRequest = new CreditsHero.Subscribers.Dtos.GetSubscribersRequestDetailInput()
-            {
-                SubscribersId = Int32.Parse(user.Id.ToString()),
-                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
-                SubscribersEmail = user.EmailAddress,
-                SubscribersName = user.UserName,
-                RequestId = Int32.Parse(requestId)
-            };
             CreditsHero.Subscribers.Dtos.GetSubscribersInput input = new CreditsHero.Subscribers.Dtos.GetSubscribersInput()
             {
                 SubscribersId = Int32.Parse(user.Id.ToString()),
@@ -282,19 +442,41 @@ namespace rooferlocator.com.Web.Controllers
                 SubscribersName = user.UserName
             };
 
+            CreditsHero.Subscribers.Dtos.GetSubscribersRequestDetailInput inputRequest = new CreditsHero.Subscribers.Dtos.GetSubscribersRequestDetailInput()
+            {
+                SubscribersId = Int32.Parse(user.Id.ToString()),
+                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
+                SubscribersEmail = user.EmailAddress,
+                SubscribersName = user.UserName,
+                RequestId = requestId != null ? Int32.Parse(requestId) : 0
+            };
+
             var creditsHeroSubscriber = _memberAppService.GetMember(input);
             input.SubscribersId = creditsHeroSubscriber.Id;
             inputRequest.SubscribersId = creditsHeroSubscriber.Id;
 
-            Models.Member.MemberRequestDetailViewModel results = new Models.Member.MemberRequestDetailViewModel();
-            List<SubscribersRequestDetailDto> subscriberRequestDetails = _memberAppService.GetMemberRequestDetails(inputRequest).SubscriberRequestDetailsList;
-            results.SubscriberRequestDetails = new List<SubscribersRequestDetailDto>();
+            if (Request.Form.Keys[0] != null && Request.Form.Keys[0] == "PassRequestId")
+            {
+                _memberAppService.UpdateSubscriberRequestState(
+                    new CreateSubscriberRequestStateInput()
+                    {
+                        CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
+                        RequestId = Int32.Parse(requestId),
+                        SubscribersId = input.SubscribersId,
+                        Status = "Pass"
+                    });
+                return Redirect(Url.Action("Index", "Home"));
+            }
+            else
+            {
+                List<SubscribersRequestDetailDto> subscriberRequestDetails = _memberAppService.GetMemberRequestDetails(inputRequest).SubscriberRequestDetailsList;
+                results.SubscriberRequestDetails = new List<SubscribersRequestDetailDto>();
 
-            results.SubscriberRequestDetails = subscriberRequestDetails;
-            results.RequestId = Int32.Parse(requestId);
-            results.SubscriberId = creditsHeroSubscriber.Id;
-
-            return View(results);
+                results.SubscriberRequestDetails = subscriberRequestDetails;
+                results.RequestId = Int32.Parse(requestId);
+                results.SubscriberId = creditsHeroSubscriber.Id;
+                return View(results);
+            }
         }
 
         public async Task<ActionResult> SendQuote()
@@ -432,7 +614,28 @@ namespace rooferlocator.com.Web.Controllers
 
             return Redirect((Url.Action("ServicesOffered", "Members", response)));
         }
-        
+
+        public async Task<ActionResult> UpdateCriteriaValue()
+        {
+            int criteriaValueId = int.Parse(Request.Form["Command"].Split('_')[1]);
+
+            //Need to update CriteriaRefId
+            var criteriaResults = _memberAppService.UpdateCriteriaValue(new CreditsHero.Common.Dtos.CreateCriteriaValuesInput()
+            {
+                CreditCount = Int32.Parse(Request.Form["txtAdminCredits_" + criteriaValueId].ToString()),
+                Name = Request.Form["txtAdminCriteriaName_" + criteriaValueId].ToString(),
+                CriteriaValuesId = criteriaValueId,
+                CriteriaRefId = Int32.Parse(Request.Form["txtAdminCriteriaId_" + criteriaValueId].ToString())
+            });
+
+            rooferlocator.com.Web.Models.ServiceResponse response = new Models.ServiceResponse()
+            {
+                FriendlyMessage = "Service Updated."
+            };
+
+            return Redirect((Url.Action("ServicesOffered", "Members", response)));
+        }
+
         public async Task<ActionResult> AddCriteria()
         {
             Company currentCompany = new Company() { Id = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]) };

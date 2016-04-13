@@ -33,73 +33,77 @@
                     <span>Member Management</span>
                 </div>
                 <div class="actions">
-                    <div class="btn-group">
-                        <a class="btn btn-circle btn-default btn-sm" ng-click="handleClick('customerDetail')" data-toggle="dropdown">
-                            <i class="fa fa-user"></i> Add
-                        </a>
-                    </div>
-                    <div class="btn-group">
-                        <a class="btn btn-circle btn-default btn-sm" ng-click="handleClick('customerSales');" data-toggle="dropdown">
-                            <i class="fa fa-user"></i> Active
-                        </a>
-                    </div>
-                    <div class="btn-group">
-                        <a id="NewMember" class="btn btn-circle btn-default btn-sm">
-                            <i class="fa fa-user"></i> New
-                        </a>
-                    </div>
-                    <div class="portlet-input input-inline input-medium">
-                        <div class="input-group">
-                            <input type="text" class="form-control input-circle-left" placeholder="search...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-circle-right btn-default" type="submit">Go!</button>
-                            </span>
+                    @*<div class="btn-group">
+                            <a class="btn btn-circle btn-default btn-sm" ng-click="handleClick('customerDetail')" data-toggle="dropdown">
+                                <i class="fa fa-user"></i> Add
+                            </a>
                         </div>
-                    </div>
+                        <div class="btn-group">
+                            <a class="btn btn-circle btn-default btn-sm" ng-click="handleClick('customerSales');" data-toggle="dropdown">
+                                <i class="fa fa-user"></i> Active
+                            </a>
+                        </div>
+                        <div class="btn-group">
+                            <a id="NewMember" class="btn btn-circle btn-default btn-sm">
+                                <i class="fa fa-user"></i> New
+                            </a>
+                        </div>
+                        <div class="portlet-input input-inline input-medium">
+                            <div class="input-group">
+                                <input type="text" class="form-control input-circle-left" placeholder="search...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-circle-right btn-default" type="submit">Go!</button>
+                                </span>
+                            </div>
+                        </div>*@
                 </div>
             </div>
             <!--BEGIN MEMBER LIST-->
             @if (role == "Admin")
             {
-            <div id="List" class="portlet-body form " style="display:block;">
-                <div class="portlet-body form ">
-                    <form role="form">
-                        <div class="table-responsive">
-                            <table class=" table table-striped table-bordered table-hover">
-                                <thead class="flip-content">
-                                    <tr>
-                                        <th>
-                                            <h6>Full Name</h6>
-                                        </th>
-                                        <th>
-                                            <h6>Email Address</h6>
-                                        </th>
-                                        <th>
-                                            <h6>Company Name</h6>
-                                        </th>
-                                        <th>
-                                            <h6>Action</h6>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="member in vm.members">
-                                        <td><b>{{member.fullName}}</b></td>
-                                        <td><b>{{member.email}}</b></td>
-                                        <td><b>{{member.company.name}}</b></td>
-                                        <td style="margin:0px;">
-                                            <button ng-click="showDetails(member)" type="button" class="btn red"> <i class="fa reload"></i> Details</button>
-                                            <button ng-click="showDetails(member)" type="button" class="btn red"> <i class="fa reload"></i> Activate</button>
-                                            <button ng-click="vm.deleteItem(member)" type="button" class="btn red"> <i class="fa reload"></i> Delete</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        @*</div>*@
-                    </form>
+                <div id="List" class="portlet-body form " style="display:block;">
+                    <div class="portlet-body form ">
+                        @using (Html.BeginForm("Detail", "Members", FormMethod.Post, null))
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead class="flip-content">
+                                        <tr>
+                                            <th>
+                                                <h6>Full Name</h6>
+                                            </th>
+                                            <th>
+                                                <h6>Email Address</h6>
+                                            </th>
+                                            <th>
+                                                <h6>Company Name</h6>
+                                            </th>
+                                            <th>
+                                                <h6>Action</h6>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Members)
+                                        {
+                                            <tr>
+                                                <td><b>@item.FullName</b></td>
+                                                <td><b>@item.Email</b></td>
+                                                <td><b>@item.Company.Name</b></td>
+                                                <td style="margin:0px;" nowrap>
+                                                    <button type="submit" value="UserDetails_@item.UserRefId" id="btnUserDetails" name="Command" class="btn red"> <i class="fa reload"></i> Details</button>
+                                                    <button type="submit" disabled value="Activate_@item.UserRefId" id="btnActivateUser" name="Command" class="btn red"> <i class="fa reload"></i> Activate</button>
+                                                    <button type="submit" value="ResetPassword_@item.UserRefId" id="btnResetPassword" name="Command" class="btn red"> <i class="fa reload"></i>Reset Password</button>
+                                                    <button type="submit" value="Delete_@item.UserRefId" id="btnDeleteUser" name="Command" class="btn red"> <i class="fa reload"></i> Delete</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
             }
             <!--END MEMBER LIST-->
         </div>

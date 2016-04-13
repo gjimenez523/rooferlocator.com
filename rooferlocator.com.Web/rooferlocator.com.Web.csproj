@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>rooferlocator.com.Web</RootNamespace>
     <AssemblyName>rooferlocator.com.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -79,7 +79,7 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="AuthorizeNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\AuthorizeNet.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\AuthorizeNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
@@ -103,11 +103,11 @@
       <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="CreditsHero.Application, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\CreditsHero.Application.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\CreditsHero.Application.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CreditsHero.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\CreditsHero.Core.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\CreditsHero.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -171,8 +171,16 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="MyDesignHero.Application, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MyDesignHero.0.0.4\lib\MyDesignHero.Application.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MyDesignHero.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MyDesignHero.0.0.4\lib\MyDesignHero.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Nito.AsyncEx, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -188,27 +196,31 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <HintPath>..\packages\MyDesignHero.0.0.4\lib\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PayPal, Version=1.7.3.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\PayPal.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\PayPal.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\RestSharp.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SendGrid, Version=6.3.4.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\SendGrid.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\SendGrid.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SendGrid.SmtpApi, Version=1.3.1.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\SendGrid.SmtpApi.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\SendGrid.SmtpApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SendGridMail, Version=6.3.4.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\SendGridMail.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\SendGridMail.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Stripe.net, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\Stripe.net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Collections.Immutable, Version=1.0.34.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -223,7 +235,7 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\System.Web.Cors.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
@@ -238,11 +250,11 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\System.Web.Http.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\System.Web.Http.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\System.Web.Http.Cors.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\System.Web.Http.Cors.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -280,7 +292,7 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Twilio.Api, Version=3.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CreditsHero.0.0.49\lib\Twilio.Api.dll</HintPath>
+      <HintPath>..\packages\CreditsHero.0.0.65\lib\Twilio.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -4344,6 +4356,281 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\canvas4\css\animate.css" />
+    <Content Include="Content\canvas4\css\bootstrap-rtl.css" />
+    <Content Include="Content\canvas4\css\bootstrap.css" />
+    <Content Include="Content\canvas4\css\calendar.css" />
+    <Content Include="Content\canvas4\css\camera-rtl.css" />
+    <Content Include="Content\canvas4\css\camera.css" />
+    <Content Include="Content\canvas4\css\colors-rtl.css" />
+    <Content Include="Content\canvas4\css\colors-rtl.php" />
+    <Content Include="Content\canvas4\css\colors.css" />
+    <Content Include="Content\canvas4\css\colors.php" />
+    <Content Include="Content\canvas4\css\components\bs-datatable.css" />
+    <Content Include="Content\canvas4\css\components\bs-editable.css" />
+    <Content Include="Content\canvas4\css\components\bs-filestyle.css" />
+    <Content Include="Content\canvas4\css\components\bs-rating.css" />
+    <Content Include="Content\canvas4\css\components\bs-select.css" />
+    <Content Include="Content\canvas4\css\components\bs-switches.css" />
+    <Content Include="Content\canvas4\css\components\dark-components.css" />
+    <Content Include="Content\canvas4\css\components\daterangepicker.css" />
+    <Content Include="Content\canvas4\css\components\ion.rangeslider.css" />
+    <Content Include="Content\canvas4\css\components\pricing-table.css" />
+    <Content Include="Content\canvas4\css\components\radio-checkbox.css" />
+    <Content Include="Content\canvas4\css\components\rangeslider\sprite-skin-nice.png" />
+    <Content Include="Content\canvas4\css\components\select-boxes.css" />
+    <Content Include="Content\canvas4\css\components\timepicker.css" />
+    <Content Include="Content\canvas4\css\custom.css" />
+    <Content Include="Content\canvas4\css\dark-rtl.css" />
+    <Content Include="Content\canvas4\css\dark.css" />
+    <Content Include="Content\canvas4\css\elastic.css" />
+    <Content Include="Content\canvas4\css\et-line.css" />
+    <Content Include="Content\canvas4\css\font-icons-rtl.css" />
+    <Content Include="Content\canvas4\css\font-icons.css" />
+    <Content Include="Content\canvas4\css\fonts.css" />
+    <Content Include="Content\canvas4\css\fonts\font-icons.svg" />
+    <Content Include="Content\canvas4\css\fonts\lined-icons.svg" />
+    <Content Include="Content\canvas4\css\fonts\Simple-Line-Icons.dev.svg" />
+    <Content Include="Content\canvas4\css\fonts\Simple-Line-Icons.svg" />
+    <Content Include="Content\canvas4\css\imports\blog.css" />
+    <Content Include="Content\canvas4\css\imports\content.css" />
+    <Content Include="Content\canvas4\css\imports\events.css" />
+    <Content Include="Content\canvas4\css\imports\extras.css" />
+    <Content Include="Content\canvas4\css\imports\footer.css" />
+    <Content Include="Content\canvas4\css\imports\header.css" />
+    <Content Include="Content\canvas4\css\imports\helpers.css" />
+    <Content Include="Content\canvas4\css\imports\layouts.css" />
+    <Content Include="Content\canvas4\css\imports\pagetitle.css" />
+    <Content Include="Content\canvas4\css\imports\portfolio.css" />
+    <Content Include="Content\canvas4\css\imports\shop.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\alerts.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\buttons.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\carousel.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\clients.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\countdown.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\counter-skills.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\dividers.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\faqs.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\feature-box.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\headings.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\misc.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\overlay.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\pricing.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\process-steps.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\promo.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\social-icons.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\styled-icons.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\tabs.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\team.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\testimonials.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\toggles-accordions.css" />
+    <Content Include="Content\canvas4\css\imports\shortcodes\youtubebg.css" />
+    <Content Include="Content\canvas4\css\imports\sliders.css" />
+    <Content Include="Content\canvas4\css\imports\topbar.css" />
+    <Content Include="Content\canvas4\css\imports\typography.css" />
+    <Content Include="Content\canvas4\css\imports\widgets.css" />
+    <Content Include="Content\canvas4\css\magnific-popup.css" />
+    <Content Include="Content\canvas4\css\nivo-slider.css" />
+    <Content Include="Content\canvas4\css\portfolio.css" />
+    <Content Include="Content\canvas4\css\responsive-rtl.css" />
+    <Content Include="Content\canvas4\css\responsive.css" />
+    <Content Include="Content\canvas4\css\swiper.css" />
+    <Content Include="Content\canvas4\css\vmap.css" />
+    <Content Include="Content\canvas4\et-line.css" />
+    <Content Include="Content\canvas4\images\icons\map-icon-red.png" />
+    <Content Include="Content\canvas4\images\team\1.jpg" />
+    <Content Include="Content\canvas4\images\team\2.jpg" />
+    <Content Include="Content\canvas4\images\team\3.jpg" />
+    <Content Include="Content\canvas4\include\phpmailer\class.phpmailer.php" />
+    <Content Include="Content\canvas4\include\phpmailer\class.phpmaileroauth.php" />
+    <Content Include="Content\canvas4\include\phpmailer\class.phpmaileroauthgoogle.php" />
+    <Content Include="Content\canvas4\include\phpmailer\class.pop3.php" />
+    <Content Include="Content\canvas4\include\phpmailer\class.smtp.php" />
+    <Content Include="Content\canvas4\include\phpmailer\get_oauth_token.php" />
+    <Content Include="Content\canvas4\include\phpmailer\PHPMailerAutoload.php" />
+    <Content Include="Content\canvas4\include\sendemail.php" />
+    <Content Include="Content\canvas4\js\canvas.slider.fade.js" />
+    <Content Include="Content\canvas4\js\components\bs-datatable.js" />
+    <Content Include="Content\canvas4\js\components\bs-editable.js" />
+    <Content Include="Content\canvas4\js\components\bs-filestyle.js" />
+    <Content Include="Content\canvas4\js\components\bs-select.js" />
+    <Content Include="Content\canvas4\js\components\bs-switches.js" />
+    <Content Include="Content\canvas4\js\components\daterangepicker.js" />
+    <Content Include="Content\canvas4\js\components\moment.js" />
+    <Content Include="Content\canvas4\js\components\rangeslider.min.js" />
+    <Content Include="Content\canvas4\js\components\responsive-tabs.js" />
+    <Content Include="Content\canvas4\js\components\select-boxes.js" />
+    <Content Include="Content\canvas4\js\components\selectsplitter.js" />
+    <Content Include="Content\canvas4\js\components\star-rating.js" />
+    <Content Include="Content\canvas4\js\components\timepicker.js" />
+    <Content Include="Content\canvas4\js\components\typehead.js" />
+    <Content Include="Content\canvas4\js\events-data.js" />
+    <Content Include="Content\canvas4\js\functions.js" />
+    <Content Include="Content\canvas4\js\jquery.calendario.js" />
+    <Content Include="Content\canvas4\js\jquery.camera.js" />
+    <Content Include="Content\canvas4\js\jquery.elastic.js" />
+    <Content Include="Content\canvas4\js\jquery.gmap.js" />
+    <Content Include="Content\canvas4\js\jquery.js" />
+    <Content Include="Content\canvas4\js\jquery.mousewheel.min.js" />
+    <Content Include="Content\canvas4\js\jquery.nivo.js" />
+    <Content Include="Content\canvas4\js\jquery.vmap.js" />
+    <Content Include="Content\canvas4\js\plugins.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.bootstrap.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.chart.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.color.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.cookie.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.countdown.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.countto.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.dribbble.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.fitvids.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.flexslider.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.flickrfeed.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.form.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.important.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.infinitescroll.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.instagram.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.isotope.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.magnific.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.owlcarousel.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.pagetransition.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.paginate.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.parallax.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.piechart.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.superfish.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.swiper.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.tabs.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.textrotator.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.toastr.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.twitterfeed.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.validation.js" />
+    <Content Include="Content\canvas4\js\plugins\jquery.youtube.js" />
+    <Content Include="Content\canvas4\js\vmap\continents\jquery.vmap.africa.js" />
+    <Content Include="Content\canvas4\js\vmap\continents\jquery.vmap.asia.js" />
+    <Content Include="Content\canvas4\js\vmap\continents\jquery.vmap.australia.js" />
+    <Content Include="Content\canvas4\js\vmap\continents\jquery.vmap.europe.js" />
+    <Content Include="Content\canvas4\js\vmap\continents\jquery.vmap.north-america.js" />
+    <Content Include="Content\canvas4\js\vmap\continents\jquery.vmap.south-america.js" />
+    <Content Include="Content\canvas4\js\vmap\jquery.vmap.algeria.js" />
+    <Content Include="Content\canvas4\js\vmap\jquery.vmap.brazil.js" />
+    <Content Include="Content\canvas4\js\vmap\jquery.vmap.europe.js" />
+    <Content Include="Content\canvas4\js\vmap\jquery.vmap.france.js" />
+    <Content Include="Content\canvas4\js\vmap\jquery.vmap.germany.js" />
+    <Content Include="Content\canvas4\js\vmap\jquery.vmap.russia.js" />
+    <Content Include="Content\canvas4\js\vmap\jquery.vmap.sampledata.js" />
+    <Content Include="Content\canvas4\js\vmap\jquery.vmap.usa.js" />
+    <Content Include="Content\canvas4\js\vmap\jquery.vmap.world.js" />
+    <Content Include="Content\canvas4\one-page\css\colors.css" />
+    <Content Include="Content\canvas4\one-page\css\colors.php" />
+    <Content Include="Content\canvas4\one-page\css\et-line.css" />
+    <Content Include="Content\canvas4\one-page\css\et-line\et-line.svg" />
+    <Content Include="Content\canvas4\one-page\css\fonts.css" />
+    <Content Include="Content\canvas4\one-page\images\blog\1.jpg" />
+    <Content Include="Content\canvas4\one-page\images\blog\2.jpg" />
+    <Content Include="Content\canvas4\one-page\images\blog\3.jpg" />
+    <Content Include="Content\canvas4\one-page\images\blog\4.jpg" />
+    <Content Include="Content\canvas4\one-page\images\blog\5.jpg" />
+    <Content Include="Content\canvas4\one-page\images\blog\6.jpg" />
+    <Content Include="Content\canvas4\one-page\images\blog\7.jpg" />
+    <Content Include="Content\canvas4\one-page\images\canvasone%402x.png" />
+    <Content Include="Content\canvas4\one-page\images\canvasone-dark%402x.png" />
+    <Content Include="Content\canvas4\one-page\images\canvasone-dark.png" />
+    <Content Include="Content\canvas4\one-page\images\canvasone.png" />
+    <Content Include="Content\canvas4\one-page\images\devices-wireframe.png" />
+    <Content Include="Content\canvas4\one-page\images\fashion\1.jpg" />
+    <Content Include="Content\canvas4\one-page\images\fashion\2.jpg" />
+    <Content Include="Content\canvas4\one-page\images\fashion\3.jpg" />
+    <Content Include="Content\canvas4\one-page\images\fashion\4.jpg" />
+    <Content Include="Content\canvas4\one-page\images\icons\map-icon-red.png" />
+    <Content Include="Content\canvas4\one-page\images\page\1.jpg" />
+    <Content Include="Content\canvas4\one-page\images\page\3.jpg" />
+    <Content Include="Content\canvas4\one-page\images\page\4.jpg" />
+    <Content Include="Content\canvas4\one-page\images\page\5.jpg" />
+    <Content Include="Content\canvas4\one-page\images\page\chrome.png" />
+    <Content Include="Content\canvas4\one-page\images\page\iphone-slider.png" />
+    <Content Include="Content\canvas4\one-page\images\page\main.jpg" />
+    <Content Include="Content\canvas4\one-page\images\page\op-register.jpg" />
+    <Content Include="Content\canvas4\one-page\images\page\slider-1.jpg" />
+    <Content Include="Content\canvas4\one-page\images\page\slider-2.jpg" />
+    <Content Include="Content\canvas4\one-page\images\page\testimonials.jpg" />
+    <Content Include="Content\canvas4\one-page\images\portfolio\mixed\1.jpg" />
+    <Content Include="Content\canvas4\one-page\images\portfolio\mixed\10.jpg" />
+    <Content Include="Content\canvas4\one-page\images\portfolio\mixed\11.jpg" />
+    <Content Include="Content\canvas4\one-page\images\portfolio\mixed\2.jpg" />
+    <Content Include="Content\canvas4\one-page\images\portfolio\mixed\3.jpg" />
+    <Content Include="Content\canvas4\one-page\images\portfolio\mixed\4.jpg" />
+    <Content Include="Content\canvas4\one-page\images\portfolio\mixed\5.jpg" />
+    <Content Include="Content\canvas4\one-page\images\portfolio\mixed\6.jpg" />
+    <Content Include="Content\canvas4\one-page\images\portfolio\mixed\7.jpg" />
+    <Content Include="Content\canvas4\one-page\images\portfolio\mixed\8.jpg" />
+    <Content Include="Content\canvas4\one-page\images\portfolio\mixed\9.jpg" />
+    <Content Include="Content\canvas4\one-page\images\team\1.jpg" />
+    <Content Include="Content\canvas4\one-page\images\team\2.jpg" />
+    <Content Include="Content\canvas4\one-page\images\team\3.jpg" />
+    <Content Include="Content\canvas4\one-page\images\videos\1.jpg" />
+    <Content Include="Content\canvas4\one-page\images\videos\1.mp4" />
+    <Content Include="Content\canvas4\one-page\images\videos\2.jpg" />
+    <Content Include="Content\canvas4\one-page\images\videos\2.mp4" />
+    <Content Include="Content\canvas4\one-page\images\videos\3.jpg" />
+    <Content Include="Content\canvas4\one-page\images\videos\3.mp4" />
+    <Content Include="Content\canvas4\one-page\include\phpmailer\class.phpmailer.php" />
+    <Content Include="Content\canvas4\one-page\include\phpmailer\class.phpmaileroauth.php" />
+    <Content Include="Content\canvas4\one-page\include\phpmailer\class.phpmaileroauthgoogle.php" />
+    <Content Include="Content\canvas4\one-page\include\phpmailer\class.pop3.php" />
+    <Content Include="Content\canvas4\one-page\include\phpmailer\class.smtp.php" />
+    <Content Include="Content\canvas4\one-page\include\phpmailer\get_oauth_token.php" />
+    <Content Include="Content\canvas4\one-page\include\phpmailer\PHPMailerAutoload.php" />
+    <Content Include="Content\canvas4\one-page\include\sendemail.php" />
+    <Content Include="Content\canvas4\one-page\index-dark.html" />
+    <Content Include="Content\canvas4\one-page\index.html" />
+    <Content Include="Content\canvas4\one-page\onepage.css" />
+    <Content Include="Content\canvas4\one-page\op-big-text.html" />
+    <Content Include="Content\canvas4\one-page\op-browser.html" />
+    <Content Include="Content\canvas4\one-page\op-canvas-fade-slider.html" />
+    <Content Include="Content\canvas4\one-page\op-canvas-slider.html" />
+    <Content Include="Content\canvas4\one-page\op-carousel.html" />
+    <Content Include="Content\canvas4\one-page\op-chart.html" />
+    <Content Include="Content\canvas4\one-page\op-counter-2.html" />
+    <Content Include="Content\canvas4\one-page\op-counter.html" />
+    <Content Include="Content\canvas4\one-page\op-device.html" />
+    <Content Include="Content\canvas4\one-page\op-dots.html" />
+    <Content Include="Content\canvas4\one-page\op-event.html" />
+    <Content Include="Content\canvas4\one-page\op-holiday.html" />
+    <Content Include="Content\canvas4\one-page\op-html5-video-dark.html" />
+    <Content Include="Content\canvas4\one-page\op-html5-video-light.html" />
+    <Content Include="Content\canvas4\one-page\op-image-grid-video-lightbox.html" />
+    <Content Include="Content\canvas4\one-page\op-lightbox-video.html" />
+    <Content Include="Content\canvas4\one-page\op-owl-slider-video.html" />
+    <Content Include="Content\canvas4\one-page\op-owl-slider.html" />
+    <Content Include="Content\canvas4\one-page\op-parallax-dark-image-full.html" />
+    <Content Include="Content\canvas4\one-page\op-parallax-dark-image-fullwidth.html" />
+    <Content Include="Content\canvas4\one-page\op-parallax-light-image-full.html" />
+    <Content Include="Content\canvas4\one-page\op-parallax-light-image-fullwidth.html" />
+    <Content Include="Content\canvas4\one-page\op-personal.html" />
+    <Content Include="Content\canvas4\one-page\op-portfolio-side-header.html" />
+    <Content Include="Content\canvas4\one-page\op-portfolio.html" />
+    <Content Include="Content\canvas4\one-page\op-pricing.html" />
+    <Content Include="Content\canvas4\one-page\op-register-2.html" />
+    <Content Include="Content\canvas4\one-page\op-register-testimonials.html" />
+    <Content Include="Content\canvas4\one-page\op-register.html" />
+    <Content Include="Content\canvas4\one-page\op-revolution-fullscreen.html" />
+    <Content Include="Content\canvas4\one-page\op-revolution-fullwidth.html" />
+    <Content Include="Content\canvas4\one-page\op-section-2.html" />
+    <Content Include="Content\canvas4\one-page\op-section.html" />
+    <Content Include="Content\canvas4\one-page\op-side-header.html" />
+    <Content Include="Content\canvas4\one-page\op-subscription.html" />
+    <Content Include="Content\canvas4\one-page\op-tr-blank-dark.html" />
+    <Content Include="Content\canvas4\one-page\op-tr-blank.html" />
+    <Content Include="Content\canvas4\one-page\op-tr-image-dark.html" />
+    <Content Include="Content\canvas4\one-page\op-tr-image-light.html" />
+    <Content Include="Content\canvas4\one-page\op-video-event-form.html" />
+    <Content Include="Content\canvas4\one-page\op-video-event.html" />
+    <Content Include="Content\canvas4\one-page\op-video-grid-2.html" />
+    <Content Include="Content\canvas4\one-page\op-video-grid.html" />
+    <Content Include="Content\canvas4\onepage.css" />
+    <Content Include="Content\canvas4\style-import.css" />
+    <Content Include="Content\canvas4\style-rtl.css" />
+    <Content Include="Content\canvas4\style.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -4399,6 +4686,13 @@
     <Content Include="Global.asax" />
     <Content Include="images\bg.gif" />
     <Content Include="images\footer-bg.gif" />
+    <Content Include="images\homePage1.jpg" />
+    <Content Include="images\homePage2.jpg" />
+    <Content Include="images\homePage_roofCustomer.jpg" />
+    <Content Include="images\homePage_roofCustomr.jpg" />
+    <Content Include="images\homePage_roofMaterials.jpg" />
+    <Content Include="images\homePage_roofSearch.jpg" />
+    <Content Include="images\homePage_roofSearch2.jpg" />
     <Content Include="images\logo_AuthorizeNet.png" />
     <Content Include="images\logo_CreditCard.png" />
     <Content Include="images\logo_Paypal.png" />
@@ -4779,8 +5073,81 @@
     <Content Include="Assets\global\plugins\typeahead\README.md" />
     <Content Include="Assets\global\plugins\uniform\css\uniform.default.scss" />
     <Content Include="Assets\global\plugins\uniform\README.md" />
+    <Content Include="Content\canvas4\css\fonts\font-icons.eot" />
+    <Content Include="Content\canvas4\css\fonts\font-icons.ttf" />
+    <Content Include="Content\canvas4\css\fonts\font-icons.woff" />
+    <Content Include="Content\canvas4\css\fonts\lined-icons.eot" />
+    <Content Include="Content\canvas4\css\fonts\lined-icons.ttf" />
+    <Content Include="Content\canvas4\css\fonts\lined-icons.woff" />
+    <Content Include="Content\canvas4\css\fonts\Simple-Line-Icons.eot" />
+    <Content Include="Content\canvas4\css\fonts\Simple-Line-Icons.ttf" />
+    <Content Include="Content\canvas4\css\fonts\Simple-Line-Icons.woff" />
+    <Content Include="Content\canvas4\style.less" />
+    <Content Include="Content\canvas4\less\blog.less" />
+    <Content Include="Content\canvas4\less\content.less" />
+    <Content Include="Content\canvas4\less\dark.less" />
+    <Content Include="Content\canvas4\less\events.less" />
+    <Content Include="Content\canvas4\less\extras.less" />
+    <Content Include="Content\canvas4\less\footer.less" />
+    <Content Include="Content\canvas4\less\header.less" />
+    <Content Include="Content\canvas4\less\helpers.less" />
+    <Content Include="Content\canvas4\less\layouts.less" />
+    <Content Include="Content\canvas4\less\mixins.less" />
+    <Content Include="Content\canvas4\less\pagetitle.less" />
+    <Content Include="Content\canvas4\less\portfolio.less" />
+    <Content Include="Content\canvas4\less\responsive.less" />
+    <Content Include="Content\canvas4\less\shop.less" />
+    <Content Include="Content\canvas4\less\shortcodes.less" />
+    <Content Include="Content\canvas4\less\shortcodes\alerts.less" />
+    <Content Include="Content\canvas4\less\shortcodes\buttons.less" />
+    <Content Include="Content\canvas4\less\shortcodes\carousel.less" />
+    <Content Include="Content\canvas4\less\shortcodes\clients.less" />
+    <Content Include="Content\canvas4\less\shortcodes\countdown.less" />
+    <Content Include="Content\canvas4\less\shortcodes\counter-skills.less" />
+    <Content Include="Content\canvas4\less\shortcodes\dividers.less" />
+    <Content Include="Content\canvas4\less\shortcodes\faqs.less" />
+    <Content Include="Content\canvas4\less\shortcodes\feature-box.less" />
+    <Content Include="Content\canvas4\less\shortcodes\headings.less" />
+    <Content Include="Content\canvas4\less\shortcodes\misc.less" />
+    <Content Include="Content\canvas4\less\shortcodes\overlay.less" />
+    <Content Include="Content\canvas4\less\shortcodes\pricing.less" />
+    <Content Include="Content\canvas4\less\shortcodes\process-steps.less" />
+    <Content Include="Content\canvas4\less\shortcodes\promo.less" />
+    <Content Include="Content\canvas4\less\shortcodes\social-icons.less" />
+    <Content Include="Content\canvas4\less\shortcodes\styled-icons.less" />
+    <Content Include="Content\canvas4\less\shortcodes\tabs.less" />
+    <Content Include="Content\canvas4\less\shortcodes\team.less" />
+    <Content Include="Content\canvas4\less\shortcodes\testimonials.less" />
+    <Content Include="Content\canvas4\less\shortcodes\toggles-accordions.less" />
+    <Content Include="Content\canvas4\less\shortcodes\youtubebg.less" />
+    <Content Include="Content\canvas4\less\sliders.less" />
+    <Content Include="Content\canvas4\less\topbar.less" />
+    <Content Include="Content\canvas4\less\typography.less" />
+    <Content Include="Content\canvas4\less\variables.less" />
+    <Content Include="Content\canvas4\less\widgets.less" />
+    <Content Include="Content\canvas4\one-page\css\et-line\et-line.eot" />
+    <Content Include="Content\canvas4\one-page\css\et-line\et-line.ttf" />
+    <Content Include="Content\canvas4\one-page\css\et-line\et-line.woff" />
+    <Content Include="Content\canvas4\one-page\images\videos\1.webm" />
+    <Content Include="Content\canvas4\one-page\images\videos\2.webm" />
+    <Content Include="Content\canvas4\one-page\images\videos\3.webm" />
     <None Include="Properties\PublishProfiles\RooferLocator1 - Web Deploy.pubxml" />
+    <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="Scripts\angular.min.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Mdh\Framework\scripts\mdh.js" />
+    <Content Include="Scripts\angular-animate.min.js" />
+    <Content Include="Scripts\angular-sanitize.min.js" />
+    <Content Include="Scripts\angular-ui-router.min.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
+    <Content Include="Scripts\angular-ui\ui-utils-ieshiv.js" />
+    <Content Include="Scripts\angular-ui\ui-utils-ieshiv.min.js" />
+    <Content Include="Scripts\angular-ui\ui-utils.js" />
+    <Content Include="Scripts\angular-ui\ui-utils.min.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-2.2.0-vsdoc.js" />
@@ -4791,6 +5158,8 @@
     <Content Include="Scripts\jquery.blockUI.js" />
     <Content Include="Scripts\jquery-2.2.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -4822,6 +5191,7 @@
       <DependentUpon>Login.css</DependentUpon>
     </Content>
     <Content Include="Views\Customers\Index.js" />
+    <Content Include="Views\Home\PublicIndex.js" />
     <Content Include="Views\Home\index.js" />
     <Content Include="Views\Members\Email.js" />
     <Content Include="Views\Members\Detail.js" />
@@ -4914,6 +5284,8 @@
     <Content Include="Views\Members\Detail.cshtml" />
     <Content Include="Views\Members\Quote.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Home\PublicIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4942,6 +5314,9 @@
   <ItemGroup>
     <Folder Include="Assets\apps\img\" />
     <Folder Include="Assets\global\plugins\angularjs\plugins\angular-file-upload\uploads\" />
+    <Folder Include="Content\canvas4\images\portfolio\" />
+    <Folder Include="Mdh\Framework\pages\" />
+    <Folder Include="Mdh\Framework\styles\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

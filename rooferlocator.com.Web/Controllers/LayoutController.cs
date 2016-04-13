@@ -59,9 +59,10 @@ namespace rooferlocator.com.Web.Controllers
 
             if (AbpSession.UserId.HasValue)
             {
+
                 model = new UserMenuOrLoginLinkViewModel
                 {
-                    LoginInformations = AsyncHelper.RunSync(() => _sessionAppService.GetCurrentLoginInformations()),
+                    //LoginInformations = AsyncHelper.RunSync(() => _sessionAppService.GetCurrentLoginInformations()),
                     IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled,
                 };
             }

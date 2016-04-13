@@ -63,6 +63,13 @@
     <![endif]-->
 
     @Scripts.Render("~/Bundles/vendor/js/top")
+
+    <!-- SignalR scripts -->
+    <script src="http://localhost:6634/signalr/hubs"></script>
+    @*<script src="http://mydh.azurewebsites.net/signalr/hubs"></script>*@
+    @*@Html.IncludeScript("~/Abp/Framework/scripts/libs/abp.signalr.js")*@
+
+
 </head>
 <body>
 <!-- BEGIN HEADER -->
@@ -72,50 +79,6 @@
     <!-- BEGIN CONTAINER -->
     <div class="container-fluid">
         <div class="page-content page-content-popup">
-            @*<div class="page-content-fixed-header">
-                <!-- BEGIN BREADCRUMBS -->
-                <ul class="page-breadcrumb">
-                    <li>
-                        <a href="#">Dashboard</a>
-                    </li>
-                    <li>Dashboard</li>
-                </ul>
-                <!-- END BREADCRUMBS -->
-                <div class="content-header-menu">
-                    <!-- BEGIN DROPDOWN AJAX MENU -->
-                    <div class="dropdown-ajax-menu btn-group">
-                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <i class="fa fa-circle"></i>
-                            <i class="fa fa-circle"></i>
-                            <i class="fa fa-circle"></i>
-                        </button>
-                        <ul class="dropdown-menu-v2">
-                            <li>
-                                <a href="start.html">Application</a>
-                            </li>
-                            <li>
-                                <a href="start.html">Reports</a>
-                            </li>
-                            <li>
-                                <a href="start.html">Templates</a>
-                            </li>
-                            <li>
-                                <a href="start.html">Settings</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- END DROPDOWN AJAX MENU -->
-                    <!-- BEGIN MENU TOGGLER -->
-                    <button type="button" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="toggle-icon">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </span>
-                    </button>
-                    <!-- END MENU TOGGLER -->
-                </div>
-            </div>*@
             @if (role != "Customer")
             {
             <div class="page-sidebar-wrapper">
@@ -141,7 +104,7 @@
                             System.Collections.Hashtable menuItemsReports = new System.Collections.Hashtable();
                             menuItemsMembers.Add("User Management", "/members");
                             menuItemsMembers.Add("Service Management", "/members/ServicesOffered");
-                            menuItemsMembers.Add("Quote Type Management", "/members/ServicesOffered");
+                            //menuItemsMembers.Add("Quote Type Management", "/members/ServicesOffered");
                             //menuItemsMembers.Add("Operating Areas", "/members/Location");
                             //menuItemsMembers.Add("Register Subscriber", "/members/Register");
                             menuItemsTips.Add("Management", "/members/Payment");
@@ -151,9 +114,9 @@
                             menuItemsReports.Add("None at this time", "");
                             //menuItemsReports.Add("Sales", "");
                             @CustomHelpers.MainMenu(((System.Web.HttpRequestWrapper)this.Request).FilePath)
-                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "Admin", "Member Management", menuItemsMembers, "fa fa-users")
-                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "Tips", "Tips Management", menuItemsTips, "fa fa-users")
-                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "News", "News Management", menuItemsNews, "fa fa-users")
+                            @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "Admin", "Management", menuItemsMembers, "fa fa-users")
+                            @*@CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "Tips", "Tips Management", menuItemsTips, "fa fa-users")*@
+                            @*@CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "News", "News Management", menuItemsNews, "fa fa-users")*@
                             @CustomHelpers.MenuContainer(((System.Web.HttpRequestWrapper)this.Request).FilePath, "", "Reports", menuItemsReports, "fa fa-list-ul")
                         }
                         @if (role == "Member")

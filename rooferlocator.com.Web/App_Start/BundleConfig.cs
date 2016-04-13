@@ -49,12 +49,24 @@ namespace rooferlocator.com.Web
                         "~/Scripts/others/spinjs/spin.js",
                         "~/Scripts/others/spinjs/jquery.spin.js",
 
+                        "~/Scripts/angular.min.js",
+                        "~/Scripts/angular-animate.min.js",
+                        "~/Scripts/angular-sanitize.min.js",
+                        "~/Scripts/angular-ui-router.min.js",
+                        "~/Scripts/angular-ui/ui-bootstrap.min.js",
+                        "~/Scripts/angular-ui/ui-bootstrap-tpls.min.js",
+                        "~/Scripts/angular-ui/ui-utils.min.js",
+
                         "~/Abp/Framework/scripts/abp.js",
                         "~/Abp/Framework/scripts/libs/abp.jquery.js",
                         "~/Abp/Framework/scripts/libs/abp.toastr.js",
                         "~/Abp/Framework/scripts/libs/abp.blockUI.js",
                         "~/Abp/Framework/scripts/libs/abp.spin.js",
-                        "~/Abp/Framework/scripts/libs/abp.sweet-alert.js"
+                        "~/Abp/Framework/scripts/libs/abp.sweet-alert.js",
+
+                        "~/Scripts/jquery.signalR-2.2.0.min.js",
+
+                        "~/Mdh/Framework/scripts/mdh.js"
                     )
                 );
 

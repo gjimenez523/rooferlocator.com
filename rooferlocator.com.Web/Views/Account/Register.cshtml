@@ -41,168 +41,94 @@
 </script>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <!--HEADER BEGIN-->
-    <div class="row">
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
-                 style="box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);background-image: -ms-linear-gradient(top, #19447D 20%, #2080BE 100%);">
-                <a href="/Account/Login"><img src="~/images/rooferlocatorlogo.gif" /></a>
-                <span style="width:100%;text-align:center;padding-left:45px;">
-                    <a href="/Account/Login" style="text-align: center; color: white; vertical-align: bottom;">Home</a>
-                    <span style="text-align: center; color: white; vertical-align: bottom;">&nbsp;|&nbsp;</span>
-                    <a href="#AboutView" style="text-align: center; color: white; vertical-align: bottom;" onclick="showInfo('AboutView');">About Us</a>
-                    <span style="text-align: center; color: white; vertical-align: bottom;">&nbsp;|&nbsp;</span>
-                    <a href="#ContactView" style="text-align: center; color: white; vertical-align: bottom;" onclick="showInfo('ContactView');">Contact Us</a>
-                </span>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
-        </div>
-    </div>
-    <!--HEADER END-->
     <!--CONTENT/MAIN BEGIN-->
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
-                 style="padding-top: 15px; box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:7px;padding-right:7px;padding-top:5px;text-align:center;">
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
-                        <div class="well bs-component col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <form class="form-horizontal" action="@(Url.Action("Register","Account"))" method="POST">
-                                <fieldset>
-                                    <legend>Register</legend>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                     style="padding-left:7px;padding-right:7px;padding-top:10%;text-align:center;background-color:black;opacity:.70; border-radius:5px;max-width:500px;">
+                    
+                        <form class="form-horizontal" action="@(Url.Action("Register","Account"))" method="POST">
+                            <fieldset>
+                                <legend>Register <small>(part 1 of 3)</small></legend>
 
-                                    @if (@ViewBag.ErrorMessage != null)
+                                @if (@ViewBag.ErrorMessage != null)
                                     {
-                                        <div class="alert alert-danger">
-                                            <i class="fa fa-warning"></i> @ViewBag.ErrorMessage
-                                        </div>
+                                    <div class="alert alert-danger">
+                                        <i class="fa fa-warning"></i> @ViewBag.ErrorMessage
+                                    </div>
                                     }
 
-                                    <input type="hidden" name="IsExternalLogin" value="@Model.IsExternalLogin.ToString()" />
-
-                                    <div class="form-group">
-                                        <div class="form-body col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: right; padding-top: 5px; padding-right: 20px;width:25%;">
-                                            <label><b>First Name</b></label>
-                                        </div>
-                                        <div class="form-body col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                            <input type="text" class="form-control" name="Name"
-                                                   value="@Model.Name" placeholder="@L("First Name")"
-                                                   required maxlength="@rooferlocator.com.Users.User.MaxNameLength">
-                                        </div>
+                                <input type="hidden" name="IsExternalLogin" value="@Model.IsExternalLogin.ToString()" />
+                                
+                                <div class="form-group">
+                                    <div style="padding:0px;margin:0px;">
+                                        <label><b>First Name</b></label>
                                     </div>
-
-                                    <div class="form-group">
-                                        <div class="form-body col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: right; padding-top: 5px; padding-right: 20px;width:25%;">
-                                            <label><b>Last Name</b></label>
-                                        </div>
-                                        <div class="form-body col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                            <input type="text" class="form-control" name="Surname"
-                                                   value="@Model.Surname" placeholder="@L("Last Name")"
-                                                   required maxlength="@rooferlocator.com.Users.User.MaxSurnameLength">
-                                        </div>
+                                    <div class="form-body ">
+                                        <input type="text" class="form-control" name="Name"
+                                               value="@Model.Name" placeholder="Enter first name here"
+                                               required maxlength="@rooferlocator.com.Users.User.MaxNameLength">
                                     </div>
+                                </div>
 
-                                    <div class="form-group">
-                                        <div class="form-body col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: right; padding-top: 5px; padding-right: 20px;width:25%;">
-                                            <label><b>Email</b></label>
-                                        </div>
-                                        <div class="form-body col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                            <input type="email" class="form-control" name="EmailAddress"
-                                                   value="@Model.EmailAddress" placeholder="@L("Email Address")"
-                                                   required maxlength="@rooferlocator.com.Users.User.MaxEmailAddressLength">
-                                        </div>
+                                <div>
+                                    <div style="padding:0px;margin:0px;">
+                                        <label><b>Last Name</b></label>
                                     </div>
+                                    <div class="form-body ">
+                                        <input type="text" class="form-control" name="Surname"
+                                               value="@Model.Surname" placeholder="Enter last name here"
+                                               required maxlength="@rooferlocator.com.Users.User.MaxSurnameLength">
+                                    </div>
+                                </div>
 
-                                    <div class="form-group">
-                                        <div class="form-body col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: right; padding-top: 5px; padding-right: 20px;width:25%;">
-                                            <label><b>Username</b></label>
-                                        </div>
-                                        <div class="form-body col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                            <input type="text" class="form-control" name="UserName"
-                                                   value="@Model.UserName" placeholder="@L("UserName")"
-                                                   required maxlength="@rooferlocator.com.Users.User.MaxUserNameLength">
-                                        </div>
+                                <div>
+                                    <div style="padding:0px;margin:0px;">
+                                        <label><b>Email</b></label>
                                     </div>
+                                    <div class="form-body ">
+                                        <input type="email" class="form-control" name="EmailAddress"
+                                               value="@Model.EmailAddress" placeholder="Enter email address here"
+                                               required maxlength="@rooferlocator.com.Users.User.MaxEmailAddressLength">
+                                    </div>
+                                </div>
 
-                                    <div class="form-group">
-                                        <div class="form-body col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: right; padding-top: 5px; padding-right: 20px;width:25%;">
-                                            <label><b>Password</b></label>
-                                        </div>
-                                        <div class="form-body col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                            <input type="password" class="form-control" name="Password"
-                                                   placeholder="@L("Password")" required
-                                                   maxlength="@rooferlocator.com.Users.User.MaxPlainPasswordLength">
-                                        </div>
+                                <div>
+                                    <div style="padding:0px;margin:0px;">
+                                        <label><b>Username</b></label>
                                     </div>
+                                    <div class="form-body ">
+                                        <input type="text" class="form-control" name="UserName"
+                                               value="@Model.UserName" placeholder="Enter username here"
+                                               required maxlength="@rooferlocator.com.Users.User.MaxUserNameLength">
+                                    </div>
+                                </div>
 
-                                    <div class="form-group">
-                                        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
-                                            <button type="submit" id="RegisterButton" class="btn btn-primary"><i class="fa fa-sign-in"></i> Register</button>
-                                        </div>
+                                <div>
+                                    <div style="padding:0px;margin:0px;">
+                                        <label><b>Password</b></label>
                                     </div>
-                                </fieldset>
-                            </form>
-                        </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                                    <div class="form-body ">
+                                        <input type="password" class="form-control" name="Password"
+                                               placeholder="Enter password here" required
+                                               maxlength="@rooferlocator.com.Users.User.MaxPlainPasswordLength">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+
+                                        <button id="RegisterButton" type="submit" class="button button-border button-light button-circle" data-scrollto="#section-works" data-easing="easeInOutExpo" data-speed="1250" data-offset="70">Register</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
                 </div>
+                <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
         </div>
     </div>
     <!--CONTENT/MAIN END-->
-    <!--ABOUT US END-->
-    <div id="AboutView" style="display:none;" class="row">
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
-                 style="padding-top: 10px;padding-left:5px; padding-right:5px; text-align: center;box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
-                @Html.Partial("AboutView")
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-        </div>
-    </div>
-    <!--ABOUT US END-->
-    <!--CONTACT US BEGIN-->
-    <div id="ContactView" style="display:none;" class="row">
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
-                 style="padding-top: 10px;padding-left:5px; padding-right:5px; text-align: center;box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
-                @Html.Partial("ContactView")
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-        </div>
-    </div>
-    <!--CONTACT US END-->
-    <!--TERMS BEGIN-->
-    <div id="TermsView" style="display:none;" class="row">
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
-                 style="padding-top: 10px;padding-left:5px; padding-right:5px; text-align: center;box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
-                @Html.Partial("TermsView")
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-        </div>
-    </div>
-    <!--TERMS END-->
-    <!--FOOTER BEGIN-->
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
-                 style="padding-top: 15px; box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
-                <div style="background-image:url('/images/footer-bg.gif'); background-repeat:repeat-x;color:white;padding-top:10px;padding-bottom:10px;">
-                    <a href="@Url.Action("Register")" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;">Register</a> |
-                    <a href="#terms" onclick="showInfo('TermsView');" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;">Terms</a> |
-                    <a href="#Login" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;" onclick="showLogin();">Login</a> |
-                    <a href="#Contact" onclick="showInfo('ContactView');" style=" color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;">Contact</a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-        </div>
-    </div>
-    <!--FOOTER END-->
 </div>

@@ -27,5 +27,24 @@ namespace rooferlocator.com.EntityFramework.Repositories.Common
                 .Where(member => member.UserRefId == memberId)
                 .ToList<Member>();
         }
+
+        public List<MemberVisits> GetMemberVisits()
+        {
+            using (var context = new comDbContext())
+            {
+                try
+                {
+                    var result = context.Database
+                    .SqlQuery<MemberVisits>("GetVisits")
+                    .ToList();
+
+                    return result;
+                }
+                catch (System.Exception exc)
+                {
+                    throw exc;
+                }
+            }
+        }
     }
 }

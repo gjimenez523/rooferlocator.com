@@ -23,40 +23,64 @@ namespace rooferlocator.com.Common
         {
         }
 
+        public object CallCreditsHeroServiceSecured<T>(object results, object input, string servicePostFix)
+        {
+            return CallCreditsHeroService<T>(
+                results, input, servicePostFix,
+                System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefixSsl"]);
+        }
+
         public object CallCreditsHeroService<T>(object results, object input, string servicePostFix)
         {
-            var creditsHeroFormat = String.Format("{0}{1}",
-                System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefix"],
-                servicePostFix);
-            var timelineUrl = string.Format(creditsHeroFormat);
+            return CallCreditsHeroService<T>(
+                results, input, servicePostFix,
+                System.Configuration.ConfigurationSettings.AppSettings["creditsHero:WebServiceApiPrefix"]);
+        }
 
-            //Serialize object to JSON
-            MemoryStream jsonStream = new MemoryStream();
-
-            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(input);
-            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
-
-            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
-            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
-            creditsHeroRequest.ContentLength = byteArray.Length;
-            creditsHeroRequest.Method = "POST";
-            Stream newStream = creditsHeroRequest.GetRequestStream();
-            newStream.Write(byteArray, 0, byteArray.Length);
-            newStream.Close();
-            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
-            using (timeLineResponse)
+        public object CallCreditsHeroService<T>(object results, object input, string servicePostFix, string servicePreFix)
+        {
+            try
             {
-                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
-                {
-                    var serviceResults = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+                var creditsHeroFormat = String.Format("{0}{1}",
+                    servicePreFix,
+                    servicePostFix);
+                var timelineUrl = string.Format(creditsHeroFormat);
 
-                    Newtonsoft.Json.Linq.JObject jObject2 = serviceResults.result;
-                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(jObject2.ToString());
-                    results = itemResult;
+                //Serialize object to JSON
+                MemoryStream jsonStream = new MemoryStream();
+
+                string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+                byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+
+                HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
+                creditsHeroRequest.ContentType = "application/json;charset=utf-8";
+                creditsHeroRequest.ContentLength = byteArray.Length;
+                creditsHeroRequest.Method = "POST";
+                Stream newStream = creditsHeroRequest.GetRequestStream();
+                newStream.Write(byteArray, 0, byteArray.Length);
+                newStream.Close();
+                WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
+                using (timeLineResponse)
+                {
+                    using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
+                    {
+                        var serviceResults = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+
+                        Newtonsoft.Json.Linq.JObject jObject2 = serviceResults.result;
+                        if (jObject2 != null)
+                        {
+                            var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(jObject2.ToString());
+                            results = itemResult;
+                            return results;
+                        }
+                    }
                 }
             }
-            return results;
+            catch (System.Exception exc)
+            {
+                throw exc;
+            }
+            return null;
         }
-        
     }
 }

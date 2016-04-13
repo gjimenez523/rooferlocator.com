@@ -1,0 +1,164 @@
+﻿@model rooferlocator.com.Web.Models.Account.LoginFormViewModel
+@using System.Threading
+@using System.Web.Optimization
+@using System.Security.Claims
+@using Abp.Web.Mvc.Extensions
+@section Scripts
+{
+    @Html.IncludeScript("~/Views/Home/PublicIndex.js")
+}
+@{
+//var identity = (ClaimsIdentity)User.Identity;
+//IEnumerable<Claim> claims2 = identity.Claims;
+//var role = identity.FindFirst(ClaimTypes.Role).Value;
+    
+}
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <!--CONTENT/MAIN BEGIN-->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+                <!--SEARCH BEGIN-->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-align" style="padding-top:10%;background-color:black;opacity:.70; border-radius:5px;max-width:500px;">
+                    <form id="InquiryForm" action="@(Url.Action("Inquiry", "Account"))" method="POST">
+                        <div><label>Type of Roof:</label></div>
+                        <div>
+                            <select id="RoofTypeValues" name="RoofTypeValues" style="font-size:12pt;color:black;border-radius:5px;margin:2px;padding:5px;">
+                                <option value="-2">Loading Roof Types...</option>
+                            </select>
+                        </div>
+                        <div><label>Type of Service:</label></div>
+                        <div>
+                            <select id="TypeOfService" name="TypeOfService" style="font-size:12pt;color:black;border-radius:5px;margin:2px;padding:5px;">
+                                <option value="-2">Loading Service Types...</option>
+                            </select>
+                        </div>
+                        <div><label>Time of Repair:</label></div>
+                        <div>
+                            <select name="TimeOfRepairValues" style="font-size:12pt;color:black;border-radius:5px;margin:2px;padding:5px;">
+                                <option value="">Select</option>
+                                <option value="Less than 1 month">
+                                    Less than 1 month
+                                </option>
+                                <option value="2-3 months">
+                                    2-3 months
+                                </option>
+                                <option value="4-6 months">
+                                    4-6 months
+                                </option>
+                                <option value="More than 6 months">
+                                    More than 6 months
+                                </option>
+                            </select>
+                        </div>
+                        <div><label>State:</label></div>
+                        <div>
+                            <select name="StateValues" size="1" id="StateValues" style="font-size:12pt;color:black;border-radius:5px;margin:2px;padding:5px;">
+                                <option value="">
+                                    Select State
+                                </option>
+                                <option value='Alabama'>Alabama</option>
+                                <option value='Alaska'>Alaska</option>
+                                <option value='Arizona'>Arizona</option>
+                                <option value='Arkansas'>Arkansas</option>
+                                <option value='California'>California</option>
+                                <option value='Colorado'>Colorado</option>
+                                <option value='Connecticut'>Connecticut</option>
+                                <option value='Delaware'>Delaware</option>
+                                <option value='District of Columbia'>District of Columbia</option>
+                                <option value='Florida'>Florida</option>
+                                <option value='Georgia'>Georgia</option>
+                                <option value='Hawaii'>Hawaii</option>
+                                <option value='Idaho'>Idaho</option>
+                                <option value='Illinois'>Illinois</option>
+                                <option value='Indiana'>Indiana</option>
+                                <option value='Iowa'>Iowa</option>
+                                <option value='Kansas'>Kansas</option>
+                                <option value='Kentucky'>Kentucky</option>
+                                <option value='Louisiana'>Louisiana</option>
+                                <option value='Maine'>Maine</option>
+                                <option value='Maryland'>Maryland</option>
+                                <option value='Massachusetts'>Massachusetts</option>
+                                <option value='Michigan'>Michigan</option>
+                                <option value='Minnesota'>Minnesota</option>
+                                <option value='Mississippi'>Mississippi</option>
+                                <option value='Missouri'>Missouri</option>
+                                <option value='Montana'>Montana</option>
+                                <option value='Nebraska'>Nebraska</option>
+                                <option value='Nevada'>Nevada</option>
+                                <option value='New Hampshire'>New Hampshire</option>
+                                <option value='New Jersey'>New Jersey</option>
+                                <option value='New Mexico'>New Mexico</option>
+                                <option value='New York'>New York</option>
+                                <option value='North Carolina'>North Carolina</option>
+                                <option value='North Dakota'>North Dakota</option>
+                                <option value='Ohio'>Ohio</option>
+                                <option value='Oklahoma'>Oklahoma</option>
+                                <option value='Oregon'>Oregon</option>
+                                <option value='Pennsylvania'>Pennsylvania</option>
+                                <option value='Rhode Island'>Rhode Island</option>
+                                <option value='South Carolina'>South Carolina</option>
+                                <option value='South Dakota'>South Dakota</option>
+                                <option value='Tennessee'>Tennessee</option>
+                                <option value='Texas'>Texas</option>
+                                <option value='Utah'>Utah</option>
+                                <option value='Vermont'>Vermont</option>
+                                <option value='Virginia'>Virginia</option>
+                                <option value='Washington'>Washington</option>
+                                <option value='West Virginia'>West Virginia</option>
+                                <option value='Wisconsin'>Wisconsin</option>
+                                <option value='Wyoming'>Wyoming</option>
+                            </select>
+                        </div>
+                        <div><label>City:</label></div>
+                        <div>
+                            <select id="City" name="City" style="font-size:12pt;color:black;border-radius:5px;margin:2px;padding:5px;"></select>
+                        </div>
+                        <button id="SearchButton" type="submit" class="button button-border button-light button-circle" data-scrollto="#section-works" data-easing="easeInOutExpo" data-speed="1250" data-offset="70">Find Roofers</button>
+                    </form>
+                </div>
+                <!--SEARCH END-->
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+        </div>
+    </div>
+</div>
+<!--CONTENT/MAIN END-->
+
+<!--INQUIRY REQUEST BEGIN-->
+@if (Model != null)
+{
+    if (Model.InquiryResults != null && Model.InquiryResults.InquiryId != 0)
+    {
+    <div id="InquiryView" class="row" style="display:block;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
+                 style="text-align: center;box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
+                @Html.Partial("CustomerRequest", Model.InquiryResults)
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+        </div>
+    </div>
+    }
+}
+<!--INQUIRY REQUEST END-->
+<!--SEND REQUEST BEGIN-->
+@if (Model != null)
+{
+    if (Model.RequestResults != null && Model.RequestResults.Id != 0)
+    {
+    <div id="RequestView" class="row" style="display:block;">
+        <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
+             style="text-align: center;box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
+            @Html.Partial("CustomerRequestResult", Model.RequestResults)
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+    </div>
+    }
+}
+
+

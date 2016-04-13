@@ -1,18 +1,25 @@
 ﻿@using Abp.Web.Mvc.Extensions
 
 @model rooferlocator.com.Web.Models.Member.MemberPaymentViewModel
+
 @section scripts
 {
-@Html.IncludeScript("~/Views/Members/Payment.js")
+    @Html.IncludeScript("~/Views/Members/Payment.js")
 }
-    
+    <!--SCRIPT: Stripe Payment Gateway-->
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
     <script>
         //Need to get the CreditsHero CompanyId for RooferLocator
         chCompanyId = '@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"];'
+
+        // This identifies your website in the createToken call below
+        //NOTE THE KEY BELOW NEEDS TO BE REPLACED WITH THE LIVE KEY
+        Stripe.setPublishableKey('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
     </script>
 
     <input type="hidden" id="subscriberId" name="subscriberId" value="" />
-@using (Html.BeginForm("PurchaseCredits", "Members", FormMethod.Post, null))
+@using (Html.BeginForm("PurchaseCredits", "Members", FormMethod.Post, new { id = "frmPayment" }))
 {
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
          style="background-color:white;border-radius:5px;padding:10px;margin:10px;">
@@ -67,7 +74,7 @@
 
                         <div class="row" style="text-align:center;">
                             <img src="/images/logo_CreditCard.png" class="ui-button btn-primary" data-toggle="modal"
-                                    data-target="#authorizeNet" />
+                                    data-target="#stripe" />
                             <hr style="color:gray;" />
                             <img src="~/images/logo_Paypal.png" class="ui-button btn-primary" data-toggle="modal"
                                     data-target="#paypal" />
@@ -80,6 +87,75 @@
 
 
         <!--Load payment gateway forms-->
+        <!-- BEGIN:STRIPE PAYMENT GATEWAY-->
+        <div class="modal fade" id="stripe">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <img src="/images/logo_CreditCard.png" />
+                    </div>
+
+                    <span class="payment-errors"></span>
+
+                    <div class="modal-body  col-lg-12 col-md-12 col-sm-12 col-xs-1" id="stripeNetBody">
+                        <input type="hidden" id="txtTransactionType" name="txtTransactionType" value="Stripe" />
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for=" txtAmount">Amount</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtAmount" name="txtStripeAmount"
+                                   placeholder="Amount" readonly
+                                   ng-model="vm.paymentGateway.amount" />
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for="txtCardNumber">Credit Card Number</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtCardNumber" name="txtStripeCardNumber"
+                                   placeholder="Credit Card Number"
+                                   ng-model="vm.paymentGateway.cardNumber"
+                                   data-stripe="number" />
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for="txtExpirationDate">Expiration Date</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtExpirationMonth" name="txtStripeExpirationMonth"
+                                   placeholder="Month"
+                                   size="2"
+                                   ng-model="vm.paymentGateway.expirationYear"
+                                   data-stripe="exp-month" />
+                            <input type="text" class="form-control" id="txtExpirationYear" name="txtStripeExpirationYear"
+                                   placeholder="Year"
+                                   size="4"
+                                   ng-model="vm.paymentGateway.expirationYear" 
+                                   data-stripe="exp-year"/>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <label for="txtCardCode">CVV Code</label>
+                        </div>
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                            <input type="text" class="form-control" id="txtCardCode" name="txtStripeCardCode"
+                                   placeholder="CVV Code"
+                                   ng-model="vm.paymentGateway.cardCode" 
+                                   data-stripe="cvc"/>
+                        </div>
+                    </div>
+                    <div class="modal-body" id="stripeResponse">
+
+                    </div>
+
+                    <div id="stripeFooter" class="modal-footer" style="border-top:0px;">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Make Payment</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- END:STRIPE PAYMENT GATEWAY-->
+
+        <!-- BEGIN:AUTHORIZE.NET PAYMENT GATEWAY-->
         <div class="modal fade" id="authorizeNet">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -134,7 +210,9 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+        <!-- END:AUTHORIZE.NET PAYMENT GATEWAY-->
 
+        <!-- BEGIN:PAYPAL PAYMENT GATEWAY-->
         <div class="modal fade" id="paypal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -156,6 +234,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+        <!-- END:PAYPAL PAYMENT GATEWAY-->
 
     </div>
 }

@@ -16,7 +16,15 @@
         
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
             <div class="row" style="text-align:center;">
-                <h3><strong>Send a quote to @Model.SubscriberRequestDetails[0].RequestFullName</strong></h3>
+                <h3><strong>Send a quote to 
+                    @{
+                        var firstName = Model.SubscriberRequestDetails[0].RequestFullName.Split(' ')[0];
+                        var lastName = Model.SubscriberRequestDetails[0].RequestFullName.Split(' ')[Model.SubscriberRequestDetails[0].RequestFullName.Split(' ').Length - 1];
+                        var lastNameAbbrev = lastName.Substring(0, 1);
+                    }
+                    @firstName
+                    @lastNameAbbrev
+                    </strong></h3>
             </div>
             <div class="container">
                 <div class="portlet box blue">
@@ -28,7 +36,7 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <strong><h4>@Model.SubscriberRequestDetails[0].MemberFullName</h4></strong>
-                                RlCompany.Name<br />
+                                @*RlCompany.Name*@<br />
                                 @Model.SubscriberRequestDetails[0].MemberEmail <br />
                                 @Model.SubscriberRequestDetails[0].MemberSmsNumber <br />
                             </div>
@@ -66,7 +74,8 @@
                             </div>
                             <div class="row" style="text-align:center;">
                                 <button class="btn blue" type="submit">
-                                    Send Your Quote to @Model.SubscriberRequestDetails[0].RequestFullName
+                                    Send Your Quote to @firstName
+                                    @lastNameAbbrev
                                 </button>
                             </div>
                         }
@@ -90,7 +99,8 @@
             <div id="rowRequestHeader" class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
                     <div class="row"><i class="fa fa-5x fa-user "></i></div>
-                    <div class="row"><strong><h2>@Model.SubscriberRequestDetails[0].RequestFullName</h2></strong></div>
+                    <div class="row"><strong><h2>@firstName
+                    @lastNameAbbrev</h2></strong></div>
                 </div>
                 <div class="row">
                     <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"></div>

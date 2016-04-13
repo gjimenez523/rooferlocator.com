@@ -66,4 +66,13 @@ namespace rooferlocator.com.Common
 
         public MembersServiceType() { }
     }
+
+    public class MemberVisits
+    {
+        public int VisitMonth { get; set; }
+        public int VisitDay { get; set; }
+        public int VisitYear { get; set; }
+        public int ReturnVisits { get; set; }
+        public int NewVisits { get; set; }
+    }
 }

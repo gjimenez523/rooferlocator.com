@@ -14,6 +14,7 @@ using CreditsHero.Messaging.Requests.Dtos;
 using System.IO;
 using System.Net;
 using CreditsHero.Subscribers.Dtos.PaymentGatewayDtos;
+using rooferlocator.com.Common.Members.Dtos;
 
 namespace rooferlocator.com.Common.Members
 {
@@ -133,6 +134,16 @@ namespace rooferlocator.com.Common.Members
                 "api/services/app/Subscriber/GetSubscriber");
         }
 
+        public GetMemberVisitsOutput GetMemberVisits()
+        {
+            var resultVisits = _memberRepository.GetMemberVisits();
+
+            return new Dtos.GetMemberVisitsOutput
+            {
+                MemberVisits = Mapper.Map<List<Dtos.MemberVisitDto>>(resultVisits)
+            };
+        }
+
         public CreditsHero.Subscribers.Dtos.SubscribersInquiriesDto GetMemberInquiries(GetSubscribersInput input)
         {
             CreditsHero.Subscribers.Dtos.SubscribersInquiriesDto results = new CreditsHero.Subscribers.Dtos.SubscribersInquiriesDto();
@@ -167,6 +178,27 @@ namespace rooferlocator.com.Common.Members
                 "api/services/app/Quotes/GetSubscriberQuotesByStatus");
         }
 
+        public GetInquiryResults MakeInquiry(GetInquiryInput input)
+        {
+            GetInquiryResults results = new GetInquiryResults();
+            return (GetInquiryResults)_creditsHeroConnect.CallCreditsHeroService<GetInquiryResults>(results, input,
+                "api/services/app/Inquiry/MakeInquiry");
+        }
+
+        public GetRequestsExtOutput CreateRequestExt(CreateRequestsExtInput input)
+        {
+            GetRequestsExtOutput results = new GetRequestsExtOutput();
+            return (GetRequestsExtOutput)_creditsHeroConnect.CallCreditsHeroService<GetRequestsExtOutput>(results, input,
+                "api/services/app/Requests/CreateRequestsExt");
+        }
+
+        public RequestsDto CreateRequest(CreateRequestsInput input)
+        {
+            RequestsDto results = new RequestsDto();
+            return (RequestsDto)_creditsHeroConnect.CallCreditsHeroService<RequestsDto>(results, input,
+                "api/services/app/Requests/CreateRequests");
+        }
+
         public SubscribersCreditsDto GetMemberCredits(GetSubscribersInput input)
         {
             SubscribersCreditsDto results = new SubscribersCreditsDto();
@@ -186,6 +218,12 @@ namespace rooferlocator.com.Common.Members
             PaymentResponseDto results = new PaymentResponseDto();
             return (PaymentResponseDto)_creditsHeroConnect.CallCreditsHeroService<PaymentResponseDto>(results, input,
                 "api/services/app/Susbcribers/MakePaypalPurchase");
+        }
+        public PaymentResponseDto MakePayment(PaymentStripeDto input)
+        {
+            PaymentResponseDto results = new PaymentResponseDto();
+            return (PaymentResponseDto)_creditsHeroConnect.CallCreditsHeroService<PaymentResponseDto>(results, input,
+                "api/services/app/Subscriber/MakeStripePurchase");
         }
 
         public GetQuotesResults SendQuote(GetQuotesInput input)
@@ -273,11 +311,25 @@ namespace rooferlocator.com.Common.Members
                 "api/services/app/Criteria/AddCriteriaValue");
         }
 
+        public CriteriaValuesDto UpdateCriteriaValue(CreateCriteriaValuesInput input)
+        {
+            CriteriaValuesDto results = new CriteriaValuesDto();
+            return (CriteriaValuesDto)_creditsHeroConnect.CallCreditsHeroService<CriteriaValuesDto>(results, input,
+                "api/services/app/Criteria/UpdateCriteriaValue");
+        }
+
         public CriteriaDto AddCriteria(CreateCriteriaInput input)
         {
             CriteriaDto results = new CriteriaDto();
             return (CriteriaDto)_creditsHeroConnect.CallCreditsHeroService<CriteriaDto>(results, input,
                 "api/services/app/Criteria/CreateCriteria");
+        }
+
+        public void UpdateSubscriberRequestState(CreateSubscriberRequestStateInput input)
+        {
+            object results = new object();
+            _creditsHeroConnect.CallCreditsHeroService<object>(results, input,
+                "api/services/app/Subscriber/UpdateSubscriberRequestState");
         }
     }
 }

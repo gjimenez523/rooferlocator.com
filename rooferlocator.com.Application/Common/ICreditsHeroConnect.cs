@@ -7,5 +7,6 @@ namespace rooferlocator.com.Common
     public interface ICreditsHeroConnect : ITransientDependency
     {
         object CallCreditsHeroService<T>(object results, object input, string servicePostFix);
+        object CallCreditsHeroServiceSecured<T>(object results, object input, string servicePostFix);
     }
 }

@@ -7,5 +7,6 @@ namespace rooferlocator.com.Common
     {
         List<Member> GetMembersWithCompany();
         List<Member> GetMembersWithCompany(int memberId);
+        List<MemberVisits> GetMemberVisits();
     }
 }

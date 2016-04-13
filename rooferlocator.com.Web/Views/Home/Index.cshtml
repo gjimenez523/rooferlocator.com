@@ -16,7 +16,7 @@
 }
 
 <div class="portlet box">
-    <div class="portlet-body">
+    <div id="ContentArea" class="portlet-body">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-10">
                 @if (role == "Admin")
@@ -141,6 +141,10 @@
                                             }
                                             else
                                             {
+                                                var firstName = item.RequestorName.Split(' ')[0];
+                                                var lastName = item.RequestorName.Split(' ')[item.RequestorName.Split(' ').Length - 1];
+                                                var lastNameAbbrev = lastName.Substring(0, 1);
+
                                                 criteriaList += criteriaListRequestBegin + criteriaListRequestList + criteriaListRequestEnd;
                                                 criteriaListRequestBegin = "";
                                                 criteriaListRequestList = "";
@@ -148,10 +152,13 @@
 
                                                 criteriaListRequestBegin += "   <div class='row static-info' style='border-bottom:1px solid gainsboro;'>";
                                                 criteriaListRequestBegin += "               <div class='col-md-6 name'><strong><h4>";
-                                                criteriaListRequestBegin += item.RequestorName + "</h4></strong>";
+                                                criteriaListRequestBegin += firstName + " " + lastNameAbbrev + "</h4></strong>";
                                                 criteriaListRequestList += "<h6>" + item.CriteriaValueName + "</h6>";
                                                 criteriaListRequestEnd += "               </div>";
-                                                criteriaListRequestEnd += "               <div class='col-md-6' style='text-align:right;'>";
+                                                criteriaListRequestEnd += "               <div class='col-md-3' style='text-align:right;'>";
+                                                criteriaListRequestEnd += "                   <button class='btn red' type='submit' id='btnPass' name='PassRequestId' value='" + item.RequestId + "'> <i class='fa fa-close'></i> Pass</button>";
+                                                criteriaListRequestEnd += "               </div>";
+                                                criteriaListRequestEnd += "               <div class='col-md-3' style='text-align:right;'>";
                                                 criteriaListRequestEnd += "                   <button class='btn blue' type='submit' id='btnQuote' name='RequestId' value='" + item.RequestId + "'> <i class='fa reload'></i> Quote</button>";
                                                 criteriaListRequestEnd += "               </div>";
                                                 criteriaListRequestEnd += "   </div>";
@@ -253,6 +260,121 @@
                     </div>
                 </div>
             </div>
-        }
+                                                }
+                                                else
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                            <div class="portlet light bordered">
+                                                                <div class="portlet-title">
+                                                                    <div class="caption">
+                                                                        <i class="icon-bar-chart font-green"></i>
+                                                                        <span class="caption-subject bold uppercase">Site Visits</span>
+                                                                        <span class="caption-helper">daily stats...</span>
+                                                                    </div>
+                                                                    <div class="actions">
+                                                                        @*<div class="btn-group btn-group-devided" data-toggle="buttons">
+                                                                                <label class="btn red btn-outline btn-circle btn-sm active">
+                                                                                    <input name="options" class="toggle" id="option1" type="radio">New
+                                                                                </label>
+                                                                                <label class="btn red btn-outline btn-circle btn-sm">
+                                                                                    <input name="options" class="toggle" id="option2" type="radio">Returning
+                                                                                </label>
+                                                                            </div>*@
+                                                                    </div>
+                                                                </div>
+                                                                <div class="portlet-body">
+                                                                    <div id="site_statistics_loading" style="display: none;">
+                                                                        <img alt="loading" src="../assets/global/img/loading.gif">
+                                                                    </div>
+                                                                    <div class="display-none" id="site_statistics_content" style="display: block;">
+                                                                        @*<div class="chart" id="chart_2" style="padding: 0px; position: relative;"> <canvas width="1018" height="269" class="flot-base" style="left: 0px; top: 0px; width: 1132px; height: 300px; position: absolute; direction: ltr;"></canvas><div class="flot-text" style="left: 0px; top: 0px; right: 0px; bottom: 0px; color: rgb(84, 84, 84); font-size: smaller; position: absolute;"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="left: 0px; top: 0px; right: 0px; bottom: 0px; display: block; position: absolute;"><div class="flot-tick-label tickLabel" style="left: 63px; top: 280px; text-align: center; position: absolute; max-width: 70px;">2</div><div class="flot-tick-label tickLabel" style="left: 138px; top: 280px; text-align: center; position: absolute; max-width: 70px;">4</div><div class="flot-tick-label tickLabel" style="left: 214px; top: 280px; text-align: center; position: absolute; max-width: 70px;">6</div><div class="flot-tick-label tickLabel" style="left: 289px; top: 280px; text-align: center; position: absolute; max-width: 70px;">8</div><div class="flot-tick-label tickLabel" style="left: 361px; top: 280px; text-align: center; position: absolute; max-width: 70px;">10</div><div class="flot-tick-label tickLabel" style="left: 437px; top: 280px; text-align: center; position: absolute; max-width: 70px;">12</div><div class="flot-tick-label tickLabel" style="left: 512px; top: 280px; text-align: center; position: absolute; max-width: 70px;">14</div><div class="flot-tick-label tickLabel" style="left: 588px; top: 280px; text-align: center; position: absolute; max-width: 70px;">16</div><div class="flot-tick-label tickLabel" style="left: 663px; top: 280px; text-align: center; position: absolute; max-width: 70px;">18</div><div class="flot-tick-label tickLabel" style="left: 739px; top: 280px; text-align: center; position: absolute; max-width: 70px;">20</div><div class="flot-tick-label tickLabel" style="left: 814px; top: 280px; text-align: center; position: absolute; max-width: 70px;">22</div><div class="flot-tick-label tickLabel" style="left: 890px; top: 280px; text-align: center; position: absolute; max-width: 70px;">24</div><div class="flot-tick-label tickLabel" style="left: 965px; top: 280px; text-align: center; position: absolute; max-width: 70px;">26</div><div class="flot-tick-label tickLabel" style="left: 1041px; top: 280px; text-align: center; position: absolute; max-width: 70px;">28</div><div class="flot-tick-label tickLabel" style="left: 1117px; top: 280px; text-align: center; position: absolute; max-width: 70px;">30</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="left: 0px; top: 0px; right: 0px; bottom: 0px; display: block; position: absolute;"><div class="flot-tick-label tickLabel" style="left: 16px; top: 266px; text-align: right; position: absolute;">0</div><div class="flot-tick-label tickLabel" style="left: 9px; top: 245px; text-align: right; position: absolute;">10</div><div class="flot-tick-label tickLabel" style="left: 9px; top: 225px; text-align: right; position: absolute;">20</div><div class="flot-tick-label tickLabel" style="left: 9px; top: 204px; text-align: right; position: absolute;">30</div><div class="flot-tick-label tickLabel" style="left: 9px; top: 184px; text-align: right; position: absolute;">40</div><div class="flot-tick-label tickLabel" style="left: 9px; top: 164px; text-align: right; position: absolute;">50</div><div class="flot-tick-label tickLabel" style="left: 9px; top: 143px; text-align: right; position: absolute;">60</div><div class="flot-tick-label tickLabel" style="left: 9px; top: 123px; text-align: right; position: absolute;">70</div><div class="flot-tick-label tickLabel" style="left: 9px; top: 102px; text-align: right; position: absolute;">80</div><div class="flot-tick-label tickLabel" style="left: 9px; top: 82px; text-align: right; position: absolute;">90</div><div class="flot-tick-label tickLabel" style="left: 1px; top: 62px; text-align: right; position: absolute;">100</div><div class="flot-tick-label tickLabel" style="left: 1px; top: 41px; text-align: right; position: absolute;">110</div><div class="flot-tick-label tickLabel" style="left: 1px; top: 21px; text-align: right; position: absolute;">120</div><div class="flot-tick-label tickLabel" style="left: 1px; top: 1px; text-align: right; position: absolute;">130</div></div></div><canvas width="1018" height="269" class="flot-overlay" style="left: 0px; top: 0px; width: 1132px; height: 300px; position: absolute; direction: ltr;"></canvas><div class="legend"><div style="top: 15px; width: 95px; height: 38px; right: 13px; position: absolute; opacity: 0.85; background-color: rgb(255, 255, 255);"> </div><table style="top: 15px; right: 13px; color: rgb(84, 84, 84); font-size: smaller; position: absolute;"><tbody><tr><td class="legendColorBox"><div style="padding: 1px; border: 1px solid rgb(204, 204, 204); border-image: none;"><div style="border: 5px solid rgb(209, 38, 16); border-image: none; width: 4px; height: 0px; overflow: hidden;"></div></div></td><td class="legendLabel">Unique Visits</td></tr><tr><td class="legendColorBox"><div style="padding: 1px; border: 1px solid rgb(204, 204, 204); border-image: none;"><div style="border: 5px solid rgb(55, 183, 243); border-image: none; width: 4px; height: 0px; overflow: hidden;"></div></div></td><td class="legendLabel">Page Views</td></tr></tbody></table></div></div>*@
+                                                                        <div class="chart" id="chart_2" style="padding: 0px; position: relative;">
+                                                                            <canvas width="476" height="269" class="flot-base" style="left: 0px; top: 0px; width: 530px; height: 300px; position: absolute; direction: ltr;"></canvas>
+                                                                            <div class="flot-text" style="left: 0px; top: 0px; right: 0px; bottom: 0px; color: rgb(84, 84, 84); font-size: smaller; position: absolute;">
+                                                                                <div class="flot-x-axis flot-x1-axis xaxis x1axis" style="left: 0px; top: 0px; right: 0px; bottom: 0px; display: block; position: absolute;">
+
+                                                                                </div>
+                                                                                <div class="flot-y-axis flot-y1-axis yaxis y1axis" style="left: 0px; top: 0px; right: 0px; bottom: 0px; display: block; position: absolute;">
+
+                                                                                </div>
+                                                                            </div>
+                                                                            <canvas width="476" height="269" class="flot-overlay" style="left: 0px; top: 0px; width: 530px; height: 300px; position: absolute; direction: ltr;"></canvas>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                            <div class="portlet light bordered">
+                                                                <div class="portlet-title">
+                                                                    <div class="caption">
+                                                                        <i class="icon-share font-red-sunglo hide"></i>
+                                                                        <span class="caption-subject bold uppercase">Revenue</span>
+                                                                        <span class="caption-helper">monthly stats...</span>
+                                                                    </div>
+                                                                    <div class="actions">
+                                                                        <div class="btn-group">
+                                                                            <a class="btn dark btn-outline btn-circle btn-sm dropdown-toggle" href="" data-toggle="dropdown" data-close-others="true" data-hover="dropdown">
+                                                                                Filter Range
+                                                                                <span class="fa fa-angle-down"> </span>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu pull-right">
+                                                                                <li>
+                                                                                    <a href="javascript:;">
+                                                                                        Q1 2016
+                                                                                        <span class="label label-sm label-default"> current </span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">
+                                                                                        Q2 2016
+                                                                                        <span class="label label-sm label-default"> upcoming </span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li class="active">
+                                                                                    <a href="javascript:;">
+                                                                                        Q3 2016
+                                                                                        <span class="label label-sm label-success"> upcoming </span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">
+                                                                                        Q4 2016
+                                                                                        <span class="label label-sm label-warning"> upcoming </span>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="portlet-body">
+                                                                    <div id="site_activities_loading" style="display: none;">
+                                                                        <img alt="loading" src="/assets/global/img/loading.gif">
+                                                                    </div>
+                                                                    <div class="display-none" id="site_activities_content" style="display: none;">
+                                                                        <div id="site_activitiesx" style="padding: 0px; height: 228px; position: relative;"> <canvas width="476" height="205" class="flot-base" style="left: 0px; top: 0px; width: 530px; height: 228px; position: absolute; direction: ltr;"></canvas><div class="flot-text" style="left: 0px; top: 0px; right: 0px; bottom: 0px; color: rgb(84, 84, 84); font-size: smaller; position: absolute;"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="left: 0px; top: 0px; right: 0px; bottom: 0px; display: block; position: absolute;"><div style='font: small-caps 400 11px/18px "Open Sans",sans-serif; left: 130px; top: 209px; text-align: center; color: rgb(111, 123, 138); position: absolute; max-width: 53px; font-size-adjust: none; font-stretch: normal;'>FEB</div><div style='font: small-caps 400 11px/18px "Open Sans",sans-serif; left: 181px; top: 209px; text-align: center; color: rgb(111, 123, 138); position: absolute; max-width: 53px; font-size-adjust: none; font-stretch: normal;'>MAR</div><div style='font: small-caps 400 11px/18px "Open Sans",sans-serif; left: 237px; top: 209px; text-align: center; color: rgb(111, 123, 138); position: absolute; max-width: 53px; font-size-adjust: none; font-stretch: normal;'>APR</div><div style='font: small-caps 400 11px/18px "Open Sans",sans-serif; left: 290px; top: 209px; text-align: center; color: rgb(111, 123, 138); position: absolute; max-width: 53px; font-size-adjust: none; font-stretch: normal;'>MAY</div><div style='font: small-caps 400 11px/18px "Open Sans",sans-serif; left: 346px; top: 209px; text-align: center; color: rgb(111, 123, 138); position: absolute; max-width: 53px; font-size-adjust: none; font-stretch: normal;'>JUN</div><div style='font: small-caps 400 11px/18px "Open Sans",sans-serif; left: 401px; top: 209px; text-align: center; color: rgb(111, 123, 138); position: absolute; max-width: 53px; font-size-adjust: none; font-stretch: normal;'>JUL</div><div style='font: small-caps 400 11px/18px "Open Sans",sans-serif; left: 452px; top: 209px; text-align: center; color: rgb(111, 123, 138); position: absolute; max-width: 53px; font-size-adjust: none; font-stretch: normal;'>AUG</div><div style='font: small-caps 400 11px/18px "Open Sans",sans-serif; left: 509px; top: 209px; text-align: center; color: rgb(111, 123, 138); position: absolute; max-width: 53px; font-size-adjust: none; font-stretch: normal;'>SEP</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="left: 0px; top: 0px; right: 0px; bottom: 0px; display: block; position: absolute;"><div style='font: small-caps 400 11px/14px "Open Sans",sans-serif; left: 20px; top: 197px; text-align: right; color: rgb(111, 123, 138); position: absolute; font-size-adjust: none; font-stretch: normal;'>0</div><div style='font: small-caps 400 11px/14px "Open Sans",sans-serif; left: 7px; top: 149px; text-align: right; color: rgb(111, 123, 138); position: absolute; font-size-adjust: none; font-stretch: normal;'>500</div><div style='font: small-caps 400 11px/14px "Open Sans",sans-serif; left: 1px; top: 100px; text-align: right; color: rgb(111, 123, 138); position: absolute; font-size-adjust: none; font-stretch: normal;'>1000</div><div style='font: small-caps 400 11px/14px "Open Sans",sans-serif; left: 1px; top: 52px; text-align: right; color: rgb(111, 123, 138); position: absolute; font-size-adjust: none; font-stretch: normal;'>1500</div><div style='font: small-caps 400 11px/14px "Open Sans",sans-serif; left: 1px; top: 3px; text-align: right; color: rgb(111, 123, 138); position: absolute; font-size-adjust: none; font-stretch: normal;'>2000</div></div></div><canvas width="476" height="205" class="flot-overlay" style="left: 0px; top: 0px; width: 530px; height: 228px; position: absolute; direction: ltr;"></canvas></div>
+                                                                    </div>
+                                                                    <div style="margin: 20px 0px 10px 30px;">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+                                                                                <span class="label label-sm label-success"> Revenue: </span>
+                                                                                <h3>$0.00</h3>
+                                                                            </div>
+                                                                            <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+                                                                                <span class="label label-sm label-danger"> Requests: </span>
+                                                                                <h3>0</h3>
+                                                                            </div>
+                                                                            <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+                                                                                <span class="label label-sm label-warning"> Hires: </span>
+                                                                                <h3>0</h3>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
     </div>
 </div>

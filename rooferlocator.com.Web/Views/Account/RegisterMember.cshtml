@@ -52,36 +52,16 @@
 </script>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <!--HEADER BEGIN-->
-    <div class="row">
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
-                 style="box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);background-image: -ms-linear-gradient(top, #19447D 20%, #2080BE 100%);">
-                <a href="/Account/Login"><img src="~/images/rooferlocatorlogo.gif" /></a>
-                <span style="width:100%;text-align:center;padding-left:45px;">
-                    <a href="/Account/Login" style="text-align: center; color: white; vertical-align: bottom;">Home</a>
-                    <span style="text-align: center; color: white; vertical-align: bottom;">&nbsp;|&nbsp;</span>
-                    <a href="#AboutView" style="text-align: center; color: white; vertical-align: bottom;" onclick="showInfo('AboutView');">About Us</a>
-                    <span style="text-align: center; color: white; vertical-align: bottom;">&nbsp;|&nbsp;</span>
-                    <a href="#ContactView" style="text-align: center; color: white; vertical-align: bottom;" onclick="showInfo('ContactView');">Contact Us</a>
-                </span>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
-        </div>
-    </div>
-    <!--HEADER END-->
     <!--CONTENT/MAIN BEGIN-->
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
-                 style="padding-top: 15px; box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:7px;padding-right:7px;padding-top:5px;text-align:center;">
-                    <div class="well bs-component">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-align" 
+                     style="padding-left:7px;padding-right:7px;padding-top:5px;text-align:center;background-color:black;opacity:.70; border-radius:5px;max-width:500px;">
                         <form class="form-horizontal" action="@(Url.Action("RegisterMember", "Register"))" method="POST">
                             <fieldset>
-                                <legend>Register</legend>
+                                <legend>Register <small>(part 2 of 3)</small></legend>
                                 <ul class="nav nav-pills">
                                     <li id="CompanyItem" role="presentation" class="active" onclick="showPanel('CompanyPanel', 'CompanyItem');"><a href="#CompanyPanel">Company</a></li>
                                     <li id="LicenseItem" role="presentation" onclick="showPanel('LicensePanel', 'LicenseItem');"><a href="#LicensePanel">License</a></li>
@@ -94,35 +74,35 @@
                                 <div id="CompanyPanel" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="display:block;">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <input type="text" class="form-control" name="Company.Name" value="@Model.Company.Name"
-                                               placeholder="@L("Company Name")" required>
+                                               placeholder="Enter company name here" required>
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <input type="text" class="form-control" name="Company.Address1" value="@Model.Company.Address1"
-                                               placeholder="@L("Address1")" required>
+                                               placeholder="Enter company address line 1 here" required>
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <input type="text" class="form-control" name="Company.Address2" value="@Model.Company.Address2"
-                                               placeholder="@L("Address2")">
+                                               placeholder="Enter address line 2 here">
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                         <input type="text" class="form-control" name="Company.City" value="@Model.Company.City"
-                                               placeholder="@L("City")">
+                                               placeholder="Enter city here">
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                                         <input type="text" class="form-control" name="Company.State" value="@Model.Company.State"
-                                               placeholder="@L("State")">
+                                               placeholder="State">
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                                         <input type="text" class="form-control" name="Company.Zip" value="@Model.Company.Zip"
-                                               placeholder="@L("Zip")">
+                                               placeholder="Enter zip here">
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                         <input type="text" class="form-control" name="Company.ServiceArea" value="@Model.Company.ServiceArea"
-                                               placeholder="@L("Service Area")">
+                                               placeholder="Enter service area here">
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                         <input type="text" class="form-control" name="Company.YearEstablished" value="@Model.Company.YearEstablished"
-                                               placeholder="@L("Year Established")">
+                                               placeholder="Year Est.">
                                     </div>
                                 </div>
                                 <!--END COMPANY INFO-->
@@ -131,28 +111,28 @@
                                     <div class="form-group">
                                         <div class="col-lg-12 col-md-12 col-sm-1 col-xs-1">
                                             <input type="hidden" class="form-control" name="Fullname" value="@Model.FullName"
-                                                   placeholder="@L("Fullname")" required>
+                                                   placeholder="Enter fullname here" required>
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-1 col-xs-1">
                                             <input type="hidden" class="form-control" name="Email" value="@Model.Email"
-                                                   placeholder="@L("Email")" required>
+                                                   placeholder="Enter email here" required>
                                         </div>
 
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <input type="text" class="form-control" name="JobTitle" value="@Model.JobTitle"
-                                                   placeholder="@L("JobTitle")" required>
+                                                   placeholder="Enter job title here">
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <input type="text" class="form-control" name="Credential" value="@Model.Credential"
-                                                   placeholder="@L("Credential")" required>
+                                                   placeholder="Enter credential here">
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <input type="text" class="form-control" name="License Description" value="@Model.LicenseDescription"
-                                                   placeholder="@L("LicenseDescription")" required>
+                                                   placeholder="Enter license description here">
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <input type="text" class="form-control" name="LicenseNumber" value="@Model.LicenseNumber"
-                                                   placeholder="@L("LicenseNumber")" required>
+                                                   placeholder="Enter license number here">
                                         </div>
                                     </div>
                                 </div>
@@ -162,15 +142,15 @@
                                     <div class="form-group">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <input type="text" class="form-control" name="CellPhone" value="@Model.CellPhone"
-                                                   placeholder="@L("CellPhone")" required>
+                                                   placeholder="Enter cell number here" required>
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <input type="text" class="form-control" name="Fax" value="@Model.Fax"
-                                                   placeholder="@L("Fax")" required>
+                                                   placeholder="Enter fax number here">
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <input type="text" class="form-control" name="Phone" value="@Model.Phone"
-                                                   placeholder="@L("Phone")" required>
+                                                   placeholder="Enter phone number here" required>
                                         </div>
 
                                     </div>
@@ -179,70 +159,15 @@
 
                                 <div class="form-group">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
-                                        <button type="submit" id="RegisterButton" class="btn btn-primary"><i class="fa fa-sign-in"></i> Finish</button>
+                                        <button id="RegisterButton" type="submit" class="button button-border button-light button-circle" data-scrollto="#section-works" data-easing="easeInOutExpo" data-speed="1250" data-offset="70">Next</button>
                                     </div>
                                 </div>
                             </fieldset>
                         </form>
-                    </div>
                 </div>
+                <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
         </div>
     </div>
     <!--CONTENT/MAIN END-->
-    <!--ABOUT US END-->
-    <div id="AboutView" style="display:none;" class="row">
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
-                 style="padding-top: 10px;padding-left:5px; padding-right:5px; text-align: center;box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
-                @Html.Partial("AboutView")
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-        </div>
-    </div>
-    <!--ABOUT US END-->
-    <!--CONTACT US BEGIN-->
-    <div id="ContactView" style="display:none;" class="row">
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
-                 style="padding-top: 10px;padding-left:5px; padding-right:5px; text-align: center;box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
-                @Html.Partial("ContactView")
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-        </div>
-    </div>
-    <!--CONTACT US END-->
-    <!--TERMS BEGIN-->
-    <div id="TermsView" style="display:none;" class="row">
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-sm-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
-                 style="padding-top: 10px;padding-left:5px; padding-right:5px; text-align: center;box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
-                @Html.Partial("TermsView")
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-        </div>
-    </div>
-    <!--TERMS END-->
-    <!--FOOTER BEGIN-->
-    <div class="row">
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 center-align"
-                 style="padding-top: 15px; box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8);margin-top:-9px;">
-                <div style="background-image:url('/images/footer-bg.gif'); background-repeat:repeat-x;color:white;padding-top:10px;padding-bottom:10px;">
-                    <a href="#lead" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;">Lead</a> |
-                    <a href="#terms" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;">Terms</a> |
-                    <a href="#Login" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;" onclick="showLogin();">Login</a> |
-                    <a href="#Contact" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;">Contact</a> |
-                    <a href="#Affiliate" style="color:white;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;">Affiliate</a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
-        </div>
-    </div>
-    <!--FOOTER END-->
 </div>

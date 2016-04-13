@@ -36,38 +36,38 @@ namespace rooferlocator.com.MultiTenancy
 
         public async Task CreateTenant(CreateTenantInput input)
         {
-            //Create tenant
-            var tenant = new Tenant(input.TenancyName, input.Name);
-            var defaultEdition = await _editionManager.FindByNameAsync(EditionManager.DefaultEditionName);
-            if (defaultEdition != null)
-            {
-                tenant.EditionId = defaultEdition.Id;
-            }
+            ////Create tenant
+            //var tenant = new Tenant(input.TenancyName, input.Name);
+            //var defaultEdition = await _editionManager.FindByNameAsync(EditionManager.DefaultEditionName);
+            //if (defaultEdition != null)
+            //{
+            //    tenant.EditionId = defaultEdition.Id;
+            //}
 
-            CheckErrors(await TenantManager.CreateAsync(tenant));
-            await CurrentUnitOfWork.SaveChangesAsync(); //To get new tenant's id.
+            //CheckErrors(await TenantManager.CreateAsync(tenant));
+            //await CurrentUnitOfWork.SaveChangesAsync(); //To get new tenant's id.
 
-            //We are working entities of new tenant, so changing tenant filter
-            using (CurrentUnitOfWork.SetFilterParameter(AbpDataFilters.MayHaveTenant, AbpDataFilters.Parameters.TenantId, tenant.Id))
-            {
-                //Create static roles for new tenant
-                CheckErrors(await _roleManager.CreateStaticRoles(tenant.Id));
+            ////We are working entities of new tenant, so changing tenant filter
+            //using (CurrentUnitOfWork.SetFilterParameter(AbpDataFilters.MayHaveTenant, AbpDataFilters.Parameters.TenantId, tenant.Id))
+            //{
+            //    //Create static roles for new tenant
+            //    CheckErrors(await _roleManager.CreateStaticRoles(tenant.Id));
 
-                await CurrentUnitOfWork.SaveChangesAsync(); //To get static role ids
+            //    await CurrentUnitOfWork.SaveChangesAsync(); //To get static role ids
 
-                //grant all permissions to admin role
-                var adminRole = _roleManager.Roles.Single(r => r.Name == StaticRoleNames.Tenants.Admin);
-                await _roleManager.GrantAllPermissionsAsync(adminRole);
+            //    //grant all permissions to admin role
+            //    var adminRole = _roleManager.Roles.Single(r => r.Name == StaticRoleNames.Tenants.Admin);
+            //    await _roleManager.GrantAllPermissionsAsync(adminRole);
 
-                //Create admin user for the tenant
-                var adminUser = User.CreateTenantAdminUser(tenant.Id, input.AdminEmailAddress, User.DefaultPassword);
-                CheckErrors(await UserManager.CreateAsync(adminUser));
-                await CurrentUnitOfWork.SaveChangesAsync(); //To get admin user's id
+            //    //Create admin user for the tenant
+            //    var adminUser = User.CreateTenantAdminUser(tenant.Id, input.AdminEmailAddress, User.DefaultPassword);
+            //    CheckErrors(await UserManager.CreateAsync(adminUser));
+            //    await CurrentUnitOfWork.SaveChangesAsync(); //To get admin user's id
 
-                //Assign admin user to role!
-                CheckErrors(await UserManager.AddToRoleAsync(adminUser.Id, adminRole.Name));
-                await CurrentUnitOfWork.SaveChangesAsync();
-            }
+            //    //Assign admin user to role!
+            //    CheckErrors(await UserManager.AddToRoleAsync(adminUser.Id, adminRole.Name));
+            //    await CurrentUnitOfWork.SaveChangesAsync();
+            //}
         }
     }
 }

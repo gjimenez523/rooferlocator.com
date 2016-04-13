@@ -288,8 +288,16 @@ namespace rooferlocator.com.Web.Controllers
                     var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
 
                     Newtonsoft.Json.Linq.JObject jObject2 = results.result;
-                    var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<CreditsHero.Messaging.Dtos.RequestsDto>(jObject2.ToString());
-                    requestResults = itemResult;
+                    if (jObject2!= null)
+                    {
+                        var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<CreditsHero.Messaging.Dtos.RequestsDto>(jObject2.ToString());
+                        requestResults = itemResult;
+                    }
+                    else
+                    {
+                        requestResults = null;
+                    }
+                    
                 }
             }
             #endregion

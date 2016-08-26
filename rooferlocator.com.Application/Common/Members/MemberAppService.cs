@@ -106,6 +106,36 @@ namespace rooferlocator.com.Common.Members
             }
         }
 
+        public Dtos.GetMembersOutput GetRequestMembers(Dtos.GetMemberInput input)
+        {
+            if (input.RequestId != null && input.CompanyId != null)
+            {
+                CreditsHero.Subscribers.Dtos.GetSubscribersInput inputSubscriber =
+                    new GetSubscribersInput()
+                    {
+                        CompanyId = input.CompanyId
+
+                    };
+
+                CreditsHero.Subscribers.Dtos.GetSubscribersOutput results = new GetSubscribersOutput();
+                var membersCreditsHero = (GetSubscribersOutput)_creditsHeroConnect
+                    .CallCreditsHeroService<GetSubscribersOutput>(results, inputSubscriber,
+                        "api/services/app/Subscriber/GetSubscribersByCompany");
+
+                return new Dtos.GetMembersOutput
+                {
+                    Members = Mapper.Map<List<Dtos.MemberDto>>(membersCreditsHero)
+                };
+            }
+            else
+            {
+                return new Dtos.GetMembersOutput
+                {
+                    Members = new List<MemberDto>()
+                };
+            }
+        }
+
         public CreditsHero.Common.Dtos.GetCriteriaOutput GetCriteria(GetSubscribersInput input)
         {
             CreditsHero.Common.Dtos.GetCriteriaOutput results = new CreditsHero.Common.Dtos.GetCriteriaOutput();
@@ -330,6 +360,36 @@ namespace rooferlocator.com.Common.Members
             object results = new object();
             _creditsHeroConnect.CallCreditsHeroService<object>(results, input,
                 "api/services/app/Subscriber/UpdateSubscriberRequestState");
+        }
+
+        public ReportRequestsOutput ReportRequests(ReportRequestsInput input)
+        {
+            ReportRequestsOutput results = new ReportRequestsOutput();
+            return (ReportRequestsOutput)_creditsHeroConnect.CallCreditsHeroService<ReportRequestsOutput>(results, input,
+                "api/services/app/Requests/ReportRequests");
+        }
+        public ReportRequestDetailsOutput ReportRequestDetails(ReportRequestsInput input)
+        {
+            ReportRequestDetailsOutput results = new ReportRequestDetailsOutput();
+
+            //Get Request Header
+            var leadHeader = (ReportRequestsOutput)_creditsHeroConnect.CallCreditsHeroService<ReportRequestsOutput>(results, input,
+                "api/services/app/Requests/ReportRequests");
+
+            //Get Subscribers for the Request
+            GetSubscribersInput inputSubscriber = new GetSubscribersInput() { CompanyId = input.CompanyRefId, RequestId = input.RequestRefId };
+            var subscribers = _creditsHeroConnect.CallCreditsHeroService<GetSubscribersOutput>(results, inputSubscriber,
+                "api/services/app/Subscriber/GetSubscribersByCompany");
+
+            //Get the Request Details
+            var details = _creditsHeroConnect.CallCreditsHeroService<ReportRequestDetailsOutput>(results, input,
+                "api/services/app/Requests/ReportRequestDetails");
+
+            results.Header = leadHeader;
+            results.Details = ((ReportRequestDetailsOutput)details).Details;
+            results.Subscribers = ((GetSubscribersOutput)subscribers).Subscribers;
+
+            return results;
         }
     }
 }

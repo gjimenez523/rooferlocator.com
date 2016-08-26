@@ -6,7 +6,7 @@
     <!-- Stylesheets
     ============================================= -->
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Roboto:300,400,500,700" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="~/Content/canvas4/css/bootstrap.css" type="text/css" />
+    @*<link rel="stylesheet" href="~/Content/canvas4/css/bootstrap.css" type="text/css" />
     <link rel="stylesheet" href="~/Content/canvas4/style.css" type="text/css" />
 
     <!-- One Page Module Specific Stylesheet -->
@@ -24,12 +24,12 @@
     <link href="~/Content/canvas4/main.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="~/Content/canvas4/css/responsive.css" type="text/css" />
 
-    <link rel="stylesheet" href="~/Content/canvas4/css/components/bs-select.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/canvas4/css/components/bs-select.css" type="text/css">*@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>RooferLocator.com</title>
 
     @*@Styles.Render("~/Bundles/vendor/css")*@
-    @*@Styles.Render("~/Bundles/css")*@
+    @Styles.Render("~/Bundles/css")
 
     <!-- View specific styles -->
     @RenderSection("Styles", false)
@@ -187,8 +187,8 @@
                     <!-- Logo
                     ============================================= -->
                     <div id="logo">
-                        <a href="http://www.rooferlocator.com" class="standard-logo" data-dark-logo="/images/rooferlocatorlogo.gif"><img src="~/images/rooferlocatorlogo.gif" alt="RooferLocator.com"></a>
-                        <a href="http://www.rooferlocator.com" class="retina-logo" data-dark-logo="/images/rooferlocatorlogo.gif"><img src="~/images/rooferlocatorlogo.gif" alt="RooferLocator.com"></a>
+                        <a href="http://www.rooferlocator.com" class="standard-logo" data-dark-logo="/images/rooferlocatorlogo_70x170.png"><img src="~/images/rooferlocatorlogo.gif" alt="RooferLocator.com"></a>
+                        <a href="http://www.rooferlocator.com" class="retina-logo" data-dark-logo="/images/rooferlocatorlogo_70x170.png"><img src="~/images/rooferlocatorlogo.gif" alt="RooferLocator.com"></a>
                     </div><!-- #logo end -->
                     <!-- Primary Navigation
                     ============================================= -->

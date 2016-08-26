@@ -8,5 +8,6 @@ namespace rooferlocator.com.Common.Members.Dtos
     {
         public int? MemberId { get; set; }
         public Guid? CompanyId { get; set; }
+        public int? RequestId { get; set; }
     }
 }

@@ -75,7 +75,21 @@ namespace rooferlocator.com.Web
             //~/Bundles/css
             bundles.Add(
                 new StyleBundle("~/Bundles/css")
-                    .Include("~/css/main.css")
+                    .Include(
+                    "~/css/main.css",
+                    "~/Content/canvas4/css/bootstrap.css",
+                    "~/Content/canvas4/style.css",
+                    "~/Content/canvas4/one-page/onepage.css",
+                    "~/Content/canvas4/css/dark.css",
+                    "~/Content/canvas4/css/font-icons.css",
+                    "~/Content/canvas4/one-page/css/et-line.css",
+                    "~/Content/canvas4/css/animate.css",
+                    "~/Content/canvas4/css/magnific-popup.css",
+                    "~/Content/canvas4/css/fonts.css",
+                    "~/Content/canvas4/main.css",
+                    "~/Content/canvas4/css/responsive.css",
+                    "~/Content/canvas4/css/components/bs-select.css"
+                    )
                 );
 
             //~/Bundles/js
@@ -83,6 +97,8 @@ namespace rooferlocator.com.Web
                 new ScriptBundle("~/Bundles/js")
                     .Include("~/js/main.js")
                 );
+
+            BundleTable.EnableOptimizations = true;
         }
     }
 }

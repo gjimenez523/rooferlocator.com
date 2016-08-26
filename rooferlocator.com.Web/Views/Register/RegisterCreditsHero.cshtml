@@ -1,0 +1,142 @@
+﻿@using Abp.Web.Mvc.Extensions
+@using Abp.Extensions
+@model rooferlocator.com.Web.Models.Account.RegisterCreditsHeroViewModel
+@section Styles
+{
+    <link href="~/Views/Account/Login.css" rel="stylesheet" />
+}
+@section Scripts
+{
+    @Html.IncludeScript("~/Views/Register/RegisterCreditsHero.js")
+}
+
+<script>
+    function showPanel(panelId) {
+        document.getElementById('RoofTypePanel').style.display = 'none';
+        document.getElementById('ServiceTypePanel').style.display = 'none';
+        document.getElementById(panelId).style.display = 'block';
+    }
+
+    function showLogin() {
+        document.getElementById('LoginArea').style.display = 'block';
+        document.getElementById('ImageSlider').style.display = 'none';
+        document.getElementById('SearchArea').style.display = 'none';
+        if (document.getElementById('InquiryView') != null) document.getElementById('InquiryView').style.display = 'none';
+        if (document.getElementById('RequestView') != null) document.getElementById('RequestView').style.display = 'none';
+        document.getElementById('AboutView').style.display='none';
+        document.getElementById('ContactView').style.display='none';
+        document.getElementById('TermsView').style.display='none';
+    }
+
+    function showHome() {
+        document.getElementById('LoginArea').style.display = 'none';
+        document.getElementById('ImageSlider').style.display = 'block';
+        document.getElementById('SearchArea').style.display = 'block';
+        if (document.getElementById('InquiryView')!= null) document.getElementById('InquiryView').style.display = 'none';
+        if (document.getElementById('RequestView') != null) document.getElementById('RequestView').style.display = 'none';
+        document.getElementById('AboutView').style.display='none';
+        document.getElementById('ContactView').style.display='none';
+        document.getElementById('TermsView').style.display='none';
+    }
+
+    function showInfo(viewName){
+        document.getElementById('AboutView').style.display='none';
+        document.getElementById('ContactView').style.display='none';
+        document.getElementById('TermsView').style.display='none';
+        document.getElementById(viewName).style.display='block';
+    }
+
+    //Need to get the CreditsHero CompanyId for RooferLocator
+    chCompanyId = "@System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:CompanyId"]";
+</script>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <!--CONTENT/MAIN BEGIN-->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-align" 
+                     style="padding-left:7px;padding-right:7px;padding-top:20%;text-align:center;background-color:black;opacity:.70; border-radius:5px;max-width:500px;">
+                        @*<form class="form-horizontal" action="@(Url.Action("SubscribeCreditsHeroValues", "Register"))" method="POST">*@
+                        <fieldset>
+                            <legend>Register <small>(part 3 of 3)</small></legend>
+
+                            @if (@ViewBag.ErrorMessage != null)
+                            {
+                                <div class="alert alert-danger">
+                                    <i class="fa fa-warning"></i> @ViewBag.ErrorMessage
+                                </div>
+                            }
+
+                            @if (Model != null)
+                            {
+
+                                @Html.HiddenFor(m => m.SuscriberId)
+                                <input type="hidden" id="subscriberId" value="@Model.SuscriberId" />
+
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        What roofing request types would @Html.LabelFor(m => m.SubscriberName) like to receive:
+                                        <ul class="nav nav-pills">
+                                            <li id="RoofTypeItems" role="presentation" class="active" onclick="showPanel('RoofTypePanel');">
+                                                <a href="#RoofTypeItems">Roof Type</a>
+                                            </li>
+                                            <li id="ServiceTypeItems" role="presentation" onclick="showPanel('ServiceTypePanel');">
+                                                <a href="#ServiceTypeItems">Service Type</a>
+                                            </li>
+                                        </ul>
+
+                                        <div id="RoofTypePanel" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="display:block;">
+                                            @foreach (CreditsHero.Common.Dtos.CriteriaValuesDto item in Model.RoofTypeCriteria.CriteriaValues)
+                                            {
+                                                var chkboxId = "chk" + item.Id;
+
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left" style="text-align:right;">
+                                                        @Html.Label(item.Name)
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right" style="text-align:left;">
+                                                        <input id="@chkboxId" type="checkbox"
+                                                               class="chkClass" value="@item.Id" />
+                                                    </div>
+                                                </div>
+                                                @*<td>@item.CreditCount</td>*@
+                                            }
+                                        </div>
+
+                                        <div id="ServiceTypePanel" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="display:none;">
+                                            @foreach (CreditsHero.Common.Dtos.CriteriaValuesDto item in Model.ServiceTypeCriteria.CriteriaValues)
+                                            {
+                                                var chkboxId = "chk" + item.Id;
+
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left" style="text-align:right;">
+                                                        @Html.Label(item.Name)
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right" style="text-align:left;">
+                                                        <input id="@chkboxId" type="checkbox"
+                                                               class="chkClass" value="@item.Id" />
+                                                    </div>
+                                                </div>
+                                                @*<td>@item.CreditCount</td>*@
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                                    <button id="FinishedButton" type="submit" class="button button-border button-light button-circle" data-scrollto="#section-works" data-easing="easeInOutExpo" data-speed="1250" data-offset="70">Finish</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                        @*</form>*@
+                    </div>
+                <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+            </div>
+        </div>
+    </div>
+    <!--CONTENT/MAIN END-->
+</div>

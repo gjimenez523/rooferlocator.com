@@ -64,20 +64,30 @@
                                                             <div class="md-checkbox">
                                                                 @if (role == "Admin")
                                                                 {
-                                                                    <input class="md-check" id="checkbox_@criteriaItem.Id" name="@criteriaItem.Id" type="checkbox"
-                                                                           checked="@criteriaItem.IsSelected">
+                                                                    using (Html.BeginForm("UpdateCriteriaValue", "Members", FormMethod.Post, new { id = "formNewCriteriaValue" }))
+                                                                    {
+                                                                        <input type="hidden" id="txtAdminCriteriaId_@criteriaItem.Id" name="txtAdminCriteriaId_@criteriaItem.Id" value="@item.Id" />
+                                                                            <input id="txtAdminCriteriaName_@criteriaItem.Id" name="txtAdminCriteriaName_@criteriaItem.Id" type="text" value="@criteriaItem.Name" />
+                                                                            <input id="txtAdminCredits_@criteriaItem.Id" name="txtAdminCredits_@criteriaItem.Id" type="text" value="@criteriaItem.CreditCount" />
+                                                                            <button class="btn red" type="submit" id="btnUpdate_@criteriaItem.Id"
+                                                                                    name="Command" value="CriteriaValueId_@criteriaItem.Id"
+                                                                                    onclick="$('#formServicesOffered').submit(); $('#btnUpdate_@criteriaItem.Id')[0].style.display='none';">
+                                                                                <i class="fa fa-check-circle-o"></i>
+                                                                                Update
+                                                                            </button>
+                                                                    }
                                                                 }
                                                                 else
                                                                 {
                                                                     <input class="md-check" id="checkbox_@criteriaItem.Id" name="@criteriaItem.Id" type="checkbox"
                                                                            checked="@criteriaItem.IsSelected"
                                                                            onclick="$('#panelServicesOffered')[0].style.display='none';$('#formServicesOffered').submit();">
+                                                                    <label for="checkbox_@criteriaItem.Id">
+                                                                        <span class="inc"></span>
+                                                                        <span class="check"></span>
+                                                                        <span class="box"></span> @criteriaItem.Name@*criteriaItem.Description*@
+                                                                    </label>
                                                                 }
-                                                                <label for="checkbox_@criteriaItem.Id">
-                                                                    <span class="inc"></span>
-                                                                    <span class="check"></span>
-                                                                    <span class="box"></span> @criteriaItem.Name@*criteriaItem.Description*@
-                                                                </label>
                                                             </div>
                                                         </div>
                                                     }
@@ -110,22 +120,25 @@
                                                             <p>
                                                                 <div class="form-group form-md-line-input">
                                                                     @{
-                                                                        using (Html.BeginForm("UpdateCriteriaValue", "Members", FormMethod.Post, new { id = "formNewCriteriaValue" }))
+                                                                        //Find CriteriaList
+                                                                        foreach (var criteriaItem in (List<CreditsHero.Common.Dtos.CriteriaValuesDto>)criteriaList[item.Id])
                                                                         {
-                                                                            //Find CriteriaList
-                                                                            foreach (var criteriaItem in (List<CreditsHero.Common.Dtos.CriteriaValuesDto>)criteriaList[item.Id])
-                                                                            {
                                                                             <div class="md-checkbox-list">
                                                                                 <div class="md-checkbox">
                                                                                     @if (role == "Admin")
                                                                                     {
-                                                                                        <input type="hidden" id="txtAdminCriteriaId_@criteriaItem.Id" name="txtAdminCriteriaId_@criteriaItem.Id" value="@item.Id" />
-                                                                                        <input id="txtAdminCriteriaName_@criteriaItem.Id" name="txtAdminCriteriaName_@criteriaItem.Id" type="text" value="@criteriaItem.Name"/>
-                                                                                        <input id="txtAdminCredits_@criteriaItem.Id" name="txtAdminCredits_@criteriaItem.Id" type="text" value="@criteriaItem.CreditCount" />
-                                                                                        <button class="btn red" type="submit" id="btnUpdate_@criteriaItem.Id" name="Command" value="CriteriaValueId_@criteriaItem.Id" onclick="$('#btnUpdate_@criteriaItem.Id')[0].style.display = 'none';">
-                                                                                            <i class="fa fa-check-circle-o"></i>
-                                                                                            Update
-                                                                                        </button>
+                                                                                        using (Html.BeginForm("UpdateCriteriaValue", "Members", FormMethod.Post, new { id = "formNewCriteriaValue" }))
+                                                                                        {
+                                                                                            <input type="hidden" id="txtAdminCriteriaId_@criteriaItem.Id" name="txtAdminCriteriaId_@criteriaItem.Id" value="@item.Id" />
+                                                                                            <input id="txtAdminCriteriaName_@criteriaItem.Id" name="txtAdminCriteriaName_@criteriaItem.Id" type="text" value="@criteriaItem.Name" />
+                                                                                            <input id="txtAdminCredits_@criteriaItem.Id" name="txtAdminCredits_@criteriaItem.Id" type="text" value="@criteriaItem.CreditCount" />
+                                                                                            <button class="btn red" type="submit" id="btnUpdate_@criteriaItem.Id"
+                                                                                                    name="Command" value="CriteriaValueId_@criteriaItem.Id"
+                                                                                                    onclick="$('#formServicesOffered').submit(); $('#btnUpdate_@criteriaItem.Id')[0].style.display = 'none';">
+                                                                                                <i class="fa fa-check-circle-o"></i>
+                                                                                                Update
+                                                                                            </button>
+                                                                                        }
                                                                                     }
                                                                                     else
                                                                                     {
@@ -140,7 +153,6 @@
                                                                                     }
                                                                                 </div>
                                                                             </div>
-                                                                            }
                                                                         }
 
                                                                         if (role == "Admin")
@@ -153,7 +165,7 @@
                                                                                     <input type="text" id="txtNewCriteriaValueCredits_@item.Id" name="txtNewCriteriaValueCredits_@item.Id" placeholder="Credits" />
                                                                                     <button class="btn red" type="submit" id="btn_@item.Id" onclick="$('#btn_@item.Id')[0].style.display = 'none';">
                                                                                         <i class="fa fa-plus-circle"></i>
-                                                                                        Add
+                                                                                        Submit
                                                                                     </button>
                                                                                 </div>
                                                                             }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using CreditsHero.Subscribers.Dtos;
 using CreditsHero.Messaging.Dtos;
 using rooferlocator.com.Common.Members.Dtos;
+using Abp.Web.Models;
 
 namespace rooferlocator.com.Web.Controllers
 {
@@ -30,7 +31,8 @@ namespace rooferlocator.com.Web.Controllers
             IEnumerable<Claim> claims2 = identity.Claims;
             if (!identity.IsAuthenticated)
             {
-                return RedirectToAction("PublicIndex", "Home");
+                return View();
+                //return RedirectToAction("PublicIndex", "Home");
             }
             else
             {
@@ -104,15 +106,26 @@ namespace rooferlocator.com.Web.Controllers
                     member.TotalSpend = totalSpend;
                     member.TotalMembers = subscribersOutput.Members.Count;
 
-                    return View(member);
+                    return RedirectToAction("PublicIndex", "Home", new Models.Member.MemberSummaryViewModel
+                    {
+                        TotalCredits = member.TotalCredits,
+                        TotalSpend = member.TotalSpend,
+                        TotalMembers = member.TotalMembers
+                    });
                 }
             }
         }
 
-        public async Task<ActionResult> PublicIndex()
+        public async Task<ActionResult> PublicIndex(Models.Member.MemberSummaryViewModel member)
         {
-            return View();
+            return View(member);
         }
 
+        [HttpPost]
+        [WrapResult(WrapOnSuccess = false, WrapOnError = false)]
+        public async Task<JsonResult> Reports()
+        {
+            return Json(_memberAppService.GetMemberVisits());
+        }
     }
 }

@@ -28,6 +28,8 @@ using System.IO;
 using System.Text;
 using System.Net;
 using System.Web.Configuration;
+using CreditsHero.Messaging.Dtos;
+using rooferlocator.com.Common.Members;
 
 namespace rooferlocator.com.Web.Controllers
 {
@@ -38,6 +40,7 @@ namespace rooferlocator.com.Web.Controllers
         private readonly RoleManager _roleManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IMultiTenancyConfig _multiTenancyConfig;
+        private readonly IMemberAppService _memberAppService;
         private readonly IRoofTypeAppService _roofTypeService;
         private readonly IServiceTypeAppService _serviceTypeService;
         private readonly ILocationAppService _locationService;
@@ -57,6 +60,7 @@ namespace rooferlocator.com.Web.Controllers
             RoleManager roleManager,
             IUnitOfWorkManager unitOfWorkManager,
             IMultiTenancyConfig multiTenancyConfig,
+            IMemberAppService memberAppService,
             IRoofTypeAppService roofTypeAppService,
             IServiceTypeAppService serviceTypeAppService,
             ILocationAppService locationAppService)
@@ -66,7 +70,7 @@ namespace rooferlocator.com.Web.Controllers
             _roleManager = roleManager;
             _unitOfWorkManager = unitOfWorkManager;
             _multiTenancyConfig = multiTenancyConfig;
-
+            _memberAppService = memberAppService;
             _roofTypeService = roofTypeAppService;
             _serviceTypeService = serviceTypeAppService;
             _locationService = locationAppService;
@@ -113,7 +117,7 @@ namespace rooferlocator.com.Web.Controllers
 
             if(emailBodyOverride == string.Empty)
             {
-                emailBodyOverride = String.Format("<!DOCTYPE html><html lang=en xmlns='http://www.w3.org/1999/xhtml'><head><meta charset=utf-8 /><title></title><link rel='stylesheet' href='/Content/bootstrap-cosmo.min.css' /></head><body style='background-color:gainsboro;text-align:center;padding:0px;margin:0px'><div class='row' style='padding:0px;margin:0px;'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='padding:0px;margin:0px'> <div class='row'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8); background-image: -ms-linear-gradient(rgb(25, 68, 125) 20%, rgb(32, 128, 190) 100%);'> <img src='/images/rooferlocatorlogo.gif' /> <div class='row' style='padding:0px;margin:0px;height:50px;font-family:Arial;font-size:24pt'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border:2px solid white;border-radius:5px; background:white;'> <div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'>Inquiry</div></div><div class='row' style='color:black'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='font-size:16px;'>Hello Administrator: <br/> An inquiry/search has been submitted at RooferLocator.com.<p/> Following are the details of the inquiry:<p/> <strong>Roof Type = {0}</strong> <br/> <strong>Service Type = {1}</strong> <br/> <strong>Time Of Repair = {2}</strong> <br/> <strong>State = {3}</strong> <br/> <strong>City = {4}</strong></div></div><div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'>Comment</div></div><div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border-top:1px solid gainsboro;padding:10px;color:black'> <div>{1}</div></div></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2' style='padding:0px;margin:0px'></div></div></body></html>",
+                emailBodyOverride = String.Format("<!DOCTYPE html><html lang=en xmlns='http://www.w3.org/1999/xhtml'><head><meta charset=utf-8 /><title></title><link rel='stylesheet' href='/Content/bootstrap-cosmo.min.css' /></head><body style='background-color:gainsboro;text-align:center;padding:0px;margin:0px'><div class='row' style='padding:0px;margin:0px;'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='padding:0px;margin:0px'> <div class='row'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8); background-image: -ms-linear-gradient(rgb(25, 68, 125) 20%, rgb(32, 128, 190) 100%);'> <img src='/images/rooferlocatorlogo_70x170.png' /> <div class='row' style='padding:0px;margin:0px;height:50px;font-family:Arial;font-size:24pt'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border:2px solid white;border-radius:5px; background:white;'> <div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'>Inquiry</div></div><div class='row' style='color:black'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='font-size:16px;'>Hello Administrator: <br/> An inquiry/search has been submitted at RooferLocator.com.<p/> Following are the details of the inquiry:<p/> <strong>Roof Type = {0}</strong> <br/> <strong>Service Type = {1}</strong> <br/> <strong>Time Of Repair = {2}</strong> <br/> <strong>State = {3}</strong> <br/> <strong>City = {4}</strong></div></div><div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'>Comment</div></div><div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border-top:1px solid gainsboro;padding:10px;color:black'> <div>{1}</div></div></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2' style='padding:0px;margin:0px'></div></div></body></html>",
                     inquiryValues[0].Value,
                     inquiryValues[1].Value,
                     inquiryValues[2].Value,
@@ -248,10 +252,6 @@ namespace rooferlocator.com.Web.Controllers
             };
 
             #region Request
-            var creditsHeroFormat = String.Format("{0}api/services/app/Requests/CreateRequests", WebConfigurationManager.AppSettings["creditsHero:WebServiceApiPrefix"]);
-            //var creditsHeroFormat = "http://CreditsHero.azurewebsites.net/api/services/cd/Requests/CreateRequests";
-            //var creditsHeroFormat = "http://localhost:6234/api/services/cd/Requests/CreateRequests";
-            var timelineUrl = string.Format(creditsHeroFormat);
             CreditsHero.Messaging.Dtos.CreateRequestsInput requestInput = new CreditsHero.Messaging.Dtos.CreateRequestsInput();
             CreditsHero.Messaging.Dtos.RequestsDto requestResults;
             List<KeyValuePair<string, string>> inquiryValues = new List<KeyValuePair<string, string>>();
@@ -268,38 +268,21 @@ namespace rooferlocator.com.Web.Controllers
             requestInput.SmsNumber = Request.Form["PhoneNumber"];
             requestInput.RequestsId = 0;
             requestInput.Email = Request.Form["EmailAddress"];
+            requestInput.Comment = Request.Form["Comments"];
             requestInput.ReplyToEmail = System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:EmailReply"];
 
-            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(requestInput);
-            byte[] byteArray = Encoding.UTF8.GetBytes(jsonData);
+            requestResults = _memberAppService.CreateRequest(requestInput);
+            #endregion
 
-            HttpWebRequest creditsHeroRequest = (HttpWebRequest)WebRequest.Create(timelineUrl);
-            creditsHeroRequest.ContentType = "application/json;charset=utf-8";
-            creditsHeroRequest.ContentLength = byteArray.Length;
-            creditsHeroRequest.Method = "POST";
-            Stream newStream = creditsHeroRequest.GetRequestStream();
-            newStream.Write(byteArray, 0, byteArray.Length);
-            newStream.Close();
-            WebResponse timeLineResponse = creditsHeroRequest.GetResponse();
-            using (timeLineResponse)
-            {
-                using (var reader = new StreamReader(timeLineResponse.GetResponseStream()))
-                {
-                    var results = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(reader.ReadToEnd());
+            #region Request Ext
+            CreateRequestsExtInput input = new CreateRequestsExtInput();
+            input.KeyValues = new System.Collections.Hashtable();
+            input.RequestsId = requestResults.Id;
+            input.KeyValues.Add("Budget", Request.Form["Budget"]);
+            input.KeyValues.Add("City", Request.Form["City"]);
+            input.KeyValues.Add("State", Request.Form["StateValues"]);
 
-                    Newtonsoft.Json.Linq.JObject jObject2 = results.result;
-                    if (jObject2!= null)
-                    {
-                        var itemResult = Newtonsoft.Json.JsonConvert.DeserializeObject<CreditsHero.Messaging.Dtos.RequestsDto>(jObject2.ToString());
-                        requestResults = itemResult;
-                    }
-                    else
-                    {
-                        requestResults = null;
-                    }
-                    
-                }
-            }
+            _memberAppService.CreateRequestExt(input);
             #endregion
 
             SetupLoginModel(ref loginFormModel, inquiryModel.InquiryResults, requestResults, string.Empty);
@@ -354,7 +337,7 @@ namespace rooferlocator.com.Web.Controllers
                         System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:EmailReply"],
                         "Welcome to Roofer Locator",
                         user.EmailAddress,
-                        String.Format("<!DOCTYPE html><html lang=en xmlns='http://www.w3.org/1999/xhtml'><head><meta charset=utf-8 /><title></title><link rel='stylesheet' href='/Content/bootstrap-cosmo.min.css' /></head><body style='background-color:gainsboro;text-align:center;padding:0px;margin:0px'><div class='row' style='padding:0px;margin:0px;'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='padding:0px;margin:0px'> <div class='row'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8); background-image: -ms-linear-gradient(rgb(25, 68, 125) 20%, rgb(32, 128, 190) 100%);'> <img src='{0}/images/rooferlocatorlogo.gif' /> <div class='row' style='padding:0px;margin:0px;height:50px;font-family:Arial;font-size:24pt'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border:2px solid white;border-radius:5px; background:white;'> <div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'>Welcome</div></div><div class='row' style='color:black'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='font-size:16px;'>Welcome to RooferLocator.com! <p/><div style='font-size:22px;'> The following are your credentials<p/> Username = {1} <br/> Password = {2}</div></div></div><div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'></div></div><div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border-top:1px solid gainsboro;padding:10px;color:black'> <div></div></div></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2' style='padding:0px;margin:0px'></div></div></body></html>"
+                        String.Format("<!DOCTYPE html><html lang=en xmlns='http://www.w3.org/1999/xhtml'><head><meta charset=utf-8 /><title></title><link rel='stylesheet' href='/Content/bootstrap-cosmo.min.css' /></head><body style='background-color:gainsboro;text-align:center;padding:0px;margin:0px'><div class='row' style='padding:0px;margin:0px;'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='padding:0px;margin:0px'> <div class='row'> <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div><div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' style='box-shadow: 5px 0px 5px -4px rgba(31,73,125,0.8), -5px 0px 8px -5px rgba(31,73,125,0.8); background-image: -ms-linear-gradient(rgb(25, 68, 125) 20%, rgb(32, 128, 190) 100%);'> <img src='{0}/images/rooferlocatorlogo_70x170.png' /> <div class='row' style='padding:0px;margin:0px;height:50px;font-family:Arial;font-size:24pt'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border:2px solid white;border-radius:5px; background:white;'> <div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'>Welcome</div></div><div class='row' style='color:black'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='font-size:16px;'>Welcome to RooferLocator.com! <p/><div style='font-size:22px;'> The following are your credentials<p/> Username = {1} <br/> Password = {2}</div></div></div><div class='row' style='padding-left:13px;padding-right:13px;border-radius:5px;'> <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='background:#fe7900;'></div></div><div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border-top:1px solid gainsboro;padding:10px;color:black'> <div></div></div></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'></div></div></div><div class='col-lg-2 col-md-2 col-sm-2 col-xs-2' style='padding:0px;margin:0px'></div></div></body></html>"
                         , System.Web.Configuration.WebConfigurationManager.AppSettings["dashboardHero:DashboardPrefix"], user.EmailAddress, generatedPassword));
 
                     AbpUserManager<Tenant, Role, User>.AbpLoginResult loginResult;

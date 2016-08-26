@@ -455,6 +455,10 @@ namespace rooferlocator.com.Web.Controllers
             input.SubscribersId = creditsHeroSubscriber.Id;
             inputRequest.SubscribersId = creditsHeroSubscriber.Id;
 
+            //Get Members credits
+            var creditsHeroSubscriberCredits = _memberAppService.GetMemberCredits(input);
+            ViewBag.MemberCreditsRemaining = Math.Round(creditsHeroSubscriberCredits.TotalCredits);
+
             if (Request.Form.Keys[0] != null && Request.Form.Keys[0] == "PassRequestId")
             {
                 _memberAppService.UpdateSubscriberRequestState(
@@ -485,19 +489,38 @@ namespace rooferlocator.com.Web.Controllers
             Users.User user = await GetUser();
             CreditsHero.Subscribers.Dtos.GetSubscribersInput input = await BuildCreditsHeroSubscriberInput(user);
 
-            CreditsHero.Messaging.Dtos.GetQuotesInput inputQuote = new CreditsHero.Messaging.Dtos.GetQuotesInput()
+            switch (Request.Form["btnAction"])
             {
-                Cost = Decimal.Parse(Request.Form["txtPrice"]),
-                TotalCredits = Decimal.Parse(Request.Form["totalCredits"]),
-                Message = Request.Form["txtMessage"],
-                RequestRefId = Int32.Parse(Request.Form["RequestId"]),
-                SubscriberRefId = input.SubscribersId.Value,
-                CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"])
-            };
+                case "SendQuote":
+                    
+                    CreditsHero.Messaging.Dtos.GetQuotesInput inputQuote = new CreditsHero.Messaging.Dtos.GetQuotesInput()
+                    {
+                        Cost = Decimal.Parse(Request.Form["txtPrice"]),
+                        TotalCredits = Decimal.Parse(Request.Form["totalCredits"]),
+                        Message = Request.Form["txtMessage"],
+                        RequestRefId = Int32.Parse(Request.Form["RequestId"]),
+                        SubscriberRefId = input.SubscribersId.Value,
+                        CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"])
+                    };
 
-            GetQuotesResults results = _memberAppService.SendQuote(inputQuote);
+                    GetQuotesResults results = _memberAppService.SendQuote(inputQuote);
 
-            return Redirect((Url.Action("Index", "Home")));
+                    return Redirect((Url.Action("Index", "Home")));
+                case "PurchaseCredits":
+                    return Redirect((Url.Action("Payment", "Members")));
+                case "Pass":
+                    _memberAppService.UpdateSubscriberRequestState(
+                    new CreateSubscriberRequestStateInput()
+                    {
+                        CompanyId = Guid.Parse(System.Web.Configuration.WebConfigurationManager.AppSettings["creditsHero:APIKey"]),
+                        RequestId = Int32.Parse(Request.Form["RequestId"]),
+                        SubscribersId = input.SubscribersId.Value,
+                        Status = "Pass"
+                    });
+                    return Redirect((Url.Action("Index", "Home")));
+                default:
+                    return Redirect((Url.Action("Index", "Home")));
+            }
         }
 
         public async Task<ActionResult> UpdateQuote()

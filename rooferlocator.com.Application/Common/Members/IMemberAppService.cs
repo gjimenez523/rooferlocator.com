@@ -12,6 +12,7 @@ namespace rooferlocator.com.Common.Members
     public interface IMemberAppService : IApplicationService
     {
         GetMembersOutput GetMembers(GetMemberInput input);
+        GetMembersOutput GetRequestMembers(GetMemberInput input);
         GetCriteriaOutput GetCriteria(GetSubscribersInput input);
         GetCriteriaValuesOutput GetCriteriaValues(GetCriteriaInput input);
         CreditsHero.Subscribers.Dtos.SubscribersDto GetMember(GetSubscribersInput input);
@@ -38,5 +39,7 @@ namespace rooferlocator.com.Common.Members
         CriteriaValuesDto UpdateCriteriaValue(CreateCriteriaValuesInput input);
         CriteriaDto AddCriteria(CreateCriteriaInput input);
         void UpdateSubscriberRequestState(CreateSubscriberRequestStateInput input);
+        ReportRequestsOutput ReportRequests(ReportRequestsInput input);
+        ReportRequestDetailsOutput ReportRequestDetails(ReportRequestsInput input);
     }
 }

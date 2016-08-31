@@ -5532,3 +5532,98 @@ DEBUG 2016-08-25 16:04:21,154 [1    ] Abp.Logging.LogHelper                    -
 DEBUG 2016-08-25 16:04:21,155 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Common.Companies.ICompanyAppService' with service name 'app/company'.
 WARN  2016-08-25 16:04:34,060 [8    ] Abp.Logging.LogHelper                    - Can not find 'Members' in localization source 'com'!
 WARN  2016-08-25 16:05:54,028 [13   ] Abp.Logging.LogHelper                    - Can not find 'Members' in localization source 'com'!
+DEBUG 2016-08-31 17:34:28,494 [1    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Found 17 ABP modules in total.
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=0.7.8.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=0.7.8.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkModule, Abp.EntityFramework, Version=0.7.8.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.WebApi.AbpWebApiModule, Abp.Web.Api, Version=0.7.8.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebModule, Abp.Web, Version=0.7.8.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.Mvc.AbpWebMvcModule, Abp.Web.Mvc, Version=0.7.8.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.Zero, Version=0.7.7.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFramework.AbpZeroEntityFrameworkModule, Abp.Zero.EntityFramework, Version=0.7.7.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: CreditsHero.CreditsHeroApplicationModule, CreditsHero.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: CreditsHero.CreditsHeroCoreModule, CreditsHero.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: MyDesignHero.MyDesignHeroApplicationModule, MyDesignHero.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: MyDesignHero.MyDesignHeroCoreModule, MyDesignHero.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: rooferlocator.com.comApplicationModule, rooferlocator.com.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: rooferlocator.com.comCoreModule, rooferlocator.com.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: rooferlocator.com.comDataModule, rooferlocator.com.EntityFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: rooferlocator.com.Web.comWebModule, rooferlocator.com.Web, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: rooferlocator.com.Api.comWebApiModule, rooferlocator.com.WebApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2016-08-31 17:34:32,101 [1    ] Abp.Modules.AbpModuleManager             - 17 modules loaded.
+DEBUG 2016-08-31 17:34:32,123 [1    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2016-08-31 17:34:32,123 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2016-08-31 17:34:32,123 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2016-08-31 17:34:32,123 [1    ] o.Configuration.LanguageManagementConfig - Converted CreditsHero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2016-08-31 17:34:32,123 [1    ] o.Configuration.LanguageManagementConfig - Converted MyDesignHero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2016-08-31 17:34:32,123 [1    ] o.Configuration.LanguageManagementConfig - Converted com (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2016-08-31 17:34:38,655 [1    ] Abp.Localization.LocalizationManager     - Initializing 6 localization sources.
+DEBUG 2016-08-31 17:34:38,794 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2016-08-31 17:34:38,794 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2016-08-31 17:34:38,810 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2016-08-31 17:34:38,810 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: CreditsHero
+DEBUG 2016-08-31 17:34:38,810 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: MyDesignHero
+DEBUG 2016-08-31 17:34:38,810 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: com
+DEBUG 2016-08-31 17:34:41,408 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 45 classes defines auto mapping attributes
+DEBUG 2016-08-31 17:34:41,408 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2016-08-31 17:34:41,751 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Sessions.Dto.UserLoginInfoDto
+DEBUG 2016-08-31 17:34:41,757 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Subscribers.Dtos.SubscribersExtDto
+DEBUG 2016-08-31 17:34:41,767 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Subscribers.Dtos.SubscribersDto
+DEBUG 2016-08-31 17:34:41,769 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Subscribers.Dtos.SubscribersCreditDto
+DEBUG 2016-08-31 17:34:41,771 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Subscribers.Dtos.PaymentGatewayDtos.Payment
+DEBUG 2016-08-31 17:34:41,772 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Subscribers.Dtos.PaymentGatewayDtos.PaymentResponse
+DEBUG 2016-08-31 17:34:41,773 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Subscribers.Dtos.PaymentGatewayDtos.AuthorizeNetPayment
+DEBUG 2016-08-31 17:34:41,774 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Subscribers.Dtos.PaymentGatewayDtos.PaypalPayment
+DEBUG 2016-08-31 17:34:41,774 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Subscribers.Dtos.PaymentGatewayDtos.StripePayment
+DEBUG 2016-08-31 17:34:41,775 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Subscribers.Dtos.PaymentGatewayDtos.PaymentResponseDto
+DEBUG 2016-08-31 17:34:41,776 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Company.Dtos.CompanyConfigDto
+DEBUG 2016-08-31 17:34:41,872 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.MultiTenancy.Dto.TenantListDto
+DEBUG 2016-08-31 17:34:41,873 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Messaging.Dtos.RequestDetailsDto
+DEBUG 2016-08-31 17:34:41,876 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Messaging.Dtos.RequestsDto
+DEBUG 2016-08-31 17:34:41,880 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Customers.Dtos.CustomersDto
+DEBUG 2016-08-31 17:34:41,882 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Common.Dtos.CriteriaDto
+DEBUG 2016-08-31 17:34:41,885 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Common.Dtos.CriteriaValuesDto
+DEBUG 2016-08-31 17:34:41,889 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - CreditsHero.Common.Companies.Dtos.CompanyDto
+DEBUG 2016-08-31 17:34:41,891 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - MyDesignHero.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2016-08-31 17:34:41,899 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - MyDesignHero.Sessions.Dto.UserLoginInfoDto
+DEBUG 2016-08-31 17:34:41,902 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - MyDesignHero.Users.Dto.UserDto
+DEBUG 2016-08-31 17:34:41,903 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - MyDesignHero.Sales.Packages.Dtos.PackageDto
+DEBUG 2016-08-31 17:34:41,904 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - MyDesignHero.Roles.Dto.RoleDto
+DEBUG 2016-08-31 17:34:41,907 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - MyDesignHero.Roles.Dto.UpdateRoleInput
+DEBUG 2016-08-31 17:34:41,922 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - MyDesignHero.Reports.MultiTenancy.Dto.TenantTotalDto
+DEBUG 2016-08-31 17:34:41,923 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - MyDesignHero.MultiTenancy.Dto.TenantListDto
+DEBUG 2016-08-31 17:34:41,923 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - MyDesignHero.Company.Dtos.CompanyConfigDto
+DEBUG 2016-08-31 17:34:41,925 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - MyDesignHero.Common.Companies.Dtos.CompanyPackageDto
+DEBUG 2016-08-31 17:34:41,926 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - MyDesignHero.Common.Companies.Dtos.CompanyDto
+DEBUG 2016-08-31 17:34:41,927 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2016-08-31 17:34:41,931 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Sessions.Dto.UserLoginInfoDto
+DEBUG 2016-08-31 17:34:41,935 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.MultiTenancy.Dto.TenantListDto
+DEBUG 2016-08-31 17:34:41,936 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Common.Types.Dtos.LocationDto
+DEBUG 2016-08-31 17:34:41,938 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Common.Types.Dtos.QuoteTypeDto
+DEBUG 2016-08-31 17:34:41,941 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Common.Types.Dtos.RoofTypeDto
+DEBUG 2016-08-31 17:34:41,942 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Common.Types.Dtos.ServiceTypeDto
+DEBUG 2016-08-31 17:34:41,944 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Common.News.Dtos.NewsCategoriesDto
+DEBUG 2016-08-31 17:34:41,945 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Common.News.Dtos.NewsDto
+DEBUG 2016-08-31 17:34:41,947 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Common.News.Dtos.TipsCategoriesDto
+DEBUG 2016-08-31 17:34:41,949 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Common.News.Dtos.TipsDto
+DEBUG 2016-08-31 17:34:41,950 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Common.Members.Dtos.MemberVisitDto
+DEBUG 2016-08-31 17:34:41,951 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Common.Members.Dtos.MemberDto
+DEBUG 2016-08-31 17:34:41,952 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Common.Companies.Dtos.CompanyDto
+DEBUG 2016-08-31 17:34:41,954 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - rooferlocator.com.Web.Models.Account.TenantSelectionViewModel+TenantInfo
+DEBUG 2016-08-31 17:34:42,061 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Sessions.ISessionAppService' with service name 'app/session'.
+DEBUG 2016-08-31 17:34:42,064 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Users.IUserAppService' with service name 'app/user'.
+DEBUG 2016-08-31 17:34:42,067 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Roles.IRoleAppService' with service name 'app/role'.
+DEBUG 2016-08-31 17:34:42,070 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.MultiTenancy.ITenantAppService' with service name 'app/tenant'.
+DEBUG 2016-08-31 17:34:42,073 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Common.Types.ILocationAppService' with service name 'app/location'.
+DEBUG 2016-08-31 17:34:42,076 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Common.Types.IQuoteTypeAppService' with service name 'app/quoteType'.
+DEBUG 2016-08-31 17:34:42,078 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Common.Types.IRoofTypeAppService' with service name 'app/roofType'.
+DEBUG 2016-08-31 17:34:42,079 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Common.Types.IServiceTypeAppService' with service name 'app/serviceType'.
+DEBUG 2016-08-31 17:34:42,080 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Common.News.INewsAppService' with service name 'app/news'.
+DEBUG 2016-08-31 17:34:42,081 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Common.News.ITipsAppService' with service name 'app/tips'.
+DEBUG 2016-08-31 17:34:42,083 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Common.Members.IMemberAppService' with service name 'app/member'.
+DEBUG 2016-08-31 17:34:42,084 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Common.Customers.ICustomerAppService' with service name 'app/customer'.
+DEBUG 2016-08-31 17:34:42,085 [1    ] Abp.Logging.LogHelper                    - Dynamic web api controller is created for type 'rooferlocator.com.Common.Companies.ICompanyAppService' with service name 'app/company'.
+WARN  2016-08-31 17:35:07,358 [14   ] Abp.Logging.LogHelper                    - Can not find 'Members' in localization source 'com'!
+WARN  2016-08-31 17:38:21,361 [51   ] Abp.Logging.LogHelper                    - Can not find 'Members' in localization source 'com'!
+WARN  2016-08-31 17:39:57,073 [66   ] Abp.Logging.LogHelper                    - Can not find 'Members' in localization source 'com'!

@@ -552,6 +552,44 @@ namespace rooferlocator.com.Web.Controllers
             return RedirectToAction("Login");
         }
 
+        [UnitOfWork]
+        public virtual async Task<ActionResult> ResetPassword()
+        {
+            if (Request.Form["Email"] != null)
+            {
+                if (Request.Form["Password"] == Request.Form["ConfirmPassword"])
+                {
+                    //Get User
+                    var selectedUser = _userManager.FindByEmail(Request.Form["Email"].ToString());
+                    string oldPassword = selectedUser.Password;
+
+                    if (Request.Form["PasswordResetCode"] == selectedUser.PasswordResetCode)
+                    {
+                        //Hash New Password
+                        selectedUser.Password = new PasswordHasher().HashPassword(Request.Form["ConfirmPassword"].ToString());
+
+                        //Save User
+                        var result = _userManager.Update(selectedUser);
+
+                        AuthenticationManager.SignOut();
+                        return RedirectToAction("Login");
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Password Reset Failed:  Reset code is not valid.";
+                        return View("ResetPassword", ViewBag);
+                    }
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Password Reset Failed:  Password and Confirm Password do not match.";
+                    return View("ResetPassword", ViewBag);
+                }
+            }
+            return View();
+        }
+
+
         #endregion
 
         #region Register

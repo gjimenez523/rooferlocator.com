@@ -205,48 +205,51 @@
                                                 int prevRequestId_Quote = 0;
                                                 string criteriaList = "";
                                                 //criteriaList += "<div class='mt-actions'>";
-                                                foreach (var item in Model.SubscriberQuotes.SubscriberQuotes)
+                                                if (Model.SubscriberQuotes != null)
                                                 {
-                                                    if (item.RequestId == prevRequestId_Quote)
+                                                    foreach (var item in Model.SubscriberQuotes.SubscriberQuotes)
                                                     {
-                                                        //criteriaList += item.CriteriaName + ":" + item.CriteriaValue;
-                                                    }
-                                                    else
-                                                    {
-                                                        criteriaList += "   <div class='row static-info' style='border-bottom:1px solid gainsboro;'>";
-                                                        //criteriaList += "       <span class='mt-action-img'><i class='fa fa-user'></i></span>";
-                                                        //criteriaList += "       <span class='mt-action-body'>";
-                                                        //criteriaList += "           <div class='mt-action-row'>";
-                                                        criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 name pull-left'><strong><h4>";
-                                                        criteriaList += item.RequestFullName + "</h4></strong><h6>" +
-                                                                        item.QuoteMessage;
-                                                        criteriaList += "               </div>";
-                                                        criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 name' style='text-align:center;border-right:1px solid gainsboro;border-left:1px solid gainsboro;'>";
-                                                        criteriaList += "                   <strong><h4>";
-                                                        criteriaList += "                       <span class='badge' style='background-color:#fe9230;width:100%;padding:8px;height:auto;margin:3px;'>";
-                                                        criteriaList += "                           <span style='font-size:14px;'> Quotes submitted</span>";
-                                                        criteriaList += "                               <strong style='font-size:16px;'>" + item.QuotesSubmitted + "</strong>";
-                                                        criteriaList += "                           </span>";
-                                                        criteriaList += "                       </span>";
-                                                        criteriaList += "                       <span class='badge' style='background-color:green;width:100%;padding:8px;height:auto;'>";
-                                                        criteriaList += "                           <span style='font-size:14px;'> Your quote</span>";
-                                                        criteriaList += "                               <strong style='font-size:16px;'><i class='fa fa-dollar'></i>" + item.QuoteCost + "</strong>";
-                                                        criteriaList += "                           </span>";
-                                                        criteriaList += "                       </span>";
-                                                        criteriaList += "                   </h4></strong>";
-                                                        criteriaList += "               </div>";
-                                                        //criteriaList += "               <div class='mt-action-datetime'></div>";
-                                                        criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 pull-right' style='text-align:right;'>";
-                                                        criteriaList += "                   Hired?<br/>";
-                                                        criteriaList += "                   <div class='bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-on' style='width: 94px;'><div class='bootstrap-switch-container' style='width: 138px; margin-left: 0px;'>";
-                                                        criteriaList += "                       <input class='make-switch' name='" + item.QuoteId + "' id='" + item.QuoteId + "' type='checkbox' data-off-text='No' data-on-text='Yes' onchange=\"$('#quoteUpdate').submit();\">";
-                                                        criteriaList += "                   </div></div>";
-                                                        criteriaList += "               </div>";
-                                                        //criteriaList += "           </div>";
-                                                        //criteriaList += "       </span>";
-                                                        criteriaList += "   </div>";
+                                                        if (item.RequestId == prevRequestId_Quote)
+                                                        {
+                                                            //criteriaList += item.CriteriaName + ":" + item.CriteriaValue;
+                                                        }
+                                                        else
+                                                        {
+                                                            criteriaList += "   <div class='row static-info' style='border-bottom:1px solid gainsboro;'>";
+                                                            //criteriaList += "       <span class='mt-action-img'><i class='fa fa-user'></i></span>";
+                                                            //criteriaList += "       <span class='mt-action-body'>";
+                                                            //criteriaList += "           <div class='mt-action-row'>";
+                                                            criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 name pull-left'><strong><h4>";
+                                                            criteriaList += item.RequestFullName + "</h4></strong><h6>" +
+                                                                            item.QuoteMessage;
+                                                            criteriaList += "               </div>";
+                                                            criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 name' style='text-align:center;border-right:1px solid gainsboro;border-left:1px solid gainsboro;'>";
+                                                            criteriaList += "                   <strong><h4>";
+                                                            criteriaList += "                       <span class='badge' style='background-color:#fe9230;width:100%;padding:8px;height:auto;margin:3px;'>";
+                                                            criteriaList += "                           <span style='font-size:14px;'> Quotes submitted</span>";
+                                                            criteriaList += "                               <strong style='font-size:16px;'>" + item.QuotesSubmitted + "</strong>";
+                                                            criteriaList += "                           </span>";
+                                                            criteriaList += "                       </span>";
+                                                            criteriaList += "                       <span class='badge' style='background-color:green;width:100%;padding:8px;height:auto;'>";
+                                                            criteriaList += "                           <span style='font-size:14px;'> Your quote</span>";
+                                                            criteriaList += "                               <strong style='font-size:16px;'><i class='fa fa-dollar'></i>" + item.QuoteCost + "</strong>";
+                                                            criteriaList += "                           </span>";
+                                                            criteriaList += "                       </span>";
+                                                            criteriaList += "                   </h4></strong>";
+                                                            criteriaList += "               </div>";
+                                                            //criteriaList += "               <div class='mt-action-datetime'></div>";
+                                                            criteriaList += "               <div class='col-lg-4 col-md-4 col-sm-12 col-xs-12 pull-right' style='text-align:right;'>";
+                                                            criteriaList += "                   Hired?<br/>";
+                                                            criteriaList += "                   <div class='bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-on' style='width: 94px;'><div class='bootstrap-switch-container' style='width: 138px; margin-left: 0px;'>";
+                                                            criteriaList += "                       <input class='make-switch' name='" + item.QuoteId + "' id='" + item.QuoteId + "' type='checkbox' data-off-text='No' data-on-text='Yes' onchange=\"$('#quoteUpdate').submit();\">";
+                                                            criteriaList += "                   </div></div>";
+                                                            criteriaList += "               </div>";
+                                                            //criteriaList += "           </div>";
+                                                            //criteriaList += "       </span>";
+                                                            criteriaList += "   </div>";
 
-                                                        prevRequestId_Quote = item.RequestId;
+                                                            prevRequestId_Quote = item.RequestId;
+                                                        }
                                                     }
                                                 }
                                                 //criteriaList += "</div>";

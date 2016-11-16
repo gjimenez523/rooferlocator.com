@@ -3315,7 +3315,6 @@
     <Content Include="Assets\global\plugins\icheck\demo\css\montserrat-regular.svg" />
     <Content Include="Assets\global\plugins\icheck\demo\css\normalize.css" />
     <Content Include="Assets\global\plugins\icheck\demo\index.html" />
-    <Content Include="Assets\global\plugins\icheck\demo\js\custom.js" />
     <Content Include="Assets\global\plugins\icheck\demo\js\custom.min.js" />
     <Content Include="Assets\global\plugins\icheck\demo\js\jquery.js" />
     <Content Include="Assets\global\plugins\icheck\demo\js\zepto.js" />
@@ -4872,7 +4871,6 @@
     <Content Include="Assets\global\plugins\gmaps\README.md" />
     <Content Include="Assets\global\plugins\icheck\bower.json" />
     <Content Include="Assets\global\plugins\icheck\CHANGELOG.md" />
-    <Content Include="Assets\global\plugins\icheck\demo\css\custom.styl" />
     <Content Include="Assets\global\plugins\icheck\demo\css\montserrat-bold.eot" />
     <Content Include="Assets\global\plugins\icheck\demo\css\montserrat-bold.ttf" />
     <Content Include="Assets\global\plugins\icheck\demo\css\montserrat-bold.woff" />
@@ -5133,6 +5131,9 @@
     <Content Include="Content\canvas4\one-page\images\videos\1.webm" />
     <Content Include="Content\canvas4\one-page\images\videos\2.webm" />
     <Content Include="Content\canvas4\one-page\images\videos\3.webm" />
+    <None Include="Properties\PublishProfiles\RooferLocator1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\RooferLocator1 - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\RooferLocator1 - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\RooferLocator1 - Web Deploy.pubxml" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />

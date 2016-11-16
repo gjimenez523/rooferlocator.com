@@ -81,8 +81,7 @@ namespace rooferlocator.com.Web.Controllers
                     resultsQuotes.SubscriberQuotes = subscriberQuotes;
                     results.SubscriberQuotes = resultsQuotes;
 
-
-                    return View(results);
+                    return RedirectToAction("PublicIndex", "Home", results);
                 }
                 else if (role == "Customer")
                 {
